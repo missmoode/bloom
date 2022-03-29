@@ -1,0 +1,22 @@
+{
+  "name": "sparky",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "yarn run build",
+    "build": "tsc"
+  },
+  "author": "missmoode",
+  "license": "MIT",
+  "private": true,
+  "peerDependencies": {},
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "pixi.js": "^6.3.0",
+    "progress-promise": "^0.0.6"
+  }
+}
