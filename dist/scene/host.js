@@ -27,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InternalSceneHost = exports.createSceneLink = exports.createSceneHost = void 0;
 var display_1 = require("@pixi/display");
 var stage_1 = require("./stage");
+;
 function createSceneHost(width, height) {
     if (width === void 0) { width = 0; }
     if (height === void 0) { height = width; }
@@ -77,7 +78,7 @@ var InternalSceneHost = /** @class */ (function (_super) {
             this.scene.onSizeChanged();
         }
     };
-    InternalSceneHost.prototype.load = function (link) {
+    InternalSceneHost.prototype.goto = function (link) {
         var _a;
         this.scene = new ((_a = link.Target.Scene).bind.apply(_a, __spreadArray([void 0, new stage_1.StageInternal(this)], link.Options, false)))();
     };
@@ -89,8 +90,10 @@ var InternalSceneHost = /** @class */ (function (_super) {
      */
     InternalSceneHost.prototype.finish = function () {
         var _a, _b;
-        this.removeChild((_a = this.scene) === null || _a === void 0 ? void 0 : _a.stage);
-        ((_b = this.scene) === null || _b === void 0 ? void 0 : _b.stage).destroy();
+        if (this.scene) {
+            this.removeChild((_a = this.scene) === null || _a === void 0 ? void 0 : _a.stage);
+            ((_b = this.scene) === null || _b === void 0 ? void 0 : _b.stage).destroy(true);
+        }
     };
     return InternalSceneHost;
 }(display_1.Container));

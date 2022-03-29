@@ -10,7 +10,6 @@ export interface Stage extends Pick<Container, Passed> {
   
   get mid(): Point;
 }
-
 export class StageInternal extends Container implements Stage {
   private host: SceneHost;
 

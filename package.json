@@ -5,19 +5,22 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "preinstall": "yarn run build",
     "prepublish": "yarn run build",
     "build": "tsc"
   },
   "author": "missmoode",
   "license": "MIT",
   "private": true,
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@pixi/core": "^6.3.0",
+    "@pixi/display": "^6.3.0",
+    "@pixi/math": "^6.3.0",
+    "@pixi/utils": "^6.3.0"
+  },
   "devDependencies": {
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "pixi.js": "^6.3.0",
     "progress-promise": "^0.0.6"
   }
 }

@@ -38,8 +38,12 @@ var InternalGameSession = /** @class */ (function (_super) {
         return _this;
     }
     InternalGameSession.prototype.destroy = function () {
-        this.app.destroy();
+        var _a;
+        (_a = this.app) === null || _a === void 0 ? void 0 : _a.destroy(true);
         this.resizeObserver.disconnect();
+    };
+    InternalGameSession.prototype.prepareScene = function (Scene, manifest) {
+        return { Scene: Scene, manifest: manifest };
     };
     return InternalGameSession;
 }(host_1.InternalSceneHost));

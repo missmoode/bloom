@@ -1,16 +1,16 @@
 import { Scene } from "./scene";
 import { Container, DisplayObject } from "@pixi/display";
-export declare type FixedSceneHost = {
+export interface FixedSceneHost {
     get width(): number;
     get height(): number;
-    load<S extends Scene>(link: SceneHost.Link<S>): void;
+    goto<S extends Scene>(link: SceneHost.Link<S>): void;
     finish(): void;
-};
-export declare type SceneHost = DisplayObject & FixedSceneHost & {
+}
+export interface SceneHost extends DisplayObject, FixedSceneHost {
     set width(width: number);
     set height(height: number);
     resize(width: number, height?: number): void;
-};
+}
 export declare namespace SceneHost {
     type Link<S extends Scene = Scene> = {
         Target: Scene.Target<S>;
@@ -29,7 +29,7 @@ export declare class InternalSceneHost extends Container implements SceneHost {
     get height(): number;
     set height(height: number);
     resize(width: number, height?: number): void;
-    load<S extends Scene>(link: SceneHost.Link<S>): void;
+    goto<S extends Scene>(link: SceneHost.Link<S>): void;
     /**
      * Informs the game that the scene is no longer running.
      * This tells the game that:

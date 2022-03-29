@@ -73,7 +73,9 @@ export class InternalSceneHost extends Container implements SceneHost {
    *  - It no longer needs to listen for events or receive update signals.
    */
   public finish() {
-    this.removeChild(this.scene?.stage as StageInternal);
-    (this.scene?.stage as StageInternal).destroy(true);
+    if (this.scene) {
+      this.removeChild(this.scene?.stage as StageInternal);
+      (this.scene?.stage as StageInternal).destroy(true);
+    }
   }
 }
