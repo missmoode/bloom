@@ -15,10 +15,15 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "progress-promise": "^0.0.6",
+    "@pixi/app": "^6.3.0",
+    "@pixi/constants": "^6.3.0",
     "@pixi/core": "^6.3.0",
     "@pixi/display": "^6.3.0",
     "@pixi/math": "^6.3.0",
-    "@pixi/utils": "^6.3.0"
+    "@pixi/runner": "^6.3.0",
+    "@pixi/settings": "^6.3.0",
+    "@pixi/ticker": "^6.3.0",
+    "@pixi/utils": "^6.3.0",
+    "progress-promise": "^0.0.6"
   }
 }

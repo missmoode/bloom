@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @pixi/display @pixi/math @pixi/core @pixi/util --peer
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @pixi/constance @pixi/settings @pixi/runner @pixi/ticker
 
 PATH: 
   C:\tools\ruby31\bin;C:\Python27\;C:\Python27\Scripts;C:\Python310\Scripts\;C:\Python310\;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;G:\app\Amelia\virtual\product\12.2.0\dbhome_1\bin;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\tools\ruby25\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft VS Code\bin;C:\ProgramData\chocolatey\bin;C:\Go\bin;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\PharosSystems\Core;C:\Program Files\Java\jdk-11.0.1\bin\;C:\Users\Amelia\AppData\Local\Microsoft\WindowsApps;C:\Users\Amelia\.dotnet\tools;C:\msys64\mingw32\bin;C:\msys64\usr\bin;C:\Program Files\PuTTY\;C:\Program Files\doctl\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\OpenJDK\jdk-18\bin;C:\Program Files (x86)\Yarn\bin\;c:\msys64\mingw32\bin;c:\msys64\usr\bin;C:\Program Files\OpenJDK\jdk-14.0.1\bin;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;G:\app\Amelia\virtual\product\12.2.0\dbhome_1\bin;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\tools\ruby25\bin;C:\Program Files\Oculus\Support\oculus-runtime;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft VS Code\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\Go\bin;C:\Program Files\nodejs\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\dotnet\;C:\Progr;C:\Users\Amelia\;C:\Users\Amelia\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Users\Amelia\.dotnet\tools;C:\Users\Amelia\AppData\Local\Microsoft\Wi
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@pixi%2futil: Not found
+  Error: https://registry.yarnpkg.com/@pixi%2fconstance: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66140:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140885:22)
       at Request.emit (node:events:526:28)
@@ -29,7 +29,7 @@ Trace:
 npm manifest: 
   {
     "name": "sparky",
-    "version": "1.0.2",
+    "version": "1.0.5",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -40,13 +40,15 @@ npm manifest:
     "author": "missmoode",
     "license": "MIT",
     "private": true,
-    "peerDependencies": {},
     "devDependencies": {
       "typescript": "^4.6.3"
     },
     "dependencies": {
-      "pixi.js": "^6.3.0",
-      "progress-promise": "^0.0.6"
+      "progress-promise": "^0.0.6",
+      "@pixi/core": "^6.3.0",
+      "@pixi/display": "^6.3.0",
+      "@pixi/math": "^6.3.0",
+      "@pixi/utils": "^6.3.0"
     }
   }
 
@@ -78,14 +80,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@pixi/constants/-/constants-6.3.0.tgz#c900b875ee132d7061af4c1ab53c060faec1a504"
     integrity sha512-295/bb0+5IugA9plqBnD6xrvApjgGRdaNJ6EryCa7UB2j8wt4YtuzLjNeaCtng9eJONgJXXPhPF85+spdWRMbg==
   
-  "@pixi/core@6.3.0":
+  "@pixi/core@6.3.0", "@pixi/core@^6.3.0":
     version "6.3.0"
     resolved "https://registry.yarnpkg.com/@pixi/core/-/core-6.3.0.tgz#f0eeb6804f811f7de59e32130590f82c4b930745"
     integrity sha512-j7UMizcgDoUB9eDrZIP22xJCPYpjx2/BCl8deE5M9Cim9OR2qPxnNnt3jC1oKf2vVnNMTDrMOLekhMVo89FX2Q==
     dependencies:
       "@types/offscreencanvas" "^2019.6.4"
   
-  "@pixi/display@6.3.0":
+  "@pixi/display@6.3.0", "@pixi/display@^6.3.0":
     version "6.3.0"
     resolved "https://registry.yarnpkg.com/@pixi/display/-/display-6.3.0.tgz#82781587c928ac49ea24dbc675781e885d3c4a08"
     integrity sha512-Uxc1aLTFzV55d3kOlh/g19RlE2okPXsroi5jfYGCNS0VCdFk0sp6jMNEwk12BwC0KcA5SU7217H4jLy38VCVpA==
@@ -140,7 +142,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@pixi/loaders/-/loaders-6.3.0.tgz#82441d1f664c489a754db7d2deb68bccdf97f4d6"
     integrity sha512-FXW3DkcAg2w0FABS6ixmzJNQSdabHXWumltelYM76NmBSE8oaLmg6tniBvjrTlSxUs3HlgwdeqgnUHV9GIFxLQ==
   
-  "@pixi/math@6.3.0":
+  "@pixi/math@6.3.0", "@pixi/math@^6.3.0":
     version "6.3.0"
     resolved "https://registry.yarnpkg.com/@pixi/math/-/math-6.3.0.tgz#2df6a27a8a73e1976ebbe90b01dfeab999b17bdb"
     integrity sha512-QkF9wl3/kXvthwWhrDAVgWQWl3T9dbyicHsoWfx0s9b3E0rx+PZcpz5ftaAVxGd7EvecIxV9nEUnna9TIjvwJQ==
@@ -235,7 +237,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@pixi/ticker/-/ticker-6.3.0.tgz#0438efd9abbd74eab59be7361bac47553c25e4cb"
     integrity sha512-cEqyQgM5entsi+h85fUnESBzNc/yMRG/mqsfAr7/KraP7bmCcn3MYVuTycRMkRbuNPjC1NIpqkqiOaxzgAUGPw==
   
-  "@pixi/utils@6.3.0":
+  "@pixi/utils@6.3.0", "@pixi/utils@^6.3.0":
     version "6.3.0"
     resolved "https://registry.yarnpkg.com/@pixi/utils/-/utils-6.3.0.tgz#74703e1593b3f7462165adcfaf41c62ce303829c"
     integrity sha512-QI5wb/fDdH8DAzIMlrYS0MhG382FPMLh4s3yRtOaftiOb84LL7Syz//SC+CJAyVB0UV/Lpr+T6PiCa4eBjRDgA==
