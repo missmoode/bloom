@@ -1,6 +1,6 @@
 {
   "name": "bloom",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A library for creating and packaging pixi-based games",
   "main": "dist/lib/index.js",
   "bin": "dist/cmd/index.js",
