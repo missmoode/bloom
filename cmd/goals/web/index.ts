@@ -35,9 +35,9 @@ export function Web(config: Config) {
     }
   }).pipe(source("bundle.js"))
   .pipe(buffer());
-  if (config.production) bundle = bundle.pipe(sourcemaps.init({loadMaps: true}))
-  bundle = bundle.pipe(terser())
-  if (config.production) bundle = bundle.pipe(config.production ? new PassThrough() : sourcemaps.write('.', { sourceRoot: path.dirname(config.rootScript) }));
+  if (!config.production) bundle = bundle.pipe(sourcemaps.init({loadMaps: true}))
+  bundle = bundle.pipe(terser());
+  if (!config.production) bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.dirname(config.rootScript) }));
 
   const copyResources = src(config.resources);
 
@@ -62,7 +62,7 @@ export function Web(config: Config) {
   const manifest = src(`${__dirname}${path.sep}manifest.webmanifest`)
   .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `"icons": ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
 
-  return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.outDir));
+  return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.outDir, ));
 }
 
 function rasterize(input: string, width: number, height = width) {

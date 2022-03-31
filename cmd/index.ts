@@ -5,6 +5,7 @@ import project from '../package.json';
 import { Config, defaults } from './config';
 import { Web } from './goals/web';
 import { asPromise } from './goals/goal';
+import { debug } from './util';
 
 program
   .name(project.version)
@@ -19,8 +20,11 @@ program
     if (existsSync(command.config)) {
       const config = {...defaults, ...JSON.parse(readFileSync(command.config).toString('utf-8'))} as Config;
       config.production = command.production;
-      if (command.web) await asPromise(Web(config));
-      console.log('Done!');
+      if (command.web) {
+        debug.info('Building for web...')
+        await asPromise(Web(config));
+        debug.success('Done!');
+      }
     } else {
       console.error('Missing bloom config.');
     }
