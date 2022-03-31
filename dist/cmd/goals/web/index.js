@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Web = void 0;
 var stream_1 = __importDefault(require("@rollup/stream"));
 var plugin_babel_1 = __importDefault(require("@rollup/plugin-babel"));
+var plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
 var vinyl_fs_1 = require("vinyl-fs");
 var vinyl_source_stream_1 = __importDefault(require("vinyl-source-stream"));
 var vinyl_buffer_1 = __importDefault(require("vinyl-buffer"));
@@ -28,7 +29,7 @@ function Web(config) {
     };
     var bundle = (0, stream_1.default)({
         input: config.rootScript,
-        plugins: [(0, plugin_babel_1.default)(babelConf)],
+        plugins: [(0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf)],
         output: {
             dir: config.outDir,
             sourcemap: config.production,

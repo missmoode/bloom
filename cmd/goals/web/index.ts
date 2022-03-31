@@ -14,6 +14,7 @@ import path from "path";
 import { PassThrough } from "stream";
 import Vinyl from 'vinyl';
 import terser from 'gulp-terser';
+import resolve from '@rollup/plugin-node-resolve';
 import sourcemaps from 'gulp-sourcemaps';
 
 export function Web(config: Config) {
@@ -27,7 +28,7 @@ export function Web(config: Config) {
 
   let bundle = rollup({
     input: config.rootScript,
-    plugins: [babel(babelConf as RollupBabelInputPluginOptions)],
+    plugins: [resolve(), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
       dir: config.outDir,
       sourcemap: config.production,
