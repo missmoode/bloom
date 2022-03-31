@@ -25,7 +25,7 @@ export function Web(config: Config) {
     sourcemaps: config.production
   }
 
-  const bundle = rollup({
+  let bundle = rollup({
     input: config.rootScript,
     plugins: [babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
@@ -34,10 +34,10 @@ export function Web(config: Config) {
       format: 'umd'
     }
   }).pipe(source("bundle.js"))
-  .pipe(buffer())
-  .pipe(config.production ? new PassThrough() : sourcemaps.init({loadMaps: true}))
-  .pipe(terser())
-  .pipe(config.production ? new PassThrough() : sourcemaps.write('.', { sourceRoot: path.dirname(config.rootScript) }));
+  .pipe(buffer());
+  if (config.production) bundle = bundle.pipe(sourcemaps.init({loadMaps: true}))
+  bundle = bundle.pipe(terser())
+  if (config.production) bundle = bundle.pipe(config.production ? new PassThrough() : sourcemaps.write('.', { sourceRoot: path.dirname(config.rootScript) }));
 
   const copyResources = src(config.resources);
 

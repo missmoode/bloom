@@ -35,10 +35,12 @@ function Web(config) {
             format: 'umd'
         }
     }).pipe((0, vinyl_source_stream_1.default)("bundle.js"))
-        .pipe((0, vinyl_buffer_1.default)())
-        .pipe(config.production ? new stream_2.PassThrough() : gulp_sourcemaps_1.default.init({ loadMaps: true }))
-        .pipe((0, gulp_terser_1.default)())
-        .pipe(config.production ? new stream_2.PassThrough() : gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.dirname(config.rootScript) }));
+        .pipe((0, vinyl_buffer_1.default)());
+    if (config.production)
+        bundle = bundle.pipe(gulp_sourcemaps_1.default.init({ loadMaps: true }));
+    bundle = bundle.pipe((0, gulp_terser_1.default)());
+    if (config.production)
+        bundle = bundle.pipe(config.production ? new stream_2.PassThrough() : gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.dirname(config.rootScript) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
     var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "index.html"))
         .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/gs }));
