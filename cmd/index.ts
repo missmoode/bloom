@@ -25,6 +25,7 @@ program
       const config = {...defaults, ...JSON.parse(readFileSync(command.config).toString('utf-8'))} as Config;
       config.production = command.production;
       if (command.outDirectory) config.outDir = command.outDirectory;
+      config.outDir = path.join(process.cwd(), command.outDirectory);
       if (command.clean) {
         debug.info(`Deleting ${path.relative(process.cwd(), config.outDir)}${config.production ? '' : ' in three seconds'}...`);
         if (!config.production) await new Promise(resolve => setTimeout(resolve, 3000));
