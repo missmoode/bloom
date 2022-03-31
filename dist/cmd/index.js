@@ -81,7 +81,7 @@ commander_1.program
                 config.production = command.production;
                 if (command.outDirectory)
                     config.outDir = command.outDirectory;
-                config.outDir = path_1.default.join(process.cwd(), command.outDir);
+                config.outDir = path_1.default.join(process.cwd(), config.outDir);
                 if (!command.clean) return [3 /*break*/, 3];
                 util_1.debug.info("Deleting ".concat(path_1.default.relative(process.cwd(), config.outDir)).concat(config.production ? '' : ' in three seconds', "..."));
                 if (!!config.production) return [3 /*break*/, 2];
