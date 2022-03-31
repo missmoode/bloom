@@ -8,7 +8,7 @@
   "scripts": {
     "prepublish": "yarn run build",
     "clean": "rm -rf dist",
-    "build": "yarn run clean && tsc && copyfiles cmd/**/*[!.ts] dist"
+    "build": "yarn run clean && tsc && copyfiles -e \"**/*.ts\" cmd/**/* dist"
   },
   "author": "missmoode",
   "license": "MIT",
