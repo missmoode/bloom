@@ -1,5 +1,3 @@
-import { Loader, LoaderResource } from "@pixi/loaders";
-import { Stage } from "./stage";
 import { View, ViewConstructor } from "./view";
 
   
@@ -38,20 +36,4 @@ export namespace Scenes {
   //   for (const resource of scene.manifest.resources) {
   //   }
   // }
-}
-
-type HomeOpts = {
-  name: string;
-}
-class HomeScene extends View {
-  constructor(stage: Stage, opts: HomeOpts) {
-    super(stage);
-    /** */
-  }
-}
-class TestScene extends View {
-  constructor(stage: Stage) {
-    super(stage);
-    /** */
-  }
 }
