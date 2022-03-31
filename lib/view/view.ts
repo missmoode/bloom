@@ -14,5 +14,3 @@ export abstract class View {
 export type ViewConstructor<T extends View> = new (stage: Stage, opts: any | undefined) => T;
 export type DefaultViewConstructor<T extends View> = new (stage: Stage, opts: undefined) => T;
 export type ArgumentViewConstructor<T extends View> = new (stage: Stage, opts: any) => T;
-
-new Viewport(3, 3);
