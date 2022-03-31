@@ -37,7 +37,7 @@ export function Web(config: Config) {
   }).pipe(source("bundle.js"))
   .pipe(buffer());
   if (!config.production) bundle = bundle.pipe(sourcemaps.init({loadMaps: true}))
-  bundle = bundle.pipe(terser());
+  bundle = bundle.pipe(terser({output: {comments: false}, mangle: {properties: { regex: /^_/ }}}));
   if (!config.production) bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.dirname(config.rootScript) }));
 
   const copyResources = src(config.resources);
