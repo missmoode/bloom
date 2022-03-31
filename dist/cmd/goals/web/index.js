@@ -33,7 +33,7 @@ function Web(config) {
         plugins: [(0, plugin_node_resolve_1.default)({ preferBuiltins: false }), (0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf)],
         output: {
             dir: config.outDir,
-            sourcemap: config.production,
+            sourcemap: !config.production,
             format: 'umd'
         }
     }).pipe((0, vinyl_source_stream_1.default)("bundle.js"))

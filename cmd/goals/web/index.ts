@@ -31,7 +31,7 @@ export function Web(config: Config) {
     plugins: [resolve({ preferBuiltins: false }), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
       dir: config.outDir,
-      sourcemap: config.production,
+      sourcemap: !config.production,
       format: 'umd'
     }
   }).pipe(source("bundle.js"))
