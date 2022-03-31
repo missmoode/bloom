@@ -17,7 +17,7 @@ import Vinyl from 'vinyl';
 export function Web(config: Config) {
   const babelConf = {
     extensions: ['.ts', '.js'],
-    presets: ['@babel/preset-typescript'],
+    presets: ['@babel/preset-typescript', '@babel/preset-env'],
     exclude: 'node_modules/**'
   }
 
@@ -25,15 +25,16 @@ export function Web(config: Config) {
     input: config.rootScript,
     plugins: [babel(babelConf)],
     output: {
-      dir: config.outDir
+      dir: config.outDir,
+      format: 'umd'
     }
   }).pipe(source("bundle.js"))
   .pipe(buffer());
 
   const copyResources = src(config.resources);
 
-  const html = source(`${__dirname}/index.html`)
-  .pipe(template({title: config.name, icon: `${path.basename(config.iconSVGPath).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/g}))
+  const html = src(`${__dirname}/index.html`)
+  .pipe(template({title: config.name, icon: `${path.basename(config.iconSVGPath).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/gs}))
 
   const icon = src(config.iconSVGPath);
 
@@ -50,7 +51,7 @@ export function Web(config: Config) {
     }
   ]
 
-  const manifest = source(`${__dirname}/manifest.webmanifest`)
+  const manifest = src(`${__dirname}/manifest.webmanifest`)
   .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `icons: ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
 
   return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.outDir));

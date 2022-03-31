@@ -19,20 +19,21 @@ function Web(config) {
     var _a;
     var babelConf = {
         extensions: ['.ts', '.js'],
-        presets: ['@babel/preset-typescript'],
+        presets: ['@babel/preset-typescript', '@babel/preset-env'],
         exclude: 'node_modules/**'
     };
     var bundle = (0, stream_1.default)({
         input: config.rootScript,
         plugins: [(0, plugin_babel_1.default)(babelConf)],
         output: {
-            dir: config.outDir
+            dir: config.outDir,
+            format: 'umd'
         }
     }).pipe((0, vinyl_source_stream_1.default)("bundle.js"))
         .pipe((0, vinyl_buffer_1.default)());
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
-    var html = (0, vinyl_source_stream_1.default)("".concat(__dirname, "/index.html"))
-        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/g }));
+    var html = (0, vinyl_fs_1.src)("".concat(__dirname, "/index.html"))
+        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/gs }));
     var icon = (0, vinyl_fs_1.src)(config.iconSVGPath);
     var iconPNG = rasterize(config.iconSVGPath, 512);
     var icons = [
@@ -45,7 +46,7 @@ function Web(config) {
             sizes: 'any'
         }
     ];
-    var manifest = (0, vinyl_source_stream_1.default)("".concat(__dirname, "/manifest.webmanifest"))
+    var manifest = (0, vinyl_fs_1.src)("".concat(__dirname, "/manifest.webmanifest"))
         .pipe((0, gulp_template_1.default)({ title: (_a = config.shortname) !== null && _a !== void 0 ? _a : config.name, theme_color: config.themeColor, icons: "icons: ".concat(JSON.stringify(icons)) }, { interpolate: /{{(.+?)}}/gs }));
     return (0, merge2_1.default)(bundle, copyResources, html, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.outDir));
 }
