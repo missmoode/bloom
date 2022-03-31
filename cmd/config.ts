@@ -6,10 +6,10 @@ export interface Config {
   rootScript: string,
   resources: string | string[],
   outDir: string,
-  sourceMaps: boolean
+  production: boolean
 }
 
 export const defaults = {
   outDir: 'out',
-  sourceMaps: false
+  production: false
 }

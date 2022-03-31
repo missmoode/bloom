@@ -13,12 +13,15 @@ import sharp from "sharp";
 import path from "path";
 import { PassThrough } from "stream";
 import Vinyl from 'vinyl';
+import terser from 'gulp-terser';
+import sourcemaps from 'gulp-sourcemaps';
 
 export function Web(config: Config) {
   const babelConf = {
     extensions: ['.ts', '.js'],
     presets: ['@babel/preset-typescript', '@babel/preset-env'],
-    exclude: 'node_modules/**'
+    exclude: 'node_modules/**',
+    sourcemaps: config.production
   }
 
   const bundle = rollup({
@@ -26,10 +29,14 @@ export function Web(config: Config) {
     plugins: [babel(babelConf)],
     output: {
       dir: config.outDir,
+      sourcemap: config.production,
       format: 'umd'
     }
   }).pipe(source("bundle.js"))
-  .pipe(buffer());
+  .pipe(buffer())
+  .pipe(config.production ? new PassThrough() : sourcemaps.init({loadMaps: true}))
+  .pipe(terser())
+  .pipe(config.production ? new PassThrough() : sourcemaps.write('.', { sourceRoot: path.dirname(config.rootScript) }));
 
   const copyResources = src(config.resources);
 

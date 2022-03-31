@@ -6,9 +6,9 @@ export interface Config {
     rootScript: string;
     resources: string | string[];
     outDir: string;
-    sourceMaps: boolean;
+    production: boolean;
 }
 export declare const defaults: {
     outDir: string;
-    sourceMaps: boolean;
+    production: boolean;
 };

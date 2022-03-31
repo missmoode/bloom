@@ -15,22 +15,29 @@ var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
 var stream_2 = require("stream");
 var vinyl_1 = __importDefault(require("vinyl"));
+var gulp_terser_1 = __importDefault(require("gulp-terser"));
+var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
 function Web(config) {
     var _a;
     var babelConf = {
         extensions: ['.ts', '.js'],
         presets: ['@babel/preset-typescript', '@babel/preset-env'],
-        exclude: 'node_modules/**'
+        exclude: 'node_modules/**',
+        sourcemaps: config.production
     };
     var bundle = (0, stream_1.default)({
         input: config.rootScript,
         plugins: [(0, plugin_babel_1.default)(babelConf)],
         output: {
             dir: config.outDir,
+            sourcemap: config.production,
             format: 'umd'
         }
     }).pipe((0, vinyl_source_stream_1.default)("bundle.js"))
-        .pipe((0, vinyl_buffer_1.default)());
+        .pipe((0, vinyl_buffer_1.default)())
+        .pipe(config.production ? new stream_2.PassThrough() : gulp_sourcemaps_1.default.init({ loadMaps: true }))
+        .pipe((0, gulp_terser_1.default)())
+        .pipe(config.production ? new stream_2.PassThrough() : gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.dirname(config.rootScript) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
     var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "index.html"))
         .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/gs }));

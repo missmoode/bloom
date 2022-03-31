@@ -64,6 +64,7 @@ commander_1.program
     .command('build')
     .description('Builds for web and PWA')
     .option('-w, --web', 'Build for web and PWA', true)
+    .option('-p, --production', 'Build without sourcemaps', false)
     .option('-c, --config <path>', 'configuration file to use instead of opts', './bloomConfig.json')
     .action(function (command) { return __awaiter(void 0, void 0, void 0, function () {
     var config;
@@ -71,7 +72,7 @@ commander_1.program
         switch (_a.label) {
             case 0:
                 if (!(0, fs_1.existsSync)(command.config)) return [3 /*break*/, 3];
-                config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8')));
+                config = __assign(__assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8'))), { production: command.produduction });
                 if (!command.web) return [3 /*break*/, 2];
                 return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
             case 1:

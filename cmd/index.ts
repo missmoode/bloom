@@ -13,10 +13,11 @@ program
   .command('build')
   .description('Builds for web and PWA')
   .option('-w, --web', 'Build for web and PWA', true)
+  .option('-p, --production', 'Build without sourcemaps', false)
   .option('-c, --config <path>', 'configuration file to use instead of opts', './bloomConfig.json')
   .action(async (command) => {
     if (existsSync(command.config)) {
-      const config = {...defaults, ...JSON.parse(readFileSync(command.config).toString('utf-8'))} as Config;
+      const config = {...defaults, ...JSON.parse(readFileSync(command.config).toString('utf-8')), production: command.produduction} as Config;
       if (command.web) await asPromise(Web(config));
       console.log('Done!');
     } else {
