@@ -1,7 +1,7 @@
 import { Config } from "../../config";
 
 import rollup from '@rollup/stream';
-import babel from '@rollup/plugin-babel'
+import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 
 import { dest, src } from 'vinyl-fs';
@@ -20,13 +20,14 @@ export function Web(config: Config) {
   const babelConf = {
     extensions: ['.ts', '.js'],
     presets: ['@babel/preset-typescript', '@babel/preset-env'],
+    babelHelpers: 'bundled',
     exclude: 'node_modules/**',
     sourcemaps: config.production
   }
 
   const bundle = rollup({
     input: config.rootScript,
-    plugins: [babel(babelConf)],
+    plugins: [babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
       dir: config.outDir,
       sourcemap: config.production,
@@ -59,7 +60,7 @@ export function Web(config: Config) {
   ]
 
   const manifest = src(`${__dirname}${path.sep}manifest.webmanifest`)
-  .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `icons: ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
+  .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `"icons": ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
 
   return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.outDir));
 }

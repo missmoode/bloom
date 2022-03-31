@@ -22,6 +22,7 @@ function Web(config) {
     var babelConf = {
         extensions: ['.ts', '.js'],
         presets: ['@babel/preset-typescript', '@babel/preset-env'],
+        babelHelpers: 'bundled',
         exclude: 'node_modules/**',
         sourcemaps: config.production
     };
@@ -54,7 +55,7 @@ function Web(config) {
         }
     ];
     var manifest = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "manifest.webmanifest"))
-        .pipe((0, gulp_template_1.default)({ title: (_a = config.shortname) !== null && _a !== void 0 ? _a : config.name, theme_color: config.themeColor, icons: "icons: ".concat(JSON.stringify(icons)) }, { interpolate: /{{(.+?)}}/gs }));
+        .pipe((0, gulp_template_1.default)({ title: (_a = config.shortname) !== null && _a !== void 0 ? _a : config.name, theme_color: config.themeColor, icons: "\"icons\": ".concat(JSON.stringify(icons)) }, { interpolate: /{{(.+?)}}/gs }));
     return (0, merge2_1.default)(bundle, copyResources, html, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.outDir));
 }
 exports.Web = Web;
