@@ -65,14 +65,14 @@ commander_1.program
     .description('Builds for web and PWA')
     .option('-w, --web', 'Build for web and PWA', true)
     .option('-c, --config <path>', 'configuration file to use instead of opts', './bloomConfig.json')
-    .action(function (str, options) { return __awaiter(void 0, void 0, void 0, function () {
+    .action(function (command) { return __awaiter(void 0, void 0, void 0, function () {
     var config;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!(0, fs_1.existsSync)(options.config)) return [3 /*break*/, 3];
-                config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(options.config).toString('utf-8')));
-                if (!options.web) return [3 /*break*/, 2];
+                if (!(0, fs_1.existsSync)(command.config)) return [3 /*break*/, 3];
+                config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8')));
+                if (!command.web) return [3 /*break*/, 2];
                 return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
             case 1:
                 _a.sent();
@@ -88,3 +88,7 @@ commander_1.program
     });
 }); });
 commander_1.program.parse(process.argv);
+commander_1.program.exitOverride(function (err) {
+    console.log(err);
+    process.exit(0);
+});

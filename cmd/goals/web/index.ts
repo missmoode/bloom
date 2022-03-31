@@ -31,7 +31,7 @@ export function Web(config: Config) {
   const copyResources = src(config.resources);
 
   const html = source(`${__dirname}/index.html`)
-  .pipe(template({title: config.name, icon: `./${path.basename(config.iconSVGPath).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/g}))
+  .pipe(template({title: config.name, icon: `${path.basename(config.iconSVGPath).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/g}))
 
   const icon = src(config.iconSVGPath);
 
@@ -43,7 +43,7 @@ export function Web(config: Config) {
       sizes: 'any'
     },
     {
-      src: `./${path.basename(config.iconSVGPath).replace('svg', 'png')}`,
+      src: `${path.basename(config.iconSVGPath).replace('svg', 'png')}`,
       sizes: 'any'
     }
   ]

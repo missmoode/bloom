@@ -14,10 +14,10 @@ program
   .description('Builds for web and PWA')
   .option('-w, --web', 'Build for web and PWA', true)
   .option('-c, --config <path>', 'configuration file to use instead of opts', './bloomConfig.json')
-  .action(async (str, options) => {
-    if (existsSync(options.config)) {
-      const config = {...defaults, ...JSON.parse(readFileSync(options.config).toString('utf-8'))} as Config;
-      if (options.web) await asPromise(Web(config));
+  .action(async (command) => {
+    if (existsSync(command.config)) {
+      const config = {...defaults, ...JSON.parse(readFileSync(command.config).toString('utf-8'))} as Config;
+      if (command.web) await asPromise(Web(config));
       console.log('Done!');
     } else {
       console.error('Missing bloom config.');
@@ -25,3 +25,7 @@ program
   });
 
 program.parse(process.argv);
+program.exitOverride((err) => {
+  console.log(err);
+  process.exit(0);
+})

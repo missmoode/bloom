@@ -30,7 +30,7 @@ function Web(config) {
         .pipe((0, vinyl_buffer_1.default)());
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
     var html = (0, vinyl_source_stream_1.default)("".concat(__dirname, "/index.html"))
-        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "./".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/g }));
+        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/g }));
     var icon = (0, vinyl_fs_1.src)(config.iconSVGPath);
     var iconPNG = rasterize(config.iconSVGPath, 512);
     var icons = [
@@ -39,7 +39,7 @@ function Web(config) {
             sizes: 'any'
         },
         {
-            src: "./".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')),
+            src: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')),
             sizes: 'any'
         }
     ];
