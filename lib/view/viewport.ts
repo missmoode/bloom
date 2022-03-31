@@ -34,19 +34,19 @@ export class InternalViewport extends Container implements MutableViewport {
     return this.__width;
   }
   public override set width(width: number) {
-    this.__width = width;
     this.resize(width, this.__height);
   }
 
   public override get height(): number {
-    return this.height;
+    return this.__height;
   }
   public override set height(height: number) {
-    this.__height = height;
     this.resize(this.__width, height);
   }
 
   public resize(width: number, height = width) {
+    this.__width = width;
+    this.__height = height;
     if (this.view) {
       this.view.onSizeChanged();
     }

@@ -34,7 +34,6 @@ var InternalViewport = /** @class */ (function (_super) {
             return this.__width;
         },
         set: function (width) {
-            this.__width = width;
             this.resize(width, this.__height);
         },
         enumerable: false,
@@ -42,10 +41,9 @@ var InternalViewport = /** @class */ (function (_super) {
     });
     Object.defineProperty(InternalViewport.prototype, "height", {
         get: function () {
-            return this.height;
+            return this.__height;
         },
         set: function (height) {
-            this.__height = height;
             this.resize(this.__width, height);
         },
         enumerable: false,
@@ -53,6 +51,8 @@ var InternalViewport = /** @class */ (function (_super) {
     });
     InternalViewport.prototype.resize = function (width, height) {
         if (height === void 0) { height = width; }
+        this.__width = width;
+        this.__height = height;
         if (this.view) {
             this.view.onSizeChanged();
         }
