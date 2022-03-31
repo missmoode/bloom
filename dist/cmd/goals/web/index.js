@@ -17,7 +17,7 @@ function Web(config) {
     var _a;
     var babelConf = {
         extensions: ['.ts', '.js'],
-        presets: ['@babel/plugin-typescript'],
+        presets: ['@babel/preset-typescript'],
         exclude: 'node_modules/**'
     };
     var bundle = (0, stream_1.default)({
