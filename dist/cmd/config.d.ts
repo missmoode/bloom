@@ -10,5 +10,4 @@ export interface Config {
 }
 export declare const defaults: {
     outDir: string;
-    production: boolean;
 };

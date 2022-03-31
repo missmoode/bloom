@@ -10,6 +10,5 @@ export interface Config {
 }
 
 export const defaults = {
-  outDir: 'out',
-  production: false
+  outDir: 'out'
 }

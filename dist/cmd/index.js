@@ -72,7 +72,8 @@ commander_1.program
         switch (_a.label) {
             case 0:
                 if (!(0, fs_1.existsSync)(command.config)) return [3 /*break*/, 3];
-                config = __assign(__assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8'))), { production: command.produduction });
+                config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8')));
+                config.production = command.production;
                 if (!command.web) return [3 /*break*/, 2];
                 return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
             case 1:
