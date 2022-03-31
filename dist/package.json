@@ -13,7 +13,19 @@
     "author": "missmoode",
     "license": "MIT",
     "private": true,
-    "devDependencies": {
+    "dependencies": {
+        "@pixi/app": "^6.3.0",
+        "@pixi/constants": "^6.3.0",
+        "@pixi/core": "^6.3.0",
+        "@pixi/display": "^6.3.0",
+        "@pixi/loaders": "^6.3.0",
+        "@pixi/math": "^6.3.0",
+        "@pixi/runner": "^6.3.0",
+        "@pixi/settings": "^6.3.0",
+        "@pixi/ticker": "^6.3.0",
+        "@pixi/utils": "^6.3.0",
+        "@types/babel__core": "^7.1.19",
+        "@types/vinyl-fs": "^2.4.12",
         "@babel/core": "^7.17.8",
         "@babel/preset-typescript": "^7.16.7",
         "@rollup/plugin-babel": "^5.3.1",
@@ -38,19 +50,5 @@
         "vinyl-buffer": "^1.0.1",
         "vinyl-source-stream": "^2.0.0",
         "vinyl-fs": "^3.0.3"
-    },
-    "dependencies": {
-        "@pixi/app": "^6.3.0",
-        "@pixi/constants": "^6.3.0",
-        "@pixi/core": "^6.3.0",
-        "@pixi/display": "^6.3.0",
-        "@pixi/loaders": "^6.3.0",
-        "@pixi/math": "^6.3.0",
-        "@pixi/runner": "^6.3.0",
-        "@pixi/settings": "^6.3.0",
-        "@pixi/ticker": "^6.3.0",
-        "@pixi/utils": "^6.3.0",
-        "@types/babel__core": "^7.1.19",
-        "@types/vinyl-fs": "^2.4.12"
     }
 }
