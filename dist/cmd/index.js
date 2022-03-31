@@ -57,6 +57,7 @@ var package_json_1 = __importDefault(require("../package.json"));
 var config_1 = require("./config");
 var web_1 = require("./goals/web");
 var goal_1 = require("./goals/goal");
+var util_1 = require("./util");
 commander_1.program
     .name(package_json_1.default.version)
     .description(package_json_1.default.description)
@@ -75,13 +76,13 @@ commander_1.program
                 config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8')));
                 config.production = command.production;
                 if (!command.web) return [3 /*break*/, 2];
+                util_1.debug.info('Building for web...');
                 return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
             case 1:
                 _a.sent();
+                util_1.debug.success('Done!');
                 _a.label = 2;
-            case 2:
-                console.log('Done!');
-                return [3 /*break*/, 4];
+            case 2: return [3 /*break*/, 4];
             case 3:
                 console.error('Missing bloom config.');
                 _a.label = 4;
