@@ -28,7 +28,7 @@ export function Web(config: Config) {
 
   let bundle = rollup({
     input: config.rootScript,
-    plugins: [resolve(), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
+    plugins: [resolve({ preferBuiltins: false }), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
       dir: config.outDir,
       sourcemap: config.production,

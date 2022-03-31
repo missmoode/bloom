@@ -17,6 +17,7 @@ var path_1 = __importDefault(require("path"));
 var stream_2 = require("stream");
 var vinyl_1 = __importDefault(require("vinyl"));
 var gulp_terser_1 = __importDefault(require("gulp-terser"));
+var plugin_node_resolve_1 = __importDefault(require("@rollup/plugin-node-resolve"));
 var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
 function Web(config) {
     var _a;
@@ -29,7 +30,7 @@ function Web(config) {
     };
     var bundle = (0, stream_1.default)({
         input: config.rootScript,
-        plugins: [(0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf)],
+        plugins: [(0, plugin_node_resolve_1.default)({ preferBuiltins: false }), (0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf)],
         output: {
             dir: config.outDir,
             sourcemap: config.production,
