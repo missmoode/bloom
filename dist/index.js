@@ -14,6 +14,8 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./scene"), exports);
-__exportStar(require("./game"), exports);
-__exportStar(require("./util"), exports);
+exports.Game = void 0;
+var game_1 = require("./game");
+__exportStar(require("./view"), exports);
+__exportStar(require("./utils"), exports);
+exports.Game = new game_1.InternalGameSession(document.getElementsByTagName('main')[0]);

@@ -24,6 +24,11 @@
   resolved "https://registry.yarnpkg.com/@pixi/display/-/display-6.3.0.tgz#82781587c928ac49ea24dbc675781e885d3c4a08"
   integrity sha512-Uxc1aLTFzV55d3kOlh/g19RlE2okPXsroi5jfYGCNS0VCdFk0sp6jMNEwk12BwC0KcA5SU7217H4jLy38VCVpA==
 
+"@pixi/loaders@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@pixi/loaders/-/loaders-6.3.0.tgz#82441d1f664c489a754db7d2deb68bccdf97f4d6"
+  integrity sha512-FXW3DkcAg2w0FABS6ixmzJNQSdabHXWumltelYM76NmBSE8oaLmg6tniBvjrTlSxUs3HlgwdeqgnUHV9GIFxLQ==
+
 "@pixi/math@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@pixi/math/-/math-6.3.0.tgz#2df6a27a8a73e1976ebbe90b01dfeab999b17bdb"
@@ -80,11 +85,6 @@ ismobilejs@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ismobilejs/-/ismobilejs-1.1.1.tgz#c56ca0ae8e52b24ca0f22ba5ef3215a2ddbbaa0e"
   integrity sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==
-
-progress-promise@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/progress-promise/-/progress-promise-0.0.6.tgz#dfd47723d3bee311e3263dc27c7a5f7812eb387d"
-  integrity sha1-39R3I9O+4xHjJj3CfHpfeBLrOH0=
 
 punycode@1.3.2:
   version "1.3.2"

@@ -1,6 +1,6 @@
 import { Container } from "@pixi/display";
 import { Point } from "@pixi/math";
-import { SceneHost } from "./host";
+import { FixedViewport, MutableViewport } from "./viewport";
 
 type Passed = 'addChild' | 'addChildAt' | 'removeChild' | 'removeChildAt' | 'removeChildren' | 'swapChildren' | 'getChildIndex' | 'setChildIndex' | 'sortChildren' | 'sortDirty' | 'sortableChildren' | 'children' | 'render' | 'calculateBounds';
 
@@ -11,17 +11,17 @@ export interface Stage extends Pick<Container, Passed> {
   get mid(): Point;
 }
 export class StageInternal extends Container implements Stage {
-  private host: SceneHost;
+  private host: FixedViewport;
 
-  constructor(host: SceneHost) {
+  constructor(host: FixedViewport) {
     super();
     this.host = host;
   }
 
-  public get width(): number {
+  public override get width(): number {
     return this.host.width;
   }
-  public get height(): number {
+  public override get height(): number {
     return this.host.height;
   }
 

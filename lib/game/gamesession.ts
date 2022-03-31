@@ -1,15 +1,13 @@
 import { Application } from "@pixi/app";
-import { FixedSceneHost, Scene } from "../scene";
-import { InternalSceneHost } from "../scene/host";
-import { Constructor } from "../util";
+import { IDestroyOptions } from "@pixi/display";
+import { FixedViewport } from "../view";
+import { InternalViewport } from "../view/viewport";
 
-export interface GameSession extends FixedSceneHost {
+export interface GameSession extends FixedViewport {
   destroy(): void;
-  
-  prepareScene<S extends Scene>(Scene: Constructor<S>, manifest: Scene.Manifest) : Scene.Target<S>;
 }
 
-export class InternalGameSession extends InternalSceneHost implements GameSession {
+export class InternalGameSession extends InternalViewport implements GameSession {
   private app?: Application;
 
   private resizeObserver: ResizeObserver = new ResizeObserver((e) => {
@@ -32,14 +30,8 @@ export class InternalGameSession extends InternalSceneHost implements GameSessio
     this.resizeObserver.observe(containerElement);
   }
 
-  destroy(): void {
+  override destroy(options: boolean | IDestroyOptions = true): void {
     this.app?.destroy(true);
     this.resizeObserver.disconnect();
   }
-  
-  prepareScene<S extends Scene>(Scene: Constructor<S>, manifest: Scene.Manifest) : Scene.Target<S> {
-    return { Scene, manifest };
-  }
 }
-
-export const Game: GameSession = new InternalGameSession(document.getElementsByTagName('main')[0]);
