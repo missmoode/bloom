@@ -13,6 +13,8 @@ var merge2_1 = __importDefault(require("merge2"));
 var gulp_template_1 = __importDefault(require("gulp-template"));
 var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
+var stream_2 = require("stream");
+var vinyl_1 = __importDefault(require("vinyl"));
 function Web(config) {
     var _a;
     var babelConf = {
@@ -50,8 +52,15 @@ function Web(config) {
 exports.Web = Web;
 function rasterize(input, width, height) {
     if (height === void 0) { height = width; }
-    return (0, sharp_1.default)(input)
+    var stream = new stream_2.PassThrough({ objectMode: true });
+    (0, sharp_1.default)(input)
         .resize(width, height)
         .png()
-        .pipe((0, vinyl_buffer_1.default)());
+        .toBuffer().then(function (b) {
+        stream.end(new vinyl_1.default({
+            contents: b,
+            path: path_1.default.basename(input).replace('svg', 'png')
+        }));
+    }).catch(function (e) { return stream.emit('error', e); });
+    return stream;
 }

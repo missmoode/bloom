@@ -11,6 +11,8 @@ import merge2 from "merge2";
 import template from "gulp-template";
 import sharp from "sharp";
 import path from "path";
+import { PassThrough } from "stream";
+import Vinyl from 'vinyl';
 
 export function Web(config: Config) {
   const babelConf = {
@@ -54,9 +56,17 @@ export function Web(config: Config) {
   return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.outDir));
 }
 
-function rasterize(input: string | Buffer, width: number, height = width) {
-  return sharp(input)
+function rasterize(input: string, width: number, height = width) {
+	const stream = new PassThrough({objectMode: true});
+  sharp(input)
     .resize(width, height)
     .png()
-    .pipe(buffer())
+    .toBuffer().then((b) => {
+        stream.end(new Vinyl({
+          contents: b,
+          path: path.basename(input).replace('svg', 'png')
+        }));
+      }
+    ).catch((e)=>stream.emit('error', e));
+	return stream as NodeJS.ReadWriteStream;
 }
