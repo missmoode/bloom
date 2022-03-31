@@ -58,35 +58,53 @@ var config_1 = require("./config");
 var web_1 = require("./goals/web");
 var goal_1 = require("./goals/goal");
 var util_1 = require("./util");
+var path_1 = __importDefault(require("path"));
+var rimraf_1 = require("rimraf");
 commander_1.program
     .name(package_json_1.default.version)
     .description(package_json_1.default.description)
     .version(package_json_1.default.version)
     .command('build')
     .description('Builds for web and PWA')
-    .option('-w, --web', 'Build for web and PWA', true)
-    .option('-p, --production', 'Build without sourcemaps', false)
+    .option('-c, --clean', 'delete the output directory before building')
+    .option('-w, --web', 'build for web and PWA', true)
+    .option('-p, --production', 'build without sourcemaps', false)
     .option('-c, --config <path>', 'configuration file to use instead of opts', './bloomConfig.json')
+    .option('-o, --out, --outDirectory <path>', 'the directory to output to')
     .action(function (command) { return __awaiter(void 0, void 0, void 0, function () {
     var config;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!(0, fs_1.existsSync)(command.config)) return [3 /*break*/, 3];
+                if (!(0, fs_1.existsSync)(command.config)) return [3 /*break*/, 6];
                 config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8')));
                 config.production = command.production;
-                if (!command.web) return [3 /*break*/, 2];
-                util_1.debug.info('Building for web...');
-                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
+                if (command.outDirectory)
+                    config.outDir = command.outDirectory;
+                if (!command.clean) return [3 /*break*/, 3];
+                util_1.debug.info("Deleting ".concat(path_1.default.relative(process.cwd(), config.outDir)).concat(config.production ? '' : ' in three seconds', "..."));
+                if (!!config.production) return [3 /*break*/, 2];
+                return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];
             case 1:
                 _a.sent();
-                util_1.debug.success('Done!');
                 _a.label = 2;
-            case 2: return [3 /*break*/, 4];
+            case 2:
+                (0, rimraf_1.sync)(config.outDir);
+                util_1.debug.success("Done!");
+                _a.label = 3;
             case 3:
+                if (!command.web) return [3 /*break*/, 5];
+                util_1.debug.info('Building for web...');
+                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
+            case 4:
+                _a.sent();
+                util_1.debug.success('Done!');
+                _a.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 console.error('Missing bloom config.');
-                _a.label = 4;
-            case 4: return [2 /*return*/];
+                _a.label = 7;
+            case 7: return [2 /*return*/];
         }
     });
 }); });
