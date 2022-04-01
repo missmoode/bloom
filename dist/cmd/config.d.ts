@@ -1,13 +1,12 @@
-export interface Config {
+export declare type Config = {
     name: string;
     shortname?: string;
-    iconSVGPath: string;
-    themeColor: string;
-    rootScript: string;
+    description?: string;
+    icon: string;
+    applicationRoot: string;
     resources: string | string[];
-    outDir: string;
+    themeColor: string;
+    out: string;
     production: boolean;
-}
-export declare const defaults: {
-    outDir: string;
 };
+export declare function resolve(options: any): Config;

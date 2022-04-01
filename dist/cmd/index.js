@@ -1,16 +1,4 @@
-#!/usr/bin/env node
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -51,61 +39,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_1 = require("fs");
 var commander_1 = require("commander");
 var package_json_1 = __importDefault(require("../package.json"));
 var config_1 = require("./config");
 var web_1 = require("./goals/web");
 var goal_1 = require("./goals/goal");
-var util_1 = require("./util");
-var path_1 = __importDefault(require("path"));
-var rimraf_1 = require("rimraf");
-commander_1.program
+var logger_1 = require("./logger");
+var main = commander_1.program
     .name(package_json_1.default.version)
     .description(package_json_1.default.description)
-    .version(package_json_1.default.version)
-    .command('build')
+    .version(package_json_1.default.version);
+var build = main.command('build')
     .description('Builds for web and PWA')
+    .option('-c, --config <path>', 'configuration file to use', './bloomConfig.json')
     .option('-c, --clean', 'delete the output directory before building')
-    .option('-w, --web', 'build for web and PWA', true)
     .option('-p, --production', 'build without sourcemaps', false)
-    .option('-c, --config <path>', 'configuration file to use instead of opts', './bloomConfig.json')
-    .option('-o, --out, --outDirectory <path>', 'the directory to output to')
+    .option('-o, --out <path>', 'the directory to output to', 'dist')
     .action(function (command) { return __awaiter(void 0, void 0, void 0, function () {
-    var config;
+    var config, l;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!(0, fs_1.existsSync)(command.config)) return [3 /*break*/, 6];
-                config = __assign(__assign({}, config_1.defaults), JSON.parse((0, fs_1.readFileSync)(command.config).toString('utf-8')));
-                config.production = command.production;
-                if (command.outDirectory)
-                    config.outDir = command.outDirectory;
-                config.outDir = path_1.default.join(process.cwd(), config.outDir);
-                if (!command.clean) return [3 /*break*/, 3];
-                util_1.debug.info("Deleting ".concat(path_1.default.relative(process.cwd(), config.outDir)).concat(config.production ? '' : ' in three seconds', "..."));
-                if (!!config.production) return [3 /*break*/, 2];
-                return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];
+                config = (0, config_1.resolve)(command);
+                l = (0, logger_1.createLogger)('build');
+                l.info('Building for web...', '🌷');
+                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
             case 1:
                 _a.sent();
-                _a.label = 2;
-            case 2:
-                (0, rimraf_1.sync)(config.outDir);
-                util_1.debug.success("Done!");
-                _a.label = 3;
-            case 3:
-                if (!command.web) return [3 /*break*/, 5];
-                util_1.debug.info('Building for web...');
-                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
-            case 4:
-                _a.sent();
-                util_1.debug.success('Done!');
-                _a.label = 5;
-            case 5: return [3 /*break*/, 7];
-            case 6:
-                console.error('Missing bloom config.');
-                _a.label = 7;
-            case 7: return [2 /*return*/];
+                l.info('Done!', '🌸');
+                return [2 /*return*/];
         }
     });
 }); });

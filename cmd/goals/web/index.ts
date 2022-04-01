@@ -23,14 +23,14 @@ export function Web(config: Config) {
     presets: ['@babel/preset-typescript', '@babel/preset-env'],
     babelHelpers: 'bundled',
     exclude: 'node_modules/**',
-    sourcemaps: config.production
+    sourcemaps: config.applicationRoot
   }
 
   let bundle = rollup({
-    input: config.rootScript,
+    input: config.applicationRoot,
     plugins: [resolve({ preferBuiltins: false }), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
-      dir: config.outDir,
+      dir: config.out,
       sourcemap: !config.production,
       format: 'umd'
     }
@@ -38,24 +38,24 @@ export function Web(config: Config) {
   .pipe(buffer());
   if (!config.production) bundle = bundle.pipe(sourcemaps.init({loadMaps: true}))
   bundle = bundle.pipe(terser({output: {comments: false}, mangle: {properties: { regex: /^_/ }}}));
-  if (!config.production) bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.relative(config.outDir, path.dirname(config.rootScript)) }));
+  if (!config.production) bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.relative(config.out, path.dirname(config.applicationRoot)) }));
 
   const copyResources = src(config.resources);
 
   const html = src(`${__dirname}${path.sep}index.html`)
-  .pipe(template({title: config.name, icon: `${path.basename(config.iconSVGPath).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/gs}))
+  .pipe(template({title: config.name, icon: `${path.basename(config.icon).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/gs}))
 
-  const icon = src(config.iconSVGPath);
+  const icon = src(config.icon);
 
-  const iconPNG = rasterize(config.iconSVGPath, 512)
+  const iconPNG = rasterize(config.icon, 512)
 
   const icons = [
     {
-      src: path.basename(config.iconSVGPath),
+      src: path.basename(config.icon),
       sizes: 'any'
     },
     {
-      src: `${path.basename(config.iconSVGPath).replace('svg', 'png')}`,
+      src: `${path.basename(config.icon).replace('svg', 'png')}`,
       sizes: 'any'
     }
   ]
@@ -63,7 +63,7 @@ export function Web(config: Config) {
   const manifest = src(`${__dirname}${path.sep}manifest.webmanifest`)
   .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `"icons": ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
 
-  return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.outDir, ));
+  return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.out));
 }
 
 function rasterize(input: string, width: number, height = width) {

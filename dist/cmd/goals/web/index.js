@@ -26,13 +26,13 @@ function Web(config) {
         presets: ['@babel/preset-typescript', '@babel/preset-env'],
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
-        sourcemaps: config.production
+        sourcemaps: config.applicationRoot
     };
     var bundle = (0, stream_1.default)({
-        input: config.rootScript,
+        input: config.applicationRoot,
         plugins: [(0, plugin_node_resolve_1.default)({ preferBuiltins: false }), (0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf)],
         output: {
-            dir: config.outDir,
+            dir: config.out,
             sourcemap: !config.production,
             format: 'umd'
         }
@@ -42,25 +42,25 @@ function Web(config) {
         bundle = bundle.pipe(gulp_sourcemaps_1.default.init({ loadMaps: true }));
     bundle = bundle.pipe((0, gulp_terser_1.default)({ output: { comments: false }, mangle: { properties: { regex: /^_/ } } }));
     if (!config.production)
-        bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(config.outDir, path_1.default.dirname(config.rootScript)) }));
+        bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(config.out, path_1.default.dirname(config.applicationRoot)) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
     var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "index.html"))
-        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/gs }));
-    var icon = (0, vinyl_fs_1.src)(config.iconSVGPath);
-    var iconPNG = rasterize(config.iconSVGPath, 512);
+        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/gs }));
+    var icon = (0, vinyl_fs_1.src)(config.icon);
+    var iconPNG = rasterize(config.icon, 512);
     var icons = [
         {
-            src: path_1.default.basename(config.iconSVGPath),
+            src: path_1.default.basename(config.icon),
             sizes: 'any'
         },
         {
-            src: "".concat(path_1.default.basename(config.iconSVGPath).replace('svg', 'png')),
+            src: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')),
             sizes: 'any'
         }
     ];
     var manifest = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "manifest.webmanifest"))
         .pipe((0, gulp_template_1.default)({ title: (_a = config.shortname) !== null && _a !== void 0 ? _a : config.name, theme_color: config.themeColor, icons: "\"icons\": ".concat(JSON.stringify(icons)) }, { interpolate: /{{(.+?)}}/gs }));
-    return (0, merge2_1.default)(bundle, copyResources, html, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.outDir));
+    return (0, merge2_1.default)(bundle, copyResources, html, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.out));
 }
 exports.Web = Web;
 function rasterize(input, width, height) {
