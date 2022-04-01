@@ -53,7 +53,7 @@ var main = commander_1.program
     .version(package_json_1.default.version);
 var build = main.command('build')
     .description('Builds for web and PWA')
-    .option('-c, --config <path>', 'configuration file to use', './bloomConfig.json')
+    .option('--config <path>', 'configuration file to use', './bloomConfig.json')
     .option('-c, --clean', 'delete the output directory before building')
     .option('-p, --production', 'build without sourcemaps', false)
     .option('-o, --out <path>', 'the directory to output to', 'web')
