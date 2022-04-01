@@ -39,11 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var fs_1 = require("fs");
 var commander_1 = require("commander");
 var package_json_1 = __importDefault(require("../package.json"));
 var config_1 = require("./config");
 var web_1 = require("./goals/web");
 var goal_1 = require("./goals/goal");
+var rimraf_1 = require("rimraf");
 var logger_1 = require("./logger");
 var main = commander_1.program
     .name(package_json_1.default.version)
@@ -54,13 +56,19 @@ var build = main.command('build')
     .option('-c, --config <path>', 'configuration file to use', './bloomConfig.json')
     .option('-c, --clean', 'delete the output directory before building')
     .option('-p, --production', 'build without sourcemaps', false)
-    .option('-o, --out <path>', 'the directory to output to', 'dist')
-    .action(function (command) { return __awaiter(void 0, void 0, void 0, function () {
+    .option('-o, --out <path>', 'the directory to output to', 'web')
+    .action(function (options) { return __awaiter(void 0, void 0, void 0, function () {
     var config, l;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                config = (0, config_1.resolve)(command);
+                config = (0, config_1.resolve)(options);
+                l = (0, logger_1.createLogger)('clean');
+                if (options.clean && (0, fs_1.existsSync)(options.out)) {
+                    l.info('Cleaning last build...', '🧹');
+                    (0, rimraf_1.sync)(options.out);
+                    l.info('Done!', '✨');
+                }
                 l = (0, logger_1.createLogger)('build');
                 l.info('Building for web...', '🌷');
                 return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];

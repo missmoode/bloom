@@ -34,7 +34,7 @@ function messageToString(message: Message): string {
     }
     
   } else {
-    return `${message.premoji ? `${message.premoji} ` : ''}${message.domain ? `${message.domain}: ` : ''} ${message.content}`;
+    return `${message.premoji ? `${message.premoji}  ` : ''}${message.domain ? `${message.domain}  ` : ''}${message.content}`;
   }
 }
 

@@ -27,7 +27,7 @@ function messageToString(message) {
         }
     }
     else {
-        return "".concat(message.premoji ? "".concat(message.premoji, " ") : '').concat(message.domain ? "".concat(message.domain, ": ") : '', " ").concat(message.content);
+        return "".concat(message.premoji ? "".concat(message.premoji, "  ") : '').concat(message.domain ? "".concat(message.domain, "  ") : '').concat(message.content);
     }
 }
 function log(level, message) {

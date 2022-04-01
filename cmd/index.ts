@@ -18,10 +18,16 @@ const build = main.command('build')
   .option('-c, --config <path>', 'configuration file to use', './bloomConfig.json')
   .option('-c, --clean', 'delete the output directory before building')
   .option('-p, --production', 'build without sourcemaps', false)
-  .option('-o, --out <path>', 'the directory to output to', 'dist')
+  .option('-o, --out <path>', 'the directory to output to', 'web')
   .action(async (options) => {
     const config = resolveConfig(options);
-    const l = createLogger('build')
+    let l = createLogger('clean')
+    if (options.clean && existsSync(options.out)) {
+      l.info('Cleaning last build...', '🧹');
+      rimraf(options.out);
+      l.info('Done!', '✨');
+    }
+    l = createLogger('build')
     l.info('Building for web...', '🌷');
     await asPromise(Web(config));
     l.info('Done!', '🌸');
