@@ -44,7 +44,7 @@ export function Web(config: Config) {
   const copyResources = src(config.resources);
 
   const html = src(`${__dirname}${path.sep}index.html`)
-  .pipe(template({title: config.name, icon: `${path.basename(config.icon).replace('svg', 'png')}`}, {interpolate: /{{([\s\S]+?)}}/gs}))
+  .pipe(template({title: config.name, icon: `${path.basename(config.icon).replace('svg', 'png')}`, theme_color: config.themeColor}, {interpolate: /{{([\s\S]+?)}}/gs}))
 
   const icon = src(config.icon);
 

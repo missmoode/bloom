@@ -5,6 +5,5 @@
   "display": "fullscreen",
   "background_color": "{{ theme_color }}",
   "theme_color": "{{ theme_color }}",
-  "orientation": "portrait-primary",
-  {{ icons }}
+  "orientation": "portrait-primary"
 }

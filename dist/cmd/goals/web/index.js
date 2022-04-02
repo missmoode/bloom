@@ -45,7 +45,7 @@ function Web(config) {
         bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(config.out, path_1.default.dirname(config.applicationRoot)) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
     var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "index.html"))
-        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')) }, { interpolate: /{{([\s\S]+?)}}/gs }));
+        .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')), theme_color: config.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
     var icon = (0, vinyl_fs_1.src)(config.icon);
     var iconPNG = rasterize(config.icon, 512);
     var icons = [
