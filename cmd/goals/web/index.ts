@@ -23,7 +23,9 @@ function list(directory: string): string[] {
   const result = [];
   for (const file of files) {
     const fullPath = path.join(directory, file);
-    if (!statSync(fullPath).isDirectory()) {
+    if (statSync(fullPath).isDirectory()) {
+      result.push(...list(fullPath));
+    } else {
       result.push(fullPath);
     }
   }
