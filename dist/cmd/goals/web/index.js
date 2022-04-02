@@ -44,6 +44,7 @@ function Web(config) {
     if (!config.production)
         bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(config.out, path_1.default.dirname(config.applicationRoot)) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
+    var serviceWorker = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "service-worker.js"));
     var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "index.html"))
         .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')), theme_color: config.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
     var icon = (0, vinyl_fs_1.src)(config.icon);
@@ -62,7 +63,7 @@ function Web(config) {
     ];
     var manifest = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "manifest.webmanifest"))
         .pipe((0, gulp_template_1.default)({ title: (_a = config.shortname) !== null && _a !== void 0 ? _a : config.name, theme_color: config.themeColor, icons: "\"icons\": ".concat(JSON.stringify(icons)) }, { interpolate: /{{(.+?)}}/gs }));
-    return (0, merge2_1.default)(bundle, copyResources, html, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.out));
+    return (0, merge2_1.default)(bundle, copyResources, html, serviceWorker, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.out));
 }
 exports.Web = Web;
 function rasterize(input, width, height) {

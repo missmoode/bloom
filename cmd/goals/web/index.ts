@@ -43,6 +43,8 @@ export function Web(config: Config) {
 
   const copyResources = src(config.resources);
 
+  const serviceWorker = src(`${__dirname}${path.sep}service-worker.js`);
+
   const html = src(`${__dirname}${path.sep}index.html`)
   .pipe(template({title: config.name, icon: `${path.basename(config.icon).replace('svg', 'png')}`, theme_color: config.themeColor}, {interpolate: /{{([\s\S]+?)}}/gs}))
 
@@ -66,7 +68,7 @@ export function Web(config: Config) {
   const manifest = src(`${__dirname}${path.sep}manifest.webmanifest`)
   .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `"icons": ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
 
-  return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.out));
+  return merge2(bundle, copyResources, html, serviceWorker, icon, iconPNG, manifest).pipe(dest(config.out));
 }
 
 function rasterize(input: string, width: number, height = width) {
