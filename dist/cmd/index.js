@@ -74,6 +74,9 @@ var build = main.command('build')
                 return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
             case 1:
                 _a.sent();
+                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.ServiceWorker)(config))];
+            case 2:
+                _a.sent();
                 l.info('Done!', '🌸');
                 return [2 /*return*/];
         }

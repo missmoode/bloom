@@ -2,7 +2,7 @@ import { readFileSync, existsSync } from 'fs';
 import { program } from 'commander';
 import project from '../package.json';
 import { resolve as resolveConfig } from './config';
-import { Web } from './goals/web';
+import { ServiceWorker, Web } from './goals/web';
 import { asPromise } from './goals/goal';
 import path from 'path';
 import { sync as rimraf } from 'rimraf';
@@ -30,6 +30,7 @@ const build = main.command('build')
     l = createLogger('build')
     l.info('Building for web...', '🌷');
     await asPromise(Web(config));
+    await asPromise(ServiceWorker(config));
     l.info('Done!', '🌸');
   });
 

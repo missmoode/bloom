@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Web = void 0;
+exports.ServiceWorker = exports.Web = void 0;
 var stream_1 = __importDefault(require("@rollup/stream"));
 var plugin_babel_1 = __importDefault(require("@rollup/plugin-babel"));
 var plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
@@ -19,6 +19,26 @@ var vinyl_1 = __importDefault(require("vinyl"));
 var gulp_terser_1 = __importDefault(require("gulp-terser"));
 var plugin_node_resolve_1 = __importDefault(require("@rollup/plugin-node-resolve"));
 var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
+var fs_1 = require("fs");
+function list(directory) {
+    var files = (0, fs_1.readdirSync)(directory);
+    var result = [];
+    result.push(directory);
+    for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
+        var file = files_1[_i];
+        var fullPath = path_1.default.join(directory, file);
+        if ((0, fs_1.statSync)(fullPath).isDirectory()) {
+            result.push.apply(result, list(fullPath));
+        }
+        else {
+            result.push(fullPath);
+        }
+    }
+    return result;
+}
+function mapFiles(base) {
+    return list(base).map(function (file) { return path_1.default.relative(base, file); });
+}
 function Web(config) {
     var _a;
     var babelConf = {
@@ -44,7 +64,6 @@ function Web(config) {
     if (!config.production)
         bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(config.out, path_1.default.dirname(config.applicationRoot)) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
-    var serviceWorker = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "service-worker.js"));
     var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "index.html"))
         .pipe((0, gulp_template_1.default)({ title: config.name, icon: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')), theme_color: config.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
     var icon = (0, vinyl_fs_1.src)(config.icon);
@@ -63,9 +82,15 @@ function Web(config) {
     ];
     var manifest = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "manifest.webmanifest"))
         .pipe((0, gulp_template_1.default)({ title: (_a = config.shortname) !== null && _a !== void 0 ? _a : config.name, theme_color: config.themeColor, icons: "\"icons\": ".concat(JSON.stringify(icons)) }, { interpolate: /{{(.+?)}}/gs }));
-    return (0, merge2_1.default)(bundle, copyResources, html, serviceWorker, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.out));
+    return (0, merge2_1.default)(bundle, copyResources, html, icon, iconPNG, manifest).pipe((0, vinyl_fs_1.dest)(config.out));
 }
 exports.Web = Web;
+function ServiceWorker(config) {
+    return (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "service-worker.js"))
+        .pipe((0, gulp_template_1.default)({ cache: JSON.stringify(mapFiles(config.out)) }, { interpolate: /{{(.+?)}}/gs }))
+        .pipe((0, vinyl_fs_1.dest)(config.out));
+}
+exports.ServiceWorker = ServiceWorker;
 function rasterize(input, width, height) {
     if (height === void 0) { height = width; }
     var stream = new stream_2.PassThrough({ objectMode: true });
