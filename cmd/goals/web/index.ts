@@ -33,8 +33,20 @@ function list(directory: string): string[] {
   return result;
 }
 
-function mapFiles(base: string): string[] {
-  return list(base).map(file => path.relative(base, file));
+// from a list of files and directories
+// add a trailing slash for each directory
+// and return a list of files
+function mapFilesRecursive(base: string): string[] {
+  const files = list(base);
+  const result = [];
+  for (const file of files) {
+    if (statSync(file).isDirectory()) {
+      result.push(`/${path.relative(base, file)}/`);
+    } else {
+      result.push(`/${path.relative(base, file)}`);
+    }
+  }
+  return result;
 }
 
 export function Web(config: Config) {
@@ -73,12 +85,12 @@ export function Web(config: Config) {
   const icons = [
     {
       src: path.basename(config.icon),
-      sizes: '512x512',
+      sizes: 'any',
       type: 'image/svg'
     },
     {
       src: `${path.basename(config.icon).replace('svg', 'png')}`,
-      sizes: '512x512',
+      sizes: '72x72 96x96 128x128 256x256 512x512',
       type: 'image/png'
     }
   ]
@@ -91,7 +103,7 @@ export function Web(config: Config) {
 
 export function ServiceWorker(config: Config) {
   return src(`${__dirname}${path.sep}service-worker.js`)
-  .pipe(template({cache: JSON.stringify(mapFiles(config.out))}, {interpolate: /{{(.+?)}}/gs}))
+  .pipe(template({cache: JSON.stringify(mapFilesRecursive(config.out))}, {interpolate: /{{(.+?)}}/gs}))
   .pipe(dest(config.out));
 }
 

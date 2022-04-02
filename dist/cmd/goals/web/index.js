@@ -36,8 +36,22 @@ function list(directory) {
     }
     return result;
 }
-function mapFiles(base) {
-    return list(base).map(function (file) { return path_1.default.relative(base, file); });
+// from a list of files and directories
+// add a trailing slash for each directory
+// and return a list of files
+function mapFilesRecursive(base) {
+    var files = list(base);
+    var result = [];
+    for (var _i = 0, files_2 = files; _i < files_2.length; _i++) {
+        var file = files_2[_i];
+        if ((0, fs_1.statSync)(file).isDirectory()) {
+            result.push("/".concat(path_1.default.relative(base, file), "/"));
+        }
+        else {
+            result.push("/".concat(path_1.default.relative(base, file)));
+        }
+    }
+    return result;
 }
 function Web(config) {
     var _a;
@@ -71,12 +85,12 @@ function Web(config) {
     var icons = [
         {
             src: path_1.default.basename(config.icon),
-            sizes: '512x512',
+            sizes: 'any',
             type: 'image/svg'
         },
         {
             src: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')),
-            sizes: '512x512',
+            sizes: '72x72 96x96 128x128 256x256 512x512',
             type: 'image/png'
         }
     ];
@@ -87,7 +101,7 @@ function Web(config) {
 exports.Web = Web;
 function ServiceWorker(config) {
     return (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "service-worker.js"))
-        .pipe((0, gulp_template_1.default)({ cache: JSON.stringify(mapFiles(config.out)) }, { interpolate: /{{(.+?)}}/gs }))
+        .pipe((0, gulp_template_1.default)({ cache: JSON.stringify(mapFilesRecursive(config.out)) }, { interpolate: /{{(.+?)}}/gs }))
         .pipe((0, vinyl_fs_1.dest)(config.out));
 }
 exports.ServiceWorker = ServiceWorker;

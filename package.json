@@ -6,7 +6,7 @@
   "bin": "dist/cmd/main.js",
   "types": "dist/lib/index.d.ts",
   "files:": [
-    "./dist/**/*"
+    "dist/**/*"
   ],
   "scripts": {
     "prepublish": "yarn run build",
