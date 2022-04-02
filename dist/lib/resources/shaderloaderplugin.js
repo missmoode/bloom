@@ -16,11 +16,11 @@ var ShaderLoaderPlugin = /** @class */ (function () {
             return next();
         }
         var text = resource.data;
-        var vertFinder = /(?<=\/\/ VERTEX SHADER\n)(?:.|\n)*?(?=(?:\/\/ FRAGMENT SHADER\n)|$)/;
-        var fragFinder = /(?<=\/\/ FRAGMENT SHADER\n)(?:.|\n)*?(?=(?:\/\/ VERTEX SHADER\n)|$)/;
+        var vertFinder = /(?:\/\/ VERTEX SHADER\n)((?:.|\n)*?)(?=(?:\/\/ FRAGMENT SHADER\n)|$)/;
+        var fragFinder = /(?:\/\/ FRAGMENT SHADER\n)((?:.|\n)*?)(?=(?:\/\/ VERTEX SHADER\n)|$)/;
         var vertexShader = vertFinder.exec(text);
         var fragmentShader = fragFinder.exec(text);
-        var filter = new core_1.Filter(vertexShader != null ? vertexShader[0] : undefined, fragmentShader != null ? fragmentShader[0] : undefined);
+        var filter = new core_1.Filter(vertexShader != null ? vertexShader[1] : undefined, fragmentShader != null ? fragmentShader[1] : undefined);
         resource.data = filter;
         next();
     };
