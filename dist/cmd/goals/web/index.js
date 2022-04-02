@@ -45,7 +45,7 @@ function mapFilesRecursive(base) {
     for (var _i = 0, files_2 = files; _i < files_2.length; _i++) {
         var file = files_2[_i];
         if ((0, fs_1.statSync)(file).isDirectory()) {
-            result.push("/".concat(path_1.default.relative(base, file), "/"));
+            result.push("/".concat(path_1.default.relative(base, file), "/").replace('//', '/'));
         }
         else {
             result.push("/".concat(path_1.default.relative(base, file)));

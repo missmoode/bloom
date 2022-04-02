@@ -41,7 +41,7 @@ function mapFilesRecursive(base: string): string[] {
   const result = [];
   for (const file of files) {
     if (statSync(file).isDirectory()) {
-      result.push(`/${path.relative(base, file)}/`);
+      result.push(`/${path.relative(base, file)}/`.replace('//', '/'));
     } else {
       result.push(`/${path.relative(base, file)}`);
     }
