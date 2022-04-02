@@ -40,7 +40,7 @@ function Web(config) {
         .pipe((0, vinyl_buffer_1.default)());
     if (!config.production)
         bundle = bundle.pipe(gulp_sourcemaps_1.default.init({ loadMaps: true }));
-    bundle = bundle.pipe((0, gulp_terser_1.default)({ output: { comments: false }, mangle: { properties: { regex: /^_/ } } }));
+    bundle = bundle.pipe((0, gulp_terser_1.default)({ output: { comments: false } }));
     if (!config.production)
         bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(config.out, path_1.default.dirname(config.applicationRoot)) }));
     var copyResources = (0, vinyl_fs_1.src)(config.resources);
