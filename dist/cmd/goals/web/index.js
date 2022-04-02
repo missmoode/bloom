@@ -52,12 +52,12 @@ function Web(config) {
     var icons = [
         {
             src: path_1.default.basename(config.icon),
-            sizes: 'any',
+            sizes: '512x512',
             type: 'image/svg'
         },
         {
             src: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')),
-            sizes: 'any',
+            sizes: '512x512',
             type: 'image/png'
         }
     ];

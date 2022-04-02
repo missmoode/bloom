@@ -55,12 +55,12 @@ export function Web(config: Config) {
   const icons = [
     {
       src: path.basename(config.icon),
-      sizes: 'any',
+      sizes: '512x512',
       type: 'image/svg'
     },
     {
       src: `${path.basename(config.icon).replace('svg', 'png')}`,
-      sizes: 'any',
+      sizes: '512x512',
       type: 'image/png'
     }
   ]
