@@ -28,7 +28,7 @@ export function Web(config: Config) {
 
   let bundle = rollup({
     input: config.applicationRoot,
-    plugins: [resolve({ preferBuiltins: false }), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
+    plugins: [commonjs(), babel(babelConf as RollupBabelInputPluginOptions), resolve({ preferBuiltins: false })],
     output: {
       dir: config.out,
       sourcemap: !config.production,
@@ -36,6 +36,7 @@ export function Web(config: Config) {
     }
   }).pipe(source("bundle.js"))
   .pipe(buffer());
+
   if (!config.production) bundle = bundle.pipe(sourcemaps.init({loadMaps: true}))
   bundle = bundle.pipe(terser({output: {comments: false}, mangle: {properties: { regex: /^_/ }}}));
   if (!config.production) bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.relative(config.out, path.dirname(config.applicationRoot)) }));

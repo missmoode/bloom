@@ -5,11 +5,15 @@
   "main": "dist/lib/index.js",
   "bin": "dist/cmd/main.js",
   "types": "dist/lib/index.d.ts",
+  "files:": [
+    "./dist/**/*"
+  ],
   "scripts": {
     "prepublish": "yarn run build",
     "clean": "rm -rf dist",
     "build": "yarn run clean && tsc && copyfiles -e \"**/*.ts\" cmd/**/* dist"
   },
+  "repository": "github:missmoode/bloom",
   "author": "missmoode",
   "license": "MIT",
   "private": true,
@@ -61,7 +65,5 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "devDependencies": {},
-  "peerDependencies": {
-    "typed-signals": "^2.4.0"
-  }
+  "peerDependencies": {}
 }
