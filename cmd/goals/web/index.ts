@@ -20,6 +20,7 @@ import sourcemaps from 'gulp-sourcemaps';
 export function Web(config: Config) {
   const babelConf = {
     extensions: ['.ts', '.js'],
+    include: ['**/*.ts', '**/*.js'],
     presets: ['@babel/preset-typescript', '@babel/preset-env'],
     babelHelpers: 'bundled',
     exclude: 'node_modules/**',

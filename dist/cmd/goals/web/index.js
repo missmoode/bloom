@@ -23,6 +23,7 @@ function Web(config) {
     var _a;
     var babelConf = {
         extensions: ['.ts', '.js'],
+        include: ['**/*.ts', '**/*.js'],
         presets: ['@babel/preset-typescript', '@babel/preset-env'],
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
