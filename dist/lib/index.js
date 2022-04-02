@@ -18,4 +18,5 @@ exports.Game = void 0;
 var game_1 = require("./game");
 __exportStar(require("./view"), exports);
 __exportStar(require("./utils"), exports);
+__exportStar(require("./resources"), exports);
 exports.Game = new game_1.InternalGameSession(document.getElementsByTagName('main')[0]);

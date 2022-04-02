@@ -11,18 +11,9 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Resources = exports.resourceful = void 0;
+exports.Resources = void 0;
 var loaders_1 = require("@pixi/loaders");
 var shaderloaderplugin_1 = require("./shaderloaderplugin");
-/**
- * @param base The object to attach resources to
- * @param resources The resources the view requires
- * @returns The view constructor packed with the resource keys for later loading
- */
-function resourceful(base, resources) {
-    return __assign(__assign({}, base), { _resources: resources });
-}
-exports.resourceful = resourceful;
 var Resources = /** @class */ (function () {
     function Resources() {
     }

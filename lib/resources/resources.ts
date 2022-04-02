@@ -9,18 +9,6 @@ export type ResourceContainer = {
 }
 export type Resourceful<T> = T & ResourceContainer;
 
-/**
- * @param base The object to attach resources to
- * @param resources The resources the view requires
- * @returns The view constructor packed with the resource keys for later loading
- */
-export function resourceful<T>(base: T, resources: ResourceTarget[]): Resourceful<T> {
-  return {
-    ...base,
-    _resources: resources
-  } as Resourceful<T>;
-}
-
 export class Resources {
   private static reservations: Dict<number> = {}
 
@@ -29,7 +17,7 @@ export class Resources {
   }
 
   private constructor() {
-    
+
   }
 
   /**
