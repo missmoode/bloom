@@ -18,13 +18,13 @@ export class ShaderLoaderPlugin implements ILoaderPlugin {
 
     const text: string = resource.data;
 
-    const vertFinder = /(?<=\/\/ VERTEX SHADER\n)(?:.|\n)*?(?=(?:\/\/ FRAGMENT SHADER\n)|$)/;
-    const fragFinder = /(?<=\/\/ FRAGMENT SHADER\n)(?:.|\n)*?(?=(?:\/\/ VERTEX SHADER\n)|$)/;
+    const vertFinder = /(?:\/\/ VERTEX SHADER\n)((?:.|\n)*?)(?=(?:\/\/ FRAGMENT SHADER\n)|$)/;
+    const fragFinder = /(?:\/\/ FRAGMENT SHADER\n)((?:.|\n)*?)(?=(?:\/\/ VERTEX SHADER\n)|$)/;
 
     const vertexShader = vertFinder.exec(text);
     const fragmentShader = fragFinder.exec(text);
 
-    const filter = new Filter(vertexShader != null ? vertexShader[0] : undefined, fragmentShader != null ? fragmentShader[0] : undefined);
+    const filter = new Filter(vertexShader != null ? vertexShader[1] : undefined, fragmentShader != null ? fragmentShader[1] : undefined);
     resource.data = filter;
     next();
   }
