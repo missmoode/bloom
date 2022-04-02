@@ -23,14 +23,10 @@ var fs_1 = require("fs");
 function list(directory) {
     var files = (0, fs_1.readdirSync)(directory);
     var result = [];
-    result.push(directory);
     for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
         var file = files_1[_i];
         var fullPath = path_1.default.join(directory, file);
-        if ((0, fs_1.statSync)(fullPath).isDirectory()) {
-            result.push.apply(result, list(fullPath));
-        }
-        else {
+        if (!(0, fs_1.statSync)(fullPath).isDirectory()) {
             result.push(fullPath);
         }
     }
@@ -51,6 +47,7 @@ function mapFilesRecursive(base) {
             result.push("/".concat(path_1.default.relative(base, file)));
         }
     }
+    result.push('/');
     return result;
 }
 function Web(config) {

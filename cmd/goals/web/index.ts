@@ -21,12 +21,9 @@ import { readdirSync, statSync } from "fs";
 function list(directory: string): string[] {
   const files = readdirSync(directory);
   const result = [];
-  result.push(directory);
   for (const file of files) {
     const fullPath = path.join(directory, file);
-    if (statSync(fullPath).isDirectory()) {
-      result.push(...list(fullPath));
-    } else {
+    if (!statSync(fullPath).isDirectory()) {
       result.push(fullPath);
     }
   }
@@ -46,6 +43,7 @@ function mapFilesRecursive(base: string): string[] {
       result.push(`/${path.relative(base, file)}`);
     }
   }
+  result.push('/');
   return result;
 }
 
