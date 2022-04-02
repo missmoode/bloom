@@ -11,6 +11,7 @@ export declare type Resourceful<T> = T & ResourceContainer;
 export declare function resourceful<T>(base: T, resources: ResourceTarget[]): Resourceful<T>;
 export declare class Resources {
     private static reservations;
+    private constructor();
     /**
      * @param base The object to attach resources to
      * @param resources The resources the view requires
@@ -19,4 +20,5 @@ export declare class Resources {
     static attach<T>(base: T, resources: ResourceTarget[]): Resourceful<T>;
     static loaded(resourcefulObject: ResourceContainer): boolean;
     static load(resourcefulObject: ResourceContainer): void;
+    static unload(resourcefulObject: ResourceContainer): void;
 }

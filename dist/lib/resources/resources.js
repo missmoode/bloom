@@ -36,18 +36,34 @@ var Resources = /** @class */ (function () {
     };
     Resources.loaded = function (resourcefulObject) {
         for (var key in resourcefulObject._resources) {
-            var r = this.reservations[key];
+            var r = loaders_1.Loader.shared.resources[key];
             if (!r)
                 return false;
-            if (!r.resource.isComplete)
+            if (!r.isComplete)
                 return false;
         }
         return true;
     };
     Resources.load = function (resourcefulObject) {
-        for (var key in this.reservations) {
+        for (var key in resourcefulObject._resources) {
+            if (!this.reservations[key])
+                this.reservations[key] = 0;
+            this.reservations[key]++;
+            if (!loaders_1.Loader.shared.resources[key]) {
+                loaders_1.Loader.shared.add(key, key);
+            }
         }
-        resourcefulObject._resources;
+        loaders_1.Loader.shared.load();
+    };
+    Resources.unload = function (resourcefulObject) {
+        for (var key in resourcefulObject._resources) {
+            if (this.reservations[key]) {
+                this.reservations[key]--;
+                if (this.reservations[key] == 0) {
+                    delete loaders_1.Loader.shared.resources[key];
+                }
+            }
+        }
     };
     Resources.reservations = {};
     (function () {
