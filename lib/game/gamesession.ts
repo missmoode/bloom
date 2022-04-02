@@ -1,10 +1,9 @@
 import { Application } from "@pixi/app";
-import { IDestroyOptions } from "@pixi/display";
-import { FixedViewport } from "../view";
+import { DisplayObject, IDestroyOptions } from "@pixi/display";
+import { FixedViewport, View } from "../view";
 import { InternalViewport } from "../view/viewport";
 
-export interface GameSession extends FixedViewport {
-  destroy(): void;
+export interface GameSession extends FixedViewport, Pick<DisplayObject, 'destroy'> {
 }
 
 export class InternalGameSession extends InternalViewport implements GameSession {

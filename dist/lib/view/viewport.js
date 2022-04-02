@@ -58,6 +58,7 @@ var InternalViewport = /** @class */ (function (_super) {
         }
     };
     InternalViewport.prototype.goto = function (View, opts) {
+        this.finish();
         this.view = new View(new stage_1.StageInternal(this), opts);
         this.addChild(this.view.stage);
     };

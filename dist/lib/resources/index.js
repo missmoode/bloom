@@ -14,7 +14,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.View = void 0;
-var view_1 = require("./view");
-Object.defineProperty(exports, "View", { enumerable: true, get: function () { return view_1.View; } });
-__exportStar(require("./viewport"), exports);
+__exportStar(require("./resources"), exports);

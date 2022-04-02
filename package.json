@@ -60,5 +60,8 @@
     "vinyl-fs": "^3.0.3",
     "vinyl-source-stream": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "peerDependencies": {
+    "typed-signals": "^2.4.0"
+  }
 }

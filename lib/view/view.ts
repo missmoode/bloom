@@ -1,3 +1,4 @@
+import { EventEmitter } from "stream";
 import { Stage } from "./stage";
 import { Viewport } from "./viewport";
 

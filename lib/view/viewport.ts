@@ -55,6 +55,7 @@ export class InternalViewport extends Container implements MutableViewport {
   public goto<V extends View>(View: DefaultViewConstructor<V>): void;
   public goto<V extends View>(View: ArgumentViewConstructor<V>, opts: ConstructorParameters<ViewConstructor<V>>[1]): void;
   public goto<V extends View>(View: ViewConstructor<V>, opts?: any): void {
+    this.finish();
     this.view = new View(new StageInternal(this), opts);
     this.addChild(this.view.stage as StageInternal);
   }

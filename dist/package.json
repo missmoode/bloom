@@ -1,6 +1,6 @@
 {
     "name": "bloom",
-    "version": "1.0.38",
+    "version": "1.0.39",
     "description": "A library for creating and packaging pixi-based games",
     "main": "dist/lib/index.js",
     "bin": "dist/cmd/main.js",
@@ -60,5 +60,8 @@
         "vinyl-fs": "^3.0.3",
         "vinyl-source-stream": "^2.0.0"
     },
-    "devDependencies": {}
+    "devDependencies": {},
+    "peerDependencies": {
+        "typed-signals": "^2.4.0"
+    }
 }
