@@ -11,7 +11,7 @@
   "scripts": {
     "prepublish": "yarn run build",
     "clean": "rm -rf dist",
-    "build": "yarn run clean && tsc && copyfiles -e \"**/*.ts\" cmd/**/* dist"
+    "build": "yarn run clean && yarn tsc && yarn copyfiles -e \"**/*.ts\" \"cmd/**/*\" dist"
   },
   "repository": "github:missmoode/bloom",
   "author": "missmoode",
