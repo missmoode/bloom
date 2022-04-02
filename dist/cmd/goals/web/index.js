@@ -51,11 +51,13 @@ function Web(config) {
     var icons = [
         {
             src: path_1.default.basename(config.icon),
-            sizes: 'any'
+            sizes: 'any',
+            type: 'image/svg'
         },
         {
             src: "".concat(path_1.default.basename(config.icon).replace('svg', 'png')),
-            sizes: 'any'
+            sizes: 'any',
+            type: 'image/png'
         }
     ];
     var manifest = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "manifest.webmanifest"))
