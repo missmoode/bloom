@@ -19,8 +19,7 @@ import sourcemaps from 'gulp-sourcemaps';
 
 export function Web(config: Config) {
   const babelConf = {
-    extensions: ['.ts', '.js'],
-    include: ['**/*.ts', '**/*.js'],
+    extensions: ['.ts', '.js', '.json'],
     presets: ['@babel/preset-typescript', '@babel/preset-env'],
     babelHelpers: 'bundled',
     exclude: 'node_modules/**',
@@ -29,7 +28,7 @@ export function Web(config: Config) {
 
   let bundle = rollup({
     input: config.applicationRoot,
-    plugins: [commonjs(), babel(babelConf as RollupBabelInputPluginOptions), resolve({ preferBuiltins: false })],
+    plugins: [resolve({ preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }), commonjs(), babel(babelConf as RollupBabelInputPluginOptions)],
     output: {
       dir: config.out,
       sourcemap: !config.production,

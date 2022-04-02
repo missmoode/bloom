@@ -22,8 +22,7 @@ var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
 function Web(config) {
     var _a;
     var babelConf = {
-        extensions: ['.ts', '.js'],
-        include: ['**/*.ts', '**/*.js'],
+        extensions: ['.ts', '.js', '.json'],
         presets: ['@babel/preset-typescript', '@babel/preset-env'],
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
@@ -31,7 +30,7 @@ function Web(config) {
     };
     var bundle = (0, stream_1.default)({
         input: config.applicationRoot,
-        plugins: [(0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf), (0, plugin_node_resolve_1.default)({ preferBuiltins: false })],
+        plugins: [(0, plugin_node_resolve_1.default)({ preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }), (0, plugin_commonjs_1.default)(), (0, plugin_babel_1.default)(babelConf)],
         output: {
             dir: config.out,
             sourcemap: !config.production,
