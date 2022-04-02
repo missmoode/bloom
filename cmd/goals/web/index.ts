@@ -96,7 +96,7 @@ export function Web(config: Config) {
   ]
 
   const manifest = src(`${__dirname}${path.sep}manifest.webmanifest`)
-  .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: `"icons": ${JSON.stringify(icons)}` }, {interpolate: /{{(.+?)}}/gs}))
+  .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: JSON.stringify(icons) }, {interpolate: /{{(.+?)}}/gs}))
 
   return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.out));
 }

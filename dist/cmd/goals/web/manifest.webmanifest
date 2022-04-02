@@ -1,9 +1,10 @@
 {
   "name": "{{ title }}",
   "short_name": "{{ title }}",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "fullscreen",
   "background_color": "{{ theme_color }}",
   "theme_color": "{{ theme_color }}",
+  "icons": {{ icons }},
   "orientation": "portrait-primary"
 }
