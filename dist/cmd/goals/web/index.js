@@ -145,4 +145,4 @@ function rasterize(input, width, height) {
     }).catch(function (e) { return stream.emit('error', e); });
     return stream;
 }
-exports.PWA = (0, tasks_1.task)((0, tasks_1.sequence)(Bundle, Assets, WebManifest, HTML, ServiceWorker), 'PWA');
+exports.PWA = (0, tasks_1.task)((0, tasks_1.sequence)(Bundle, Assets, WebManifest, HTML, ServiceWorker));

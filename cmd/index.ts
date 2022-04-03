@@ -5,7 +5,7 @@ import { resolve as resolveConfig } from './config';
 import { PWA } from './goals';
 import path from 'path';
 import { sync as rimraf } from 'rimraf';
-import { createLogger } from './logger';
+import { createLogger } from './utils/logger';
 
 const main = program
   .name(project.version)
@@ -26,7 +26,7 @@ const build = main.command('build')
       rimraf(options.out);
       l.info('Done!', '✨');
     }
-    l = createLogger('Build');
+    l = createLogger();
     l.info('Building PWA...', '🌷');
     await PWA(l, config);
     l.info('Done!', '🌸');

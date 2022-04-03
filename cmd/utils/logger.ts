@@ -1,3 +1,5 @@
+import { Color, stripAnsi } from "./colors";
+
 const levels = ['debug', 'info', 'warn', 'error'] as const;
 type Level = typeof levels[number];
 
@@ -8,6 +10,7 @@ type LogFunction = (message: string, premoji?: string) => void;
 export type Logger = {
   [loglevel in Level]: LogFunction;
 } & {
+  domain?: string
   createLogger: typeof createLogger;
 };
 
@@ -24,7 +27,7 @@ function messageToString(message: Message): string {
 
     if (lines.length > 1) {
 
-      return lines.map((line, index) => `${index == 0 ? '╭' : index == lines.length-1 ? '╰' : '│'} ${line}`)
+      return lines.map((line, index) => `${Color.FgMagenta}${index == 0 ? '╭' : index == lines.length-1 ? '╰' : '│'}${Color.Reset} ${line}`)
       .map(content => messageToString({...message, content}))
       .join('\n');
 
@@ -34,7 +37,7 @@ function messageToString(message: Message): string {
     }
     
   } else {
-    return `${message.premoji ? `${message.premoji}  ` : ''}${message.domain ? `${message.domain}  ` : ''}${message.content}`;
+    return `${pad(message.premoji ?? '◌', 3)}${Color.FgMagenta}${Color.Bright}${message.domain ? `${pad(message.domain, 23)}` : ''}  ${Color.Reset}${message.content}${Color.Reset}`;
   }
 }
 
@@ -53,7 +56,19 @@ export function createLogger(domain?: string): Logger {
     .map(level => createLogFunction(level, domain))
     .reduce((prev, func, i) => ({...prev, [levels[i]]: func}), {});
   return {
-    createLogger: (subdomain) => createLogger(subdomain ? domain ?  `${domain}/${subdomain}` : subdomain : domain),
+    domain: domain,
+    createLogger: (subdomain) => createLogger(subdomain ? domain ?  `${domain} » ${subdomain}` : subdomain : domain),
     ...funcs
   } as Logger;
+}
+
+// pad a string or restrict it to a certain length
+// when restricting it, do so from the left and include an ellipsis, e.g. "foo" => "...foo"
+// pad with spaces
+function pad(str: string, length: number): string {
+  if (str.length > length) {
+    return `...${str.slice(-length+3)}`;
+  } else {
+    return `${str}${' '.repeat(length - str.length)}`;
+  }
 }

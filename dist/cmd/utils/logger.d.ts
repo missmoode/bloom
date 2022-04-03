@@ -4,6 +4,7 @@ declare type LogFunction = (message: string, premoji?: string) => void;
 export declare type Logger = {
     [loglevel in Level]: LogFunction;
 } & {
+    domain?: string;
     createLogger: typeof createLogger;
 };
 export declare function createLogger(domain?: string): Logger;

@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import { existsSync, readFileSync } from "fs"
 import { basename, dirname, extname } from "path";
-import { createLogger } from './logger';
+import { createLogger } from './utils/logger';
 
 const logger = createLogger("config");
 

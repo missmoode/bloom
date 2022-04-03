@@ -64,6 +64,5 @@
     "vinyl-fs": "^3.0.3",
     "vinyl-source-stream": "^2.0.0"
   },
-  "devDependencies": {},
-  "peerDependencies": {}
+  "packageManager": "yarn@3.2.0"
 }

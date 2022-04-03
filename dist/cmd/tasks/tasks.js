@@ -13,32 +13,37 @@ function isStream(value) {
     return value && typeof value.pipe === "function";
 }
 function pretty(str) {
-    return str.charAt(0).toUpperCase + str.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2');
+    return str.charAt(0).toUpperCase() + str.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2');
 }
-function task(fn, name) {
-    if (name === void 0) { name = pretty(fn.name); }
+function task(fn) {
     var out = function (logger, config) {
-        var taskLogger = logger.createLogger(name);
-        taskLogger.info('Starting task...', '🚀');
+        var _a;
+        (_a = fn.displayName) !== null && _a !== void 0 ? _a : (fn.displayName = pretty(fn.name));
+        if (fn.displayName && fn.displayName !== '' && logger.domain !== fn.displayName) {
+            logger = logger.createLogger(fn.displayName);
+            logger.info('', '⏳');
+        }
         var ret = fn(logger, config);
         if (isStream(ret)) {
             ret = asPromise(ret);
         }
-        ret.then(function () { taskLogger.info('Task finished!', '🎉'); });
-        ret.catch(function (error) { taskLogger.error(error.message, '💥'); process.exit(1); });
+        ret.catch(function (error) { logger.error(error.message, '💥'); process.exit(1); });
         return ret;
     };
     return out;
 }
 exports.task = task;
+// Run a series of tasks chronologically, waiting for each to finish before starting the next
 function sequence() {
     var tasks = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         tasks[_i] = arguments[_i];
     }
     return function (logger, config) {
-        return tasks.reduce(function (prev, task) {
-            return prev.then(function () { return task(logger, config); });
+        return tasks.reduce(function (prev, fn) {
+            return prev.then(function () {
+                return task(fn)(logger, config);
+            });
         }, Promise.resolve());
     };
 }

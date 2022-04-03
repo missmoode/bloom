@@ -45,7 +45,7 @@ var package_json_1 = __importDefault(require("../package.json"));
 var config_1 = require("./config");
 var goals_1 = require("./goals");
 var rimraf_1 = require("rimraf");
-var logger_1 = require("./logger");
+var logger_1 = require("./utils/logger");
 var main = commander_1.program
     .name(package_json_1.default.version)
     .description(package_json_1.default.description)
@@ -68,7 +68,7 @@ var build = main.command('build')
                     (0, rimraf_1.sync)(options.out);
                     l.info('Done!', '✨');
                 }
-                l = (0, logger_1.createLogger)('Build');
+                l = (0, logger_1.createLogger)();
                 l.info('Building PWA...', '🌷');
                 return [4 /*yield*/, (0, goals_1.PWA)(l, config)];
             case 1:

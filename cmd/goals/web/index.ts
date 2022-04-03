@@ -17,7 +17,7 @@ import terser from 'gulp-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import sourcemaps from 'gulp-sourcemaps';
 import { readdirSync, statSync } from "fs";
-import { Logger } from "../../logger";
+import { Logger } from "../../utils/logger";
 import { sequence, task } from "../../tasks";
 
 function list(directory: string): string[] {
@@ -152,4 +152,4 @@ function rasterize(input: string, width: number, height = width) {
 	return stream as NodeJS.ReadWriteStream;
 }
 
-export const PWA = task(sequence(Bundle, Assets, WebManifest, HTML, ServiceWorker), 'PWA');
+export const PWA = task(sequence(Bundle, Assets, WebManifest, HTML, ServiceWorker));

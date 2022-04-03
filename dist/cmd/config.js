@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolve = void 0;
 var fs_1 = require("fs");
 var path_1 = require("path");
-var logger_1 = require("./logger");
+var logger_1 = require("./utils/logger");
 var logger = (0, logger_1.createLogger)("config");
 function resolve(options) {
     var config = __assign({}, options);
