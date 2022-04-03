@@ -10,9 +10,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createLogger = void 0;
-var colors_1 = require("./colors");
+var misc_1 = require("./misc");
+var chalk_1 = __importDefault(require("chalk"));
 var levels = ['debug', 'info', 'warn', 'error'];
 function messageToString(message) {
     var _a;
@@ -20,7 +24,7 @@ function messageToString(message) {
         var lines_1 = message.content.split('\n')
             .filter(function (s, i, a) { return s.length > 0 || i < a.length - 1; });
         if (lines_1.length > 1) {
-            return lines_1.map(function (line, index) { return "".concat(colors_1.Color.FgMagenta).concat(index == 0 ? '╭' : index == lines_1.length - 1 ? '╰' : '│').concat(colors_1.Color.Reset, " ").concat(line); })
+            return lines_1.map(function (line, index) { return "".concat(chalk_1.default.yellow(index == 0 ? '╭' : index == lines_1.length - 1 ? '╰' : '│'), " ").concat(line); })
                 .map(function (content) { return messageToString(__assign(__assign({}, message), { content: content })); })
                 .join('\n');
         }
@@ -29,7 +33,7 @@ function messageToString(message) {
         }
     }
     else {
-        return "".concat(pad((_a = message.premoji) !== null && _a !== void 0 ? _a : '◌', 3)).concat(colors_1.Color.FgMagenta).concat(colors_1.Color.Bright).concat(message.domain ? "".concat(pad(message.domain, 23)) : '', "  ").concat(colors_1.Color.Reset).concat(message.content).concat(colors_1.Color.Reset);
+        return "".concat((0, misc_1.pad)((_a = message.premoji) !== null && _a !== void 0 ? _a : '◌', 3)).concat(formatDomain(message.domain), " ").concat(chalk_1.default.yellowBright.bold('│'), " ").concat(message.content);
     }
 }
 function log(level, message) {
@@ -40,6 +44,22 @@ function createLogFunction(level, domain) {
         log(level, { domain: domain, content: content, premoji: premoji });
     };
 }
+function formatDomain(domain, length) {
+    if (length === void 0) { length = 16; }
+    var str = (0, misc_1.pad)(domain, length, true);
+    if (domain) {
+        var split = str.lastIndexOf('»');
+        if (split > -1) {
+            str = chalk_1.default.magenta.bold(str.slice(0, split)) + chalk_1.default.magentaBright.bold(str.slice(split));
+        }
+        else {
+            str = chalk_1.default.magentaBright.bold(str);
+        }
+        str.replace(/» /g, chalk_1.default.gray('»'));
+        str.replace(/../g, chalk_1.default.gray('..'));
+    }
+    return str;
+}
 function createLogger(domain) {
     var funcs = levels
         .map(function (level) { return createLogFunction(level, domain); })
@@ -47,17 +67,6 @@ function createLogger(domain) {
         var _a;
         return (__assign(__assign({}, prev), (_a = {}, _a[levels[i]] = func, _a)));
     }, {});
-    return __assign({ domain: domain, createLogger: function (subdomain) { return createLogger(subdomain ? domain ? "".concat(domain, " \u00BB ").concat(subdomain) : subdomain : domain); } }, funcs);
+    return __assign({ domain: domain, createLogger: function (subdomain) { return createLogger(subdomain ? domain ? "".concat(domain, "\u00BB").concat(subdomain) : subdomain : domain); } }, funcs);
 }
 exports.createLogger = createLogger;
-// pad a string or restrict it to a certain length
-// when restricting it, do so from the left and include an ellipsis, e.g. "foo" => "...foo"
-// pad with spaces
-function pad(str, length) {
-    if (str.length > length) {
-        return "...".concat(str.slice(-length + 3));
-    }
-    else {
-        return "".concat(str).concat(' '.repeat(length - str.length));
-    }
-}

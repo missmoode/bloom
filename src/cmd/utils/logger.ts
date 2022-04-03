@@ -1,9 +1,9 @@
-import { Color } from './colors';
+import { pad } from './misc';
+import chalk from 'chalk';
+
 
 const levels = ['debug', 'info', 'warn', 'error'] as const;
 type Level = typeof levels[number];
-
-type status = 'start' | 'finish' | 'notification';
 
 type LogFunction = (message: string, premoji?: string) => void;
 
@@ -27,7 +27,7 @@ function messageToString(message: Message): string {
 
     if (lines.length > 1) {
 
-      return lines.map((line, index) => `${Color.FgMagenta}${index == 0 ? '╭' : index == lines.length-1 ? '╰' : '│'}${Color.Reset} ${line}`)
+      return lines.map((line, index) => `${chalk.yellow(index == 0 ? '╭' : index == lines.length-1 ? '╰' : '│')} ${line}`)
         .map(content => messageToString({ ...message, content }))
         .join('\n');
 
@@ -37,7 +37,7 @@ function messageToString(message: Message): string {
     }
     
   } else {
-    return `${pad(message.premoji ?? '◌', 3)}${Color.FgMagenta}${Color.Bright}${message.domain ? `${pad(message.domain, 23)}` : ''}  ${Color.Reset}${message.content}${Color.Reset}`;
+    return `${pad(message.premoji ?? '◌', 3)}${formatDomain(message.domain)} ${chalk.yellowBright.bold('│')} ${message.content}`;
   }
 }
 
@@ -51,24 +51,29 @@ function createLogFunction(level: Level, domain?: string): LogFunction {
   };
 }
 
+
+function formatDomain(domain?: string, length = 16) {
+  let str = pad(domain, length, true);
+  if (domain) {
+    const split = str.lastIndexOf('»');
+    if (split>-1) {
+      str = chalk.magenta.bold(str.slice(0, split)) + chalk.magentaBright.bold(str.slice(split));
+    } else {
+      str = chalk.magentaBright.bold(str);
+    }
+    str.replace(/» /g, chalk.gray('»'));
+    str.replace(/../g, chalk.gray('..'));
+  }
+  return str;
+}
+
 export function createLogger(domain?: string): Logger {
   const funcs = levels
     .map(level => createLogFunction(level, domain))
     .reduce((prev, func, i) => ({ ...prev, [levels[i]]: func }), {});
   return {
     domain: domain,
-    createLogger: (subdomain) => createLogger(subdomain ? domain ?  `${domain} » ${subdomain}` : subdomain : domain),
+    createLogger: (subdomain) => createLogger(subdomain ? domain ?  `${domain}»${subdomain}` : subdomain : domain),
     ...funcs
   } as Logger;
-}
-
-// pad a string or restrict it to a certain length
-// when restricting it, do so from the left and include an ellipsis, e.g. "foo" => "...foo"
-// pad with spaces
-function pad(str: string, length: number): string {
-  if (str.length > length) {
-    return `...${str.slice(-length+3)}`;
-  } else {
-    return `${str}${' '.repeat(length - str.length)}`;
-  }
 }

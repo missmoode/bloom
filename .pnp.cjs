@@ -66,6 +66,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/vinyl-source-stream", "npm:0.0.30"],\
             ["@typescript-eslint/eslint-plugin", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:5.17.0"],\
             ["@typescript-eslint/parser", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:5.17.0"],\
+            ["chalk", "npm:4.1.2"],\
             ["commander", "npm:9.1.0"],\
             ["commonjs", "npm:0.0.1"],\
             ["copyfiles", "npm:2.4.1"],\
@@ -3737,6 +3738,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/vinyl-source-stream", "npm:0.0.30"],\
             ["@typescript-eslint/eslint-plugin", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:5.17.0"],\
             ["@typescript-eslint/parser", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:5.17.0"],\
+            ["chalk", "npm:4.1.2"],\
             ["commander", "npm:9.1.0"],\
             ["commonjs", "npm:0.0.1"],\
             ["copyfiles", "npm:2.4.1"],\
