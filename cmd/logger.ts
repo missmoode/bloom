@@ -5,7 +5,7 @@ type status = "start" | "finish" | "notification";
 
 type LogFunction = (message: string, premoji?: string) => void;
 
-type Logger = {
+export type Logger = {
   [loglevel in Level]: LogFunction;
 } & {
   createLogger: typeof createLogger;

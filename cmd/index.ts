@@ -2,8 +2,7 @@ import { readFileSync, existsSync } from 'fs';
 import { program } from 'commander';
 import project from '../package.json';
 import { resolve as resolveConfig } from './config';
-import { ServiceWorker, Web } from './goals/web';
-import { asPromise } from './goals/goal';
+import { PWA } from './goals';
 import path from 'path';
 import { sync as rimraf } from 'rimraf';
 import { createLogger } from './logger';
@@ -27,10 +26,9 @@ const build = main.command('build')
       rimraf(options.out);
       l.info('Done!', '✨');
     }
-    l = createLogger('build')
-    l.info('Building for web...', '🌷');
-    await asPromise(Web(config));
-    await asPromise(ServiceWorker(config));
+    l = createLogger('Build');
+    l.info('Building PWA...', '🌷');
+    await PWA(l, config);
     l.info('Done!', '🌸');
   });
 

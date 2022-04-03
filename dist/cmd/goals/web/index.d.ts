@@ -1,4 +1,5 @@
 /// <reference types="node" />
 import { Config } from "../../config";
-export declare function Web(config: Config): NodeJS.ReadWriteStream;
-export declare function ServiceWorker(config: Config): NodeJS.ReadWriteStream;
+import { Logger } from "../../logger";
+export declare function Assets(log: Logger, config: Config): NodeJS.ReadWriteStream;
+export declare const PWA: import("../../tasks").TaskFunction<Promise<void>>;

@@ -43,8 +43,7 @@ var fs_1 = require("fs");
 var commander_1 = require("commander");
 var package_json_1 = __importDefault(require("../package.json"));
 var config_1 = require("./config");
-var web_1 = require("./goals/web");
-var goal_1 = require("./goals/goal");
+var goals_1 = require("./goals");
 var rimraf_1 = require("rimraf");
 var logger_1 = require("./logger");
 var main = commander_1.program
@@ -69,13 +68,10 @@ var build = main.command('build')
                     (0, rimraf_1.sync)(options.out);
                     l.info('Done!', '✨');
                 }
-                l = (0, logger_1.createLogger)('build');
-                l.info('Building for web...', '🌷');
-                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.Web)(config))];
+                l = (0, logger_1.createLogger)('Build');
+                l.info('Building PWA...', '🌷');
+                return [4 /*yield*/, (0, goals_1.PWA)(l, config)];
             case 1:
-                _a.sent();
-                return [4 /*yield*/, (0, goal_1.asPromise)((0, web_1.ServiceWorker)(config))];
-            case 2:
                 _a.sent();
                 l.info('Done!', '🌸');
                 return [2 /*return*/];

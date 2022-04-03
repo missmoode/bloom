@@ -17,6 +17,8 @@ import terser from 'gulp-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import sourcemaps from 'gulp-sourcemaps';
 import { readdirSync, statSync } from "fs";
+import { Logger } from "../../logger";
+import { sequence, task } from "../../tasks";
 
 function list(directory: string): string[] {
   const files = readdirSync(directory);
@@ -49,7 +51,7 @@ function mapFilesRecursive(base: string): string[] {
   return result;
 }
 
-export function Web(config: Config) {
+function Bundle(log: Logger, config: Config) {
   const babelConf = {
     extensions: ['.ts', '.js', '.json'],
     presets: ['@babel/preset-typescript', '@babel/preset-env'],
@@ -73,35 +75,63 @@ export function Web(config: Config) {
   bundle = bundle.pipe(terser({output: {comments: false}}));
   if (!config.production) bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.relative(config.out, path.dirname(config.applicationRoot)) }));
 
-  const copyResources = src(config.resources);
+  return bundle.pipe(dest(config.out));
+}
 
-  const html = src(`${__dirname}${path.sep}index.html`)
-  .pipe(template({title: config.name, icon: `${path.basename(config.icon).replace('svg', 'png')}`, theme_color: config.themeColor}, {interpolate: /{{([\s\S]+?)}}/gs}))
+export function Assets(log: Logger, config: Config) {
+  return src(config.resources).pipe(dest(config.out));
+}
 
+// write json object to vinyl file
+function writeJson(obj: any, fileName: string) {
+  const file = new Vinyl({
+    contents: Buffer.from(JSON.stringify(obj)),
+    path: fileName
+  });
+  return file;
+};
+
+function WebManifest(log: Logger, config: Config) {
   const icon = src(config.icon);
 
   const iconPNG = rasterize(config.icon, 512)
 
-  const icons = [
-    {
-      src: path.basename(config.icon),
-      sizes: 'any',
-      type: 'image/svg'
-    },
-    {
-      src: `${path.basename(config.icon).replace('svg', 'png')}`,
-      sizes: '72x72 96x96 128x128 256x256 512x512',
-      type: 'image/png'
-    }
-  ]
+  const manifest = {
+    name: config.name,
+    short_name: config.name,
+    description: config.description,
+    background_color: config.themeColor,
+    theme_color: config.themeColor,
+    display: 'standalone',
+    orientation: 'portrait',
+    start_url: '/',
+    icons: [
+      {
+        src: path.basename(config.icon),
+        sizes: 'any',
+        type: 'image/svg'
+      },
+      {
+        src: `${path.basename(config.icon).replace('svg', 'png')}`,
+        sizes: '72x72 96x96 128x128 256x256 512x512',
+        type: 'image/png'
+      }
+    ]
+  };
 
-  const manifest = src(`${__dirname}${path.sep}manifest.webmanifest`)
-  .pipe(template({ title: config.shortname ?? config.name, theme_color: config.themeColor, icons: JSON.stringify(icons) }, {interpolate: /{{(.+?)}}/gs}))
+	const manifestStream = new PassThrough({objectMode: true});
+  manifestStream.end(writeJson(manifest, 'manifest.webmanifest'));
 
-  return merge2(bundle, copyResources, html, icon, iconPNG, manifest).pipe(dest(config.out));
+  return merge2(icon, iconPNG, manifestStream).pipe(dest(config.out));
 }
 
-export function ServiceWorker(config: Config) {
+function HTML(log: Logger, config: Config) {
+  const html = src(`${__dirname}${path.sep}index.html`)
+  .pipe(template({title: config.name, icon: `${path.basename(config.icon).replace('svg', 'png')}`, theme_color: config.themeColor}, {interpolate: /{{([\s\S]+?)}}/gs}));
+  return html.pipe(dest(config.out));
+}
+
+function ServiceWorker(log: Logger, config: Config) {
   return src(`${__dirname}${path.sep}service-worker.js`)
   .pipe(template({cache: JSON.stringify(mapFilesRecursive(config.out))}, {interpolate: /{{(.+?)}}/gs}))
   .pipe(dest(config.out));
@@ -121,3 +151,5 @@ function rasterize(input: string, width: number, height = width) {
     ).catch((e)=>stream.emit('error', e));
 	return stream as NodeJS.ReadWriteStream;
 }
+
+export const PWA = task(sequence(Bundle, Assets, WebManifest, HTML, ServiceWorker), 'PWA');
