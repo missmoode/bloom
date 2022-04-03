@@ -1,6 +1,6 @@
-import { Container } from "@pixi/display";
-import { Point } from "@pixi/math";
-import { FixedViewport } from "./viewport";
+import { Container } from '@pixi/display';
+import { Point } from '@pixi/math';
+import { FixedViewport } from './viewport';
 declare type Passed = 'addChild' | 'addChildAt' | 'removeChild' | 'removeChildAt' | 'removeChildren' | 'swapChildren' | 'getChildIndex' | 'setChildIndex' | 'sortChildren' | 'sortDirty' | 'sortableChildren' | 'children' | 'render' | 'calculateBounds';
 export interface Stage extends Pick<Container, Passed> {
     get width(): number;

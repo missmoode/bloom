@@ -1,5 +1,5 @@
-import { Container, DisplayObject } from "@pixi/display";
-import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from "./view";
+import { Container, DisplayObject } from '@pixi/display';
+import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from './view';
 export interface FixedViewport {
     get width(): number;
     get height(): number;

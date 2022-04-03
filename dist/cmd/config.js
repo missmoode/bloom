@@ -15,7 +15,7 @@ exports.resolve = void 0;
 var fs_1 = require("fs");
 var path_1 = require("path");
 var logger_1 = require("./utils/logger");
-var logger = (0, logger_1.createLogger)("config");
+var logger = (0, logger_1.createLogger)('config');
 function resolve(options) {
     var config = __assign({}, options);
     if ((0, fs_1.existsSync)(options.config)) {
@@ -34,23 +34,23 @@ function inferMissing(input) {
         }
         if (!config.description && packageFile.description) {
             config.description = packageFile.description;
-            logger.debug("Inferred description from package.json", '💡');
+            logger.debug('Inferred description from package.json', '💡');
         }
         if (!config.applicationRoot && packageFile.main && packageFile.main.endsWith('.ts')) {
             config.applicationRoot = packageFile.main;
-            logger.debug("Inferred application root from package.json", '💡');
+            logger.debug('Inferred application root from package.json', '💡');
         }
         if (!config.icon && packageFile.icon) {
             config.icon = packageFile.icon;
-            logger.debug("Using inferred icon from package.json", '💡');
+            logger.debug('Using inferred icon from package.json', '💡');
         }
         if (!config.themeColor && packageFile.themeColor) {
             config.themeColor = packageFile.themeColor;
-            logger.debug("Using theme color from package.json", '💡');
+            logger.debug('Using theme color from package.json', '💡');
         }
         if (!config.resources && packageFile.resources) {
             config.resources = packageFile.resources;
-            logger.debug("Using resources from package.json", '💡');
+            logger.debug('Using resources from package.json', '💡');
         }
     }
     if (!config.name) {

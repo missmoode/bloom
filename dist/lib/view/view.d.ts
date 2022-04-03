@@ -1,4 +1,4 @@
-import { Stage } from "./stage";
+import { Stage } from './stage';
 export declare abstract class View {
     readonly stage: Stage;
     constructor(stage: Stage);

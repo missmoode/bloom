@@ -1,4 +1,4 @@
-export declare type ResourceTarget = String;
+export declare type ResourceTarget = string;
 export declare type ResourceContainer = {
     _resources: ResourceTarget[];
 };

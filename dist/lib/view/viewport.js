@@ -18,7 +18,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Viewport = exports.InternalViewport = void 0;
 var display_1 = require("@pixi/display");
 var stage_1 = require("./stage");
-;
 var InternalViewport = /** @class */ (function (_super) {
     __extends(InternalViewport, _super);
     function InternalViewport(width, height) {

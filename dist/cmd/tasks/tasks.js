@@ -4,13 +4,13 @@ exports.sequence = exports.task = void 0;
 // Adapt a stream to a promise
 function asPromise(stream) {
     return new Promise(function (resolve, reject) {
-        stream.on("end", function () { return resolve(); });
-        stream.on("error", function (error) { return reject(error); });
+        stream.on('end', function () { return resolve(); });
+        stream.on('error', function (error) { return reject(error); });
     });
 }
 // Test if a value is a NodeJS.ReadWriteStream or a Promise
 function isStream(value) {
-    return value && typeof value.pipe === "function";
+    return value && typeof value.pipe === 'function';
 }
 function pretty(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2');

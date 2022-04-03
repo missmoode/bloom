@@ -13,7 +13,8 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "eslint-plugin-unused-imports"
     ],
     "rules": {
         "indent": [
@@ -35,6 +36,7 @@
         "object-curly-spacing": [
             "error",
             "always"
-        ]
+        ],
+        "unused-imports/no-unused-imports": "error"
     }
 }

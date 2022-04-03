@@ -59,7 +59,6 @@ function Bundle(log, config) {
         extensions: ['.ts', '.js', '.json'],
         presets: ['@babel/preset-typescript', '@babel/preset-env'],
         babelHelpers: 'bundled',
-        exclude: 'node_modules/**',
         sourcemaps: config.applicationRoot
     };
     var bundle = (0, stream_1.default)({
@@ -70,7 +69,7 @@ function Bundle(log, config) {
             sourcemap: !config.production,
             format: 'umd'
         }
-    }).pipe((0, vinyl_source_stream_1.default)("bundle.js"))
+    }).pipe((0, vinyl_source_stream_1.default)('bundle.js'))
         .pipe((0, vinyl_buffer_1.default)());
     if (!config.production)
         bundle = bundle.pipe(gulp_sourcemaps_1.default.init({ loadMaps: true }));
@@ -91,7 +90,6 @@ function writeJson(obj, fileName) {
     });
     return file;
 }
-;
 function WebManifest(log, config) {
     var icon = (0, vinyl_fs_1.src)(config.icon);
     var iconPNG = rasterize(config.icon, 512);
@@ -128,7 +126,7 @@ function HTML(log, config) {
 }
 function ServiceWorker(log, config) {
     return (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1.default.sep, "service-worker.js"))
-        .pipe((0, gulp_template_1.default)({ cache: JSON.stringify(mapFilesRecursive(config.out)) }, { interpolate: /{{(.+?)}}/gs }))
+        .pipe((0, gulp_template_1.default)({ cache: JSON.stringify(mapFilesRecursive(config.out)) }, { interpolate: /\/\*{{(.+?)}}\*\//gs }))
         .pipe((0, vinyl_fs_1.dest)(config.out));
 }
 function rasterize(input, width, height) {

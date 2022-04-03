@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "ES2015"],
+    "lib": [
+      "DOM",
+      "ES2015"
+    ],
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -8,7 +11,9 @@
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "noImplicitOverride": true,
-    "resolveJsonModule": true
-  }
+    "noImplicitOverride": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
 }

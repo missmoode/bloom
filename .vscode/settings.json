@@ -1,4 +1,13 @@
 {
   "liveServer.settings.port": 5501,
-  "svg.preview.background": "white"
+  "svg.preview.background": "white",
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true
 }

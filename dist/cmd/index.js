@@ -35,21 +35,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
 var commander_1 = require("commander");
-var package_json_1 = __importDefault(require("../package.json"));
 var config_1 = require("./config");
 var goals_1 = require("./goals");
 var rimraf_1 = require("rimraf");
 var logger_1 = require("./utils/logger");
+var packageFile = JSON.parse((0, fs_1.readFileSync)("".concat(__dirname, "/../../package.json")).toString('utf-8'));
 var main = commander_1.program
-    .name(package_json_1.default.version)
-    .description(package_json_1.default.description)
-    .version(package_json_1.default.version);
+    .name(packageFile.name)
+    .description(packageFile.description)
+    .version(packageFile.version);
 var build = main.command('build')
     .description('Builds for web and PWA')
     .option('--config <path>', 'configuration file to use', './bloomConfig.json')

@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { Config } from "../config";
-import { Logger } from "../utils";
+import { Config } from '../config';
+import { Logger } from '../utils';
 export declare type TaskFunction<Result = NodeJS.ReadWriteStream | Promise<any>> = {
     (log: Logger, config: Config): Result;
     displayName?: string;

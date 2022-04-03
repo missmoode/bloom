@@ -16,6 +16,7 @@ var loaders_1 = require("@pixi/loaders");
 var shaderloaderplugin_1 = require("./shaderloaderplugin");
 var Resources = /** @class */ (function () {
     function Resources() {
+        /** */
     }
     /**
      * @param base The object to attach resources to
