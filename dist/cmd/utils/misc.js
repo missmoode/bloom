@@ -12,7 +12,7 @@ function pad(str, length, padRight) {
     if (str === void 0) { str = ''; }
     if (padRight === void 0) { padRight = false; }
     if (unicodeLength(str) > length) {
-        return "..".concat(str.slice(-length + 2));
+        return "\u2025".concat(str.slice(-length + 1));
     }
     else {
         return "".concat(!padRight ? str : '').concat(' '.repeat(length - unicodeLength(str))).concat(padRight ? str : '');

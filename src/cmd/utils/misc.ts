@@ -6,7 +6,7 @@ export function unicodeLength(str: string): number {
 
 export function pad(str = '', length: number, padRight = false): string {
   if (unicodeLength(str) > length) {
-    return `..${str.slice(-length+2)}`;
+    return `‥${str.slice(-length+1)}`;
   } else {
     return `${!padRight ? str : ''}${' '.repeat(length - unicodeLength(str))}${padRight ? str : ''}`;
   }

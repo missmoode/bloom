@@ -59,18 +59,18 @@ var build = main.command('build')
         switch (_a.label) {
             case 0:
                 config = (0, config_1.resolve)(options);
-                l = (0, logger_1.createLogger)('clean');
+                l = (0, logger_1.createLogger)('Clean');
                 if (options.clean && (0, fs_1.existsSync)(options.out)) {
                     l.info('Cleaning last build...', '🧹');
                     (0, rimraf_1.sync)(options.out);
                     l.info('Done!', '✨');
                 }
-                l = (0, logger_1.createLogger)();
-                l.info('Building PWA...', '🌷');
+                l = (0, logger_1.createLogger)('Build');
+                l.info('Building as Progressive Web App...', '🌷');
                 return [4 /*yield*/, (0, goals_1.PWA)(l, config)];
             case 1:
                 _a.sent();
-                l.info('Done!', '🌸');
+                l.info("Done! Output at \"".concat(config.out, "\"."), '🌸');
                 return [2 /*return*/];
         }
     });

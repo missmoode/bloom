@@ -8,6 +8,7 @@
   "eslint.nodePath": ".yarn/sdks",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "editor.formatOnSave": true,
-  "eslint.format.enable": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

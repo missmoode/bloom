@@ -28,7 +28,7 @@ export function task(fn: TaskFunction): TaskFunction<Promise<void>> {
     fn.displayName ??= pretty(fn.name);
     if (fn.displayName && fn.displayName !== '' && logger.domain !== fn.displayName) {
       logger = logger.createLogger(fn.displayName);
-      logger.info('', '⏳');
+      logger.info('Running task...', '⏳');
     }
     let ret = fn(logger, config);
     if (isStream(ret)) {

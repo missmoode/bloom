@@ -1642,6 +1642,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/color-rgba@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@types/color-rgba@npm:2.1.0"
+  checksum: aa3e399bf7043cba3858e195ea00692957874e665f01effdc46c95134cadca4e8bfc7c4022c628e217a90246d098686645a7f517ba554b50ccfae9f2a9f51d63
+  languageName: node
+  linkType: hard
+
 "@types/earcut@npm:^2.1.0":
   version: 2.1.1
   resolution: "@types/earcut@npm:2.1.1"
@@ -1687,6 +1694,16 @@ __metadata:
     "@types/minimatch": "*"
     "@types/node": "*"
   checksum: 6ae717fedfdfdad25f3d5a568323926c64f52ef35897bcac8aca8e19bc50c0bd84630bbd063e5d52078b2137d8e7d3c26eabebd1a2f03ff350fff8a91e79fc19
+  languageName: node
+  linkType: hard
+
+"@types/gulp-rename@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@types/gulp-rename@npm:2.0.1"
+  dependencies:
+    "@types/node": "*"
+    "@types/vinyl": "*"
+  checksum: e44f2e3a4fc5d60b2e503a9f7bd892580c3af7af7b1c2104d87914153ce177278bbeb669a3da4469ed3c518121a423dff526675ba4bff4e8981bc5ee457c27b9
   languageName: node
   linkType: hard
 
@@ -2318,6 +2335,8 @@ __metadata:
     "@rollup/stream": ^2.0.0
     "@types/babel__core": ^7.1.19
     "@types/babel__preset-env": ^7.9.2
+    "@types/color-rgba": ^2.1.0
+    "@types/gulp-rename": ^2.0.1
     "@types/gulp-sourcemaps": ^0.0.35
     "@types/gulp-template": ^5.0.1
     "@types/gulp-terser": ^1.2.1
@@ -2338,6 +2357,7 @@ __metadata:
     copyfiles: ^2.4.1
     eslint: ^8.12.0
     eslint-plugin-unused-imports: ^2.0.0
+    gulp-rename: ^2.0.0
     gulp-sourcemaps: ^3.0.0
     gulp-template: ^5.0.0
     gulp-terser: ^2.1.0
@@ -3546,6 +3566,13 @@ __metadata:
   version: 4.2.9
   resolution: "graceful-fs@npm:4.2.9"
   checksum: 68ea4e07ff2c041ada184f9278b830375f8e0b75154e3f080af6b70f66172fabb4108d19b3863a96b53fc068a310b9b6493d86d1291acc5f3861eb4b79d26ad6
+  languageName: node
+  linkType: hard
+
+"gulp-rename@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "gulp-rename@npm:2.0.0"
+  checksum: b9add0d130487dee6067206eebfc3867e4e254117edef154e8c270e3111b112335439ac1cac1519d6a32541343e04bd299484253a333b4e34c7d430039953e99
   languageName: node
   linkType: hard
 

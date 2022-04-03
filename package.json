@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn run clean && yarn tsc && yarn copyfiles -e \"**/*.ts\" \"cmd/**/*\" dist"
+    "build": "yarn run clean && yarn tsc && yarn copyfiles -e \"./src/cmd/**/*.ts\" -u 2 \"./src/cmd/**/*\" ./dist/cmd/"
   },
   "repository": "github:missmoode/bloom",
   "license": "MIT",
@@ -36,6 +36,8 @@
     "@rollup/stream": "^2.0.0",
     "@types/babel__core": "^7.1.19",
     "@types/babel__preset-env": "^7.9.2",
+    "@types/color-rgba": "^2.1.0",
+    "@types/gulp-rename": "^2.0.1",
     "@types/gulp-sourcemaps": "^0.0.35",
     "@types/gulp-template": "^5.0.1",
     "@types/gulp-terser": "^1.2.1",
@@ -51,6 +53,7 @@
     "commander": "^9.1.0",
     "commonjs": "^0.0.1",
     "copyfiles": "^2.4.1",
+    "gulp-rename": "^2.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-template": "^5.0.0",
     "gulp-terser": "^2.1.0",

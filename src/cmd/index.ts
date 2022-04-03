@@ -20,16 +20,16 @@ const build = main.command('build')
   .option('-o, --out <path>', 'the directory to output to', 'web')
   .action(async (options) => {
     const config = resolveConfig(options);
-    let l = createLogger('clean');
+    let l = createLogger('Clean');
     if (options.clean && existsSync(options.out)) {
       l.info('Cleaning last build...', '🧹');
       rimraf(options.out);
       l.info('Done!', '✨');
     }
-    l = createLogger();
-    l.info('Building PWA...', '🌷');
+    l = createLogger('Build');
+    l.info('Building as Progressive Web App...', '🌷');
     await PWA(l, config);
-    l.info('Done!', '🌸');
+    l.info(`Done! Output at "${config.out}".`, '🌸');
   });
 
 program.parse(process.argv);

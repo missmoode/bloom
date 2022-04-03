@@ -37,7 +37,7 @@ function messageToString(message: Message): string {
     }
     
   } else {
-    return `${pad(message.premoji ?? '◌', 3)}${formatDomain(message.domain)} ${chalk.yellowBright.bold('│')} ${message.content}`;
+    return `${pad(message.premoji ?? '◌', 3)}${formatDomain(message.domain)} ${chalk.reset.yellowBright.bold('│')} ${message.content}`;
   }
 }
 
@@ -55,14 +55,16 @@ function createLogFunction(level: Level, domain?: string): LogFunction {
 function formatDomain(domain?: string, length = 16) {
   let str = pad(domain, length, true);
   if (domain) {
-    const split = str.lastIndexOf('»');
+    const split = str.lastIndexOf('›');
+    const ellipsis = str.includes('‥');
     if (split>-1) {
-      str = chalk.magenta.bold(str.slice(0, split)) + chalk.magentaBright.bold(str.slice(split));
+      str = chalk.reset.cyan(str.slice(ellipsis ? 1 : 0, split)) + chalk.reset.white('›') + chalk.reset.cyanBright.bold(str.slice(split+1));
     } else {
-      str = chalk.magentaBright.bold(str);
+      str = chalk.reset.cyanBright.bold(str.slice(ellipsis ? 1 : 0));
     }
-    str.replace(/» /g, chalk.gray('»'));
-    str.replace(/../g, chalk.gray('..'));
+    if (ellipsis) str = chalk.reset.cyan('‥') + str;
+  } else {
+    str = chalk.reset.white('⋯'.repeat(length));
   }
   return str;
 }
@@ -73,7 +75,7 @@ export function createLogger(domain?: string): Logger {
     .reduce((prev, func, i) => ({ ...prev, [levels[i]]: func }), {});
   return {
     domain: domain,
-    createLogger: (subdomain) => createLogger(subdomain ? domain ?  `${domain}»${subdomain}` : subdomain : domain),
+    createLogger: (subdomain) => createLogger(subdomain ? domain ?  `${domain}›${subdomain}` : subdomain : domain),
     ...funcs
   } as Logger;
 }

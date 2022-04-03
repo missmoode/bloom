@@ -21,7 +21,7 @@ function task(fn) {
         (_a = fn.displayName) !== null && _a !== void 0 ? _a : (fn.displayName = pretty(fn.name));
         if (fn.displayName && fn.displayName !== '' && logger.domain !== fn.displayName) {
             logger = logger.createLogger(fn.displayName);
-            logger.info('', '⏳');
+            logger.info('Running task...', '⏳');
         }
         var ret = fn(logger, config);
         if (isStream(ret)) {

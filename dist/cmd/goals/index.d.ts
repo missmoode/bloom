@@ -1,1 +1,1 @@
-export * from './web';
+export * from './pwa';

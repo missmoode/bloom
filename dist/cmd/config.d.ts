@@ -3,6 +3,7 @@ export declare type Config = {
     shortname?: string;
     description?: string;
     icon: string;
+    appIcon?: string;
     applicationRoot: string;
     resources: string | string[];
     themeColor: string;

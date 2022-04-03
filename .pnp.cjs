@@ -52,6 +52,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@rollup/stream", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:2.0.0"],\
             ["@types/babel__core", "npm:7.1.19"],\
             ["@types/babel__preset-env", "npm:7.9.2"],\
+            ["@types/color-rgba", "npm:2.1.0"],\
+            ["@types/gulp-rename", "npm:2.0.1"],\
             ["@types/gulp-sourcemaps", "npm:0.0.35"],\
             ["@types/gulp-template", "npm:5.0.1"],\
             ["@types/gulp-terser", "npm:1.2.1"],\
@@ -72,6 +74,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["copyfiles", "npm:2.4.1"],\
             ["eslint", "npm:8.12.0"],\
             ["eslint-plugin-unused-imports", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:2.0.0"],\
+            ["gulp-rename", "npm:2.0.0"],\
             ["gulp-sourcemaps", "npm:3.0.0"],\
             ["gulp-template", "npm:5.0.0"],\
             ["gulp-terser", "npm:2.1.0"],\
@@ -2846,6 +2849,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/color-rgba", [\
+        ["npm:2.1.0", {\
+          "packageLocation": "./.yarn/cache/@types-color-rgba-npm-2.1.0-955a99245b-aa3e399bf7.zip/node_modules/@types/color-rgba/",\
+          "packageDependencies": [\
+            ["@types/color-rgba", "npm:2.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/earcut", [\
         ["npm:2.1.1", {\
           "packageLocation": "./.yarn/cache/@types-earcut-npm-2.1.1-8c1f5c6956-7845dab97b.zip/node_modules/@types/earcut/",\
@@ -2898,6 +2910,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/glob-stream", "npm:6.1.1"],\
             ["@types/glob", "npm:7.2.0"],\
             ["@types/node", "npm:17.0.23"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/gulp-rename", [\
+        ["npm:2.0.1", {\
+          "packageLocation": "./.yarn/cache/@types-gulp-rename-npm-2.0.1-9a888dd934-e44f2e3a4f.zip/node_modules/@types/gulp-rename/",\
+          "packageDependencies": [\
+            ["@types/gulp-rename", "npm:2.0.1"],\
+            ["@types/node", "npm:17.0.23"],\
+            ["@types/vinyl", "npm:2.0.6"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3724,6 +3747,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@rollup/stream", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:2.0.0"],\
             ["@types/babel__core", "npm:7.1.19"],\
             ["@types/babel__preset-env", "npm:7.9.2"],\
+            ["@types/color-rgba", "npm:2.1.0"],\
+            ["@types/gulp-rename", "npm:2.0.1"],\
             ["@types/gulp-sourcemaps", "npm:0.0.35"],\
             ["@types/gulp-template", "npm:5.0.1"],\
             ["@types/gulp-terser", "npm:1.2.1"],\
@@ -3744,6 +3769,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["copyfiles", "npm:2.4.1"],\
             ["eslint", "npm:8.12.0"],\
             ["eslint-plugin-unused-imports", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:2.0.0"],\
+            ["gulp-rename", "npm:2.0.0"],\
             ["gulp-sourcemaps", "npm:3.0.0"],\
             ["gulp-template", "npm:5.0.0"],\
             ["gulp-terser", "npm:2.1.0"],\
@@ -5132,6 +5158,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/graceful-fs-npm-4.2.9-ee48e00aaa-68ea4e07ff.zip/node_modules/graceful-fs/",\
           "packageDependencies": [\
             ["graceful-fs", "npm:4.2.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["gulp-rename", [\
+        ["npm:2.0.0", {\
+          "packageLocation": "./.yarn/cache/gulp-rename-npm-2.0.0-2a2997d9ce-b9add0d130.zip/node_modules/gulp-rename/",\
+          "packageDependencies": [\
+            ["gulp-rename", "npm:2.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\

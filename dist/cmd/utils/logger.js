@@ -33,7 +33,7 @@ function messageToString(message) {
         }
     }
     else {
-        return "".concat((0, misc_1.pad)((_a = message.premoji) !== null && _a !== void 0 ? _a : '◌', 3)).concat(formatDomain(message.domain), " ").concat(chalk_1.default.yellowBright.bold('│'), " ").concat(message.content);
+        return "".concat((0, misc_1.pad)((_a = message.premoji) !== null && _a !== void 0 ? _a : '◌', 3)).concat(formatDomain(message.domain), " ").concat(chalk_1.default.reset.yellowBright.bold('│'), " ").concat(message.content);
     }
 }
 function log(level, message) {
@@ -48,15 +48,19 @@ function formatDomain(domain, length) {
     if (length === void 0) { length = 16; }
     var str = (0, misc_1.pad)(domain, length, true);
     if (domain) {
-        var split = str.lastIndexOf('»');
+        var split = str.lastIndexOf('›');
+        var ellipsis = str.includes('‥');
         if (split > -1) {
-            str = chalk_1.default.magenta.bold(str.slice(0, split)) + chalk_1.default.magentaBright.bold(str.slice(split));
+            str = chalk_1.default.reset.cyan(str.slice(ellipsis ? 1 : 0, split)) + chalk_1.default.reset.white('›') + chalk_1.default.reset.cyanBright.bold(str.slice(split + 1));
         }
         else {
-            str = chalk_1.default.magentaBright.bold(str);
+            str = chalk_1.default.reset.cyanBright.bold(str.slice(ellipsis ? 1 : 0));
         }
-        str.replace(/» /g, chalk_1.default.gray('»'));
-        str.replace(/../g, chalk_1.default.gray('..'));
+        if (ellipsis)
+            str = chalk_1.default.reset.cyan('‥') + str;
+    }
+    else {
+        str = chalk_1.default.reset.white('⋯'.repeat(length));
     }
     return str;
 }
@@ -67,6 +71,6 @@ function createLogger(domain) {
         var _a;
         return (__assign(__assign({}, prev), (_a = {}, _a[levels[i]] = func, _a)));
     }, {});
-    return __assign({ domain: domain, createLogger: function (subdomain) { return createLogger(subdomain ? domain ? "".concat(domain, "\u00BB").concat(subdomain) : subdomain : domain); } }, funcs);
+    return __assign({ domain: domain, createLogger: function (subdomain) { return createLogger(subdomain ? domain ? "".concat(domain, "\u203A").concat(subdomain) : subdomain : domain); } }, funcs);
 }
 exports.createLogger = createLogger;
