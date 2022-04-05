@@ -69,7 +69,7 @@
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
     "@types/offscreencanvas": "^2019.6.4",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.17.0",
     "eslint": "^8.12.0",
     "eslint-plugin-unused-imports": "^2.0.0",
