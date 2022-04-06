@@ -10,10 +10,12 @@
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "noImplicitOverride": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/lib/**/*.ts",
+    "src/cmd/**/*.ts"
   ],
 }

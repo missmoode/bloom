@@ -1,2 +1,2 @@
 export * from './bundle';
-export * from './assets';
+export * from '../../tasks/build/assets';

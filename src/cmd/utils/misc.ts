@@ -3,11 +3,3 @@ export function unicodeLength(str: string): number {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return str.match(/./gu)!.length;
 }
-
-export function pad(str = '', length: number, padRight = false): string {
-  if (unicodeLength(str) > length) {
-    return `‥${str.slice(-length+1)}`;
-  } else {
-    return `${!padRight ? str : ''}${' '.repeat(length - unicodeLength(str))}${padRight ? str : ''}`;
-  }
-}

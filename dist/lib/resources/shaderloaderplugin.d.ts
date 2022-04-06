@@ -3,3 +3,4 @@ export declare class ShaderLoaderPlugin implements ILoaderPlugin {
     add(): void;
     use(resource: LoaderResource, next: () => void): void;
 }
+//# sourceMappingURL=shaderloaderplugin.d.ts.map

@@ -33,3 +33,4 @@ export declare class InternalViewport extends Container implements MutableViewpo
     finish(): void;
 }
 export declare const Viewport: new (width?: number | undefined, height?: number | undefined) => MutableViewport;
+//# sourceMappingURL=viewport.d.ts.map

@@ -15,3 +15,4 @@ export declare class StageInternal extends Container implements Stage {
     get mid(): Point;
 }
 export {};
+//# sourceMappingURL=stage.d.ts.map

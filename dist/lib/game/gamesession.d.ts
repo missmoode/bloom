@@ -9,3 +9,4 @@ export declare class InternalGameSession extends InternalViewport implements Gam
     constructor(containerElement: HTMLElement);
     destroy(options?: boolean | IDestroyOptions): void;
 }
+//# sourceMappingURL=gamesession.d.ts.map

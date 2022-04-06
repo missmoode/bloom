@@ -9,3 +9,4 @@ export declare type Logger = {
 };
 export declare function createLogger(domain?: string): Logger;
 export {};
+//# sourceMappingURL=logger.d.ts.map

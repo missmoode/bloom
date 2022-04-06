@@ -7,3 +7,4 @@ export declare abstract class View {
 export declare type ViewConstructor<T extends View> = new (stage: Stage, opts: any | undefined) => T;
 export declare type DefaultViewConstructor<T extends View> = new (stage: Stage, opts: undefined) => T;
 export declare type ArgumentViewConstructor<T extends View> = new (stage: Stage, opts: any) => T;
+//# sourceMappingURL=view.d.ts.map

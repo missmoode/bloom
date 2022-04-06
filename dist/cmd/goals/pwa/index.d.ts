@@ -1,1 +1,2 @@
-export declare const PWA: import("../../tasks").TaskFunction<Promise<void>>;
+export declare const PWA: any;
+//# sourceMappingURL=index.d.ts.map

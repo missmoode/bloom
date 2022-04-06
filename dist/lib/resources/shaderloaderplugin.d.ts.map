@@ -1,0 +1,1 @@
+{"version":3,"file":"shaderloaderplugin.d.ts","sourceRoot":"","sources":["../../../src/lib/resources/shaderloaderplugin.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,cAAc,EAAE,aAAa,EAAE,MAAM,eAAe,CAAC;AAI9D,qBAAa,kBAAmB,YAAW,aAAa;IACtD,GAAG;IAOH,GAAG,CAAC,QAAQ,EAAE,cAAc,EAAE,IAAI,EAAE,MAAI,IAAI;CAiB7C"}

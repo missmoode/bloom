@@ -35,48 +35,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
 var commander_1 = require("commander");
 var config_1 = require("./config");
-var goals_1 = require("./goals");
-var rimraf_1 = require("rimraf");
-var logger_1 = require("./utils/logger");
+var path_1 = __importDefault(require("path"));
+var tasks_1 = require("./tasks");
 var packageFile = JSON.parse((0, fs_1.readFileSync)("".concat(__dirname, "/../../package.json")).toString('utf-8'));
+var config;
+if ((0, fs_1.existsSync)(path_1.default.join(process.cwd(), 'bloom.json'))) {
+    config = (0, config_1.populateConfiguration)(JSON.parse((0, fs_1.readFileSync)(path_1.default.join(process.cwd(), 'bloom.json')).toString('utf-8')));
+}
+else {
+    config = (0, config_1.populateConfiguration)({});
+}
 var main = commander_1.program
     .name(packageFile.name)
     .description(packageFile.description)
     .version(packageFile.version);
-var build = main.command('build')
+main.command('build')
     .description('Builds for web and PWA')
-    .option('--config <path>', 'configuration file to use', './bloomConfig.json')
-    .option('-c, --clean', 'delete the output directory before building')
-    .option('-p, --production', 'build without sourcemaps', false)
-    .option('-o, --out <path>', 'the directory to output to', 'web')
     .action(function (options) { return __awaiter(void 0, void 0, void 0, function () {
-    var config, l;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                config = (0, config_1.resolve)(options);
-                l = (0, logger_1.createLogger)('Clean');
-                if (options.clean && (0, fs_1.existsSync)(options.out)) {
-                    l.info('Cleaning last build...', '🧹');
-                    (0, rimraf_1.sync)(options.out);
-                    l.info('Done!', '✨');
-                }
-                l = (0, logger_1.createLogger)('Build');
-                l.info('Building as Progressive Web App...', '🌷');
-                return [4 /*yield*/, (0, goals_1.PWA)(l, config)];
+            case 0: return [4 /*yield*/, (0, tasks_1.run)(config, tasks_1.build)];
             case 1:
                 _a.sent();
-                l.info("Done! Output at \"".concat(config.out, "\"."), '🌸');
                 return [2 /*return*/];
         }
     });
 }); });
 commander_1.program.parse(process.argv);
 commander_1.program.exitOverride(function (err) {
-    console.log(err);
     process.exit(0);
 });

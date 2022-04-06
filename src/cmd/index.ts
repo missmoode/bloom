@@ -1,39 +1,31 @@
 import { existsSync, readFileSync } from 'fs';
 import { program } from 'commander';
-import { resolve as resolveConfig } from './config';
-import { PWA } from './goals';
-import { sync as rimraf } from 'rimraf';
-import { createLogger } from './utils/logger';
+import { Configuration, populateConfiguration } from './config';
+import path from 'path';
+import { run, build } from './tasks';
 
 const packageFile = JSON.parse(readFileSync(`${__dirname}/../../package.json`).toString('utf-8'));
+
+let config: Configuration;
+if (existsSync(path.join(process.cwd(), 'bloom.json'))) {
+  config = populateConfiguration(JSON.parse(readFileSync(path.join(process.cwd(), 'bloom.json')).toString('utf-8')));
+} else {
+  config = populateConfiguration({});
+}
+
 
 const main = program
   .name(packageFile.name)
   .description(packageFile.description)
   .version(packageFile.version);
 
-const build = main.command('build')
+main.command('build')
   .description('Builds for web and PWA')
-  .option('--config <path>', 'configuration file to use', './bloomConfig.json')
-  .option('-c, --clean', 'delete the output directory before building')
-  .option('-p, --production', 'build without sourcemaps', false)
-  .option('-o, --out <path>', 'the directory to output to', 'web')
   .action(async (options) => {
-    const config = resolveConfig(options);
-    let l = createLogger('Clean');
-    if (options.clean && existsSync(options.out)) {
-      l.info('Cleaning last build...', '🧹');
-      rimraf(options.out);
-      l.info('Done!', '✨');
-    }
-    l = createLogger('Build');
-    l.info('Building as Progressive Web App...', '🌷');
-    await PWA(l, config);
-    l.info(`Done! Output at "${config.out}".`, '🌸');
+    await run(config, build);
   });
-
+  
 program.parse(process.argv);
 program.exitOverride((err) => {
-  console.log(err);
   process.exit(0);
 });

@@ -16,3 +16,4 @@ export declare class Resources {
     static load(resourcefulObject: ResourceContainer): void;
     static unload(resourcefulObject: ResourceContainer): void;
 }
+//# sourceMappingURL=resources.d.ts.map
