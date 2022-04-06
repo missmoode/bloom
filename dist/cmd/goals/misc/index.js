@@ -15,4 +15,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./bundle"), exports);
-__exportStar(require("./assets"), exports);
+__exportStar(require("../../tasks/build/assets"), exports);

@@ -3,8 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.populateConfiguration = void 0;
+exports.GetCommandLineOption = exports.getDescription = exports.getValue = exports.setValue = exports.populateConfiguration = void 0;
+var assert_1 = __importDefault(require("assert"));
 var path_1 = __importDefault(require("path"));
+var commander_1 = require("commander");
 var optionSchema = {
     name: [path_1.default.basename(process.cwd()), 'The name of the game, used in the title bar and in the manifest'],
     presentation: {
@@ -18,7 +20,7 @@ var optionSchema = {
             resources: "".concat(path_1.default.resolve(process.cwd(), path_1.default.join(process.cwd(), 'src/resources/**/*'))),
         },
         bundle: {
-            main: ["".concat(path_1.default.join(process.cwd(), 'src/resources')), 'The name of the main bundle file'],
+            main: ["".concat(path_1.default.join(process.cwd(), 'src/resources')), 'The path of the main bundle file'],
             minify: [false, 'Whether to minify the bundle'],
             sourcemaps: [false, 'Whether to generate sourcemaps']
         }
@@ -60,3 +62,62 @@ function populateConfiguration(set) {
     return resolveConfiguration(set);
 }
 exports.populateConfiguration = populateConfiguration;
+function setValue(configuration, key, value) {
+    var parts = key.split('.');
+    var last = parts.pop();
+    var obj = parts.reduce(function (o, k) { return o[k]; }, configuration);
+    (0, assert_1.default)(last, "Invalid option key: ".concat(key));
+    obj[last] = value;
+}
+exports.setValue = setValue;
+function getValue(configuration, key) {
+    var parts = key.split('.');
+    var last = parts.pop();
+    var obj = parts.reduce(function (o, k) { return o[k]; }, configuration);
+    (0, assert_1.default)(last, "Invalid option key: ".concat(key));
+    return obj[last];
+}
+exports.getValue = getValue;
+function getDescription(key) {
+    var parts = key.split('.');
+    var last = parts.pop();
+    var obj = parts.reduce(function (o, k) { return o[k]; }, optionSchema);
+    (0, assert_1.default)(last, "Invalid option key: ".concat(key));
+    var value = obj[last];
+    if (value instanceof Array) {
+        return value[1];
+    }
+    else {
+        return undefined;
+    }
+}
+exports.getDescription = getDescription;
+// camelCase to dash-case
+function dashCase(str) {
+    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+function GetCommandLineOption(config, key, flags) {
+    if (flags === void 0) { flags = "--".concat(dashCase(key)); }
+    var previous = getValue(config, key);
+    return new commander_1.Option("".concat(flags).concat(typeof previous === 'string' ? ' <value>' : typeof previous === 'number' ? ' <number>' : ''), getDescription(key)).default(previous)
+        .argParser(function (value) {
+        if (typeof previous === 'string') {
+            return setValue(config, key, value);
+        }
+        else if (typeof previous === 'number') {
+            if (!isNaN(Number(value))) {
+                setValue(config, key, Number(value));
+            }
+            else {
+                throw new commander_1.InvalidOptionArgumentError("Invalid number: ".concat(value));
+            }
+        }
+        else if (typeof previous === 'boolean') {
+            setValue(config, key, true);
+        }
+        else {
+            throw new commander_1.InvalidOptionArgumentError("Invalid option type for ".concat(key, ": ").concat(typeof previous));
+        }
+    });
+}
+exports.GetCommandLineOption = GetCommandLineOption;

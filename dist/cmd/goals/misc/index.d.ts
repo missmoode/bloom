@@ -1,3 +1,3 @@
 export * from './bundle';
-export * from './assets';
+export * from '../../tasks/build/assets';
 //# sourceMappingURL=index.d.ts.map

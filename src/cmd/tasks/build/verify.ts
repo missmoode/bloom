@@ -4,7 +4,7 @@ import { Listr, ListrTaskWrapper } from 'listr2';
 import { Context, Platforms } from '../context';
 
 export const verify = {
-  title: 'Verify files',
+  title: 'Verify build settings',
   task: (context: Context, task: ListrTaskWrapper<Context, any>): Listr =>
     task.newListr((parent) => [
       {

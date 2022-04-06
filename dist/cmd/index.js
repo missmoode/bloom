@@ -44,6 +44,7 @@ var commander_1 = require("commander");
 var config_1 = require("./config");
 var path_1 = __importDefault(require("path"));
 var tasks_1 = require("./tasks");
+var context_1 = require("./tasks/context");
 var packageFile = JSON.parse((0, fs_1.readFileSync)("".concat(__dirname, "/../../package.json")).toString('utf-8'));
 var config;
 if ((0, fs_1.existsSync)(path_1.default.join(process.cwd(), 'bloom.json'))) {
@@ -57,14 +58,27 @@ var main = commander_1.program
     .description(packageFile.description)
     .version(packageFile.version);
 main.command('build')
-    .description('Builds for web and PWA')
+    .description('Builds the game and places it in the output directory.')
+    .addOption(new commander_1.Option('-p, --platform <platform>', 'Selects the platform to build for').choices(context_1.Platforms))
+    .addOption((0, config_1.GetCommandLineOption)(config, 'build.bundle.main', '-i --main'))
+    .addOption((0, config_1.GetCommandLineOption)(config, 'build.out', '-o --out'))
+    .addOption((0, config_1.GetCommandLineOption)(config, 'build.bundle.minify', '-m --minify'))
+    .addOption((0, config_1.GetCommandLineOption)(config, 'build.bundle.sourcemaps', '-s --sourcemaps'))
     .action(function (options) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, tasks_1.run)(config, tasks_1.build)];
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, (0, tasks_1.run)(config, options.platform, tasks_1.build)];
             case 1:
-                _a.sent();
-                return [2 /*return*/];
+                _b.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                _a = _b.sent();
+                process.exit(1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

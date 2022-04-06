@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from 'fs';
-import { program } from 'commander';
-import { Configuration, populateConfiguration } from './config';
+import { Option, program } from 'commander';
+import { Configuration, GetCommandLineOption, populateConfiguration } from './config';
 import path from 'path';
 import { run, build } from './tasks';
+import { Platforms } from './tasks/context';
 
 const packageFile = JSON.parse(readFileSync(`${__dirname}/../../package.json`).toString('utf-8'));
 
@@ -20,11 +21,21 @@ const main = program
   .version(packageFile.version);
 
 main.command('build')
-  .description('Builds for web and PWA')
+  .description('Builds the game and places it in the output directory.')
+  .addOption(new Option('-p, --platform <platform>', 'Selects the platform to build for').choices(Platforms))
+  .addOption(GetCommandLineOption(config, 'build.bundle.main', '-i --main'))
+  .addOption(GetCommandLineOption(config, 'build.out', '-o --out'))
+  .addOption(GetCommandLineOption(config, 'build.bundle.minify', '-m --minify'))
+  .addOption(GetCommandLineOption(config, 'build.bundle.sourcemaps', '-s --sourcemaps'))
   .action(async (options) => {
-    await run(config, build);
+    try {
+      await run(config, options.platform, build);
+    } catch{
+      console.log('Build failed.');
+      process.exit(1);
+    }
   });
-  
+
 program.parse(process.argv);
 program.exitOverride((err) => {
   process.exit(0);

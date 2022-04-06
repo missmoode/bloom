@@ -17,11 +17,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.run = void 0;
 var listr2_1 = require("listr2");
 __exportStar(require("./build"), exports);
-function run(config) {
+function run(config, platform) {
     var tasks = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        tasks[_i - 1] = arguments[_i];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        tasks[_i - 2] = arguments[_i];
     }
-    return new listr2_1.Listr(tasks).run({ config: config });
+    return new listr2_1.Listr(tasks).run({ config: config, platform: platform });
 }
 exports.run = run;

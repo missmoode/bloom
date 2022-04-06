@@ -50,7 +50,7 @@ var fs_1 = require("fs");
 var promises_1 = require("fs/promises");
 var context_1 = require("../context");
 exports.verify = {
-    title: 'Verify files',
+    title: 'Verify build settings',
     task: function (context, task) {
         return task.newListr(function (parent) { return [
             {

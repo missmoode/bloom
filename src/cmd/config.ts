@@ -1,4 +1,6 @@
+import assert from 'assert';
 import path from 'path';
+import { InvalidOptionArgumentError, Option as CMDROption } from 'commander';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Dict<T = any> = { [key: string]: T };
@@ -44,7 +46,7 @@ const optionSchema = {
       resources: `${path.resolve(process.cwd(), path.join(process.cwd(), 'src/resources/**/*'))}`,
     },
     bundle: {
-      main: [`${path.join(process.cwd(), 'src/resources')}`, 'The name of the main bundle file'] as DescribedOption,
+      main: [`${path.join(process.cwd(), 'src/resources')}`, 'The path of the main bundle file'] as DescribedOption,
       minify: [ false, 'Whether to minify the bundle'] as DescribedOption,
       sourcemaps: [ false, 'Whether to generate sourcemaps'] as DescribedOption
     }
@@ -54,19 +56,19 @@ const optionSchema = {
 export type Configuration = OptionsInferredFromDefaults<typeof optionSchema>;
 
 // Based on this snippet from stackoverflow: https://stackoverflow.com/a/66661477
-type SectionPathOf<T> = '' | (
+type DeepestPropertiesOf<T> = (
   [T] extends [never] ? '' :
   T extends object ? (
     { [K in Exclude<keyof T, symbol>]:
-      T[K] extends ValueType ? '' :
-      `${K}${DotPrefix<SectionPathOf<T[K]>>}` }[
+      T[K] extends ValueType ? K :
+      `${DotPrefix<K, DeepestPropertiesOf<T[K]>>}` }[
     Exclude<keyof T, symbol>] 
   ) : ''
 ) extends infer D ? Extract<D, string> : never;
 
-type DotPrefix<T extends string> = T extends '' ? '' : `.${T}`
+type DotPrefix<K, T extends string> = K extends string | number | bigint | boolean | null | undefined ? T extends '' ? '' : `${K}.${T}` : ''
 
-type OptionKey = SectionPathOf<Configuration>;
+type OptionKey = DeepestPropertiesOf<Configuration>;
 
 function resolveConfiguration(set: any, defaults: any = optionSchema, resolutions?: ((opts: Configuration) => void)[]): any {
   const root = !resolutions;
@@ -95,4 +97,61 @@ function resolveConfiguration(set: any, defaults: any = optionSchema, resolution
 
 export function populateConfiguration(set: Partial<Configuration>) {
   return resolveConfiguration(set);
+}
+
+export function setValue(configuration: Configuration, key: OptionKey, value: ValueType) {
+  const parts = key.split('.');
+  const last = parts.pop();
+  const obj: Dict = parts.reduce((o, k) => o[k], configuration as Dict);
+  assert(last, `Invalid option key: ${key}`);
+  obj[last] = value;
+}
+
+export function getValue(configuration: Configuration, key: OptionKey): ValueType {
+  const parts = key.split('.');
+  const last = parts.pop();
+  const obj: Dict = parts.reduce((o, k) => o[k], configuration as Dict);
+  assert(last, `Invalid option key: ${key}`);
+  return obj[last];
+}
+
+export function getDescription(key: OptionKey): string | undefined {
+  const parts = key.split('.');
+  const last = parts.pop();
+  const obj: OptionDefaults = parts.reduce((o, k) => o[k], optionSchema as Dict);
+  assert(last, `Invalid option key: ${key}`);
+  const value = obj[last];
+  if (value instanceof Array) {
+    return value[1];
+  } else {
+    return undefined;
+  }
+}
+
+// camelCase to dash-case
+function dashCase(str: string) {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+export function GetCommandLineOption(config: Configuration, key: OptionKey, flags = `--${dashCase(key)}`): CMDROption {
+  const previous: ValueType = getValue(config, key);
+  return new CMDROption(
+    `${flags}${typeof previous === 'string' ? ' <value>' : typeof previous === 'number' ? ' <number>' : ''}`,
+    getDescription(key)
+  ).default(previous)
+    .argParser((value: string) => {
+      if (typeof previous === 'string') {
+        return setValue(config, key, value);
+      } else if (typeof previous === 'number') {
+        if (!isNaN(Number(value))) {
+          setValue(config, key, Number(value));
+        } else {
+          throw new InvalidOptionArgumentError(`Invalid number: ${value}`);
+        }
+      } else if (typeof previous === 'boolean') {
+        setValue(config, key, true);
+      } else {
+        throw new InvalidOptionArgumentError(`Invalid option type for ${key}: ${typeof previous}`);
+      }
+    });
 }
