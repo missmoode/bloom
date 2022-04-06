@@ -76,6 +76,7 @@ main.command('build')
                 return [3 /*break*/, 3];
             case 2:
                 _a = _b.sent();
+                console.log('Build failed.');
                 process.exit(1);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

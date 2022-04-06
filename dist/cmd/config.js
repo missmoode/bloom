@@ -20,7 +20,7 @@ var optionSchema = {
             resources: "".concat(path_1.default.resolve(process.cwd(), path_1.default.join(process.cwd(), 'src/resources/**/*'))),
         },
         bundle: {
-            main: ["".concat(path_1.default.join(process.cwd(), 'src/resources')), 'The path of the main bundle file'],
+            main: ["".concat(path_1.default.join(process.cwd(), 'src/app/app.ts')), 'The path of the main bundle file'],
             minify: [false, 'Whether to minify the bundle'],
             sourcemaps: [false, 'Whether to generate sourcemaps']
         }

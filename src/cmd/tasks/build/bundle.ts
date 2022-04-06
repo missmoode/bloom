@@ -21,16 +21,19 @@ export const bundle = {
       sourcemaps: context.config.build.bundle.sourcemaps ? context.config.build.bundle.main : undefined
     };
   
+    let count = 0;
+
     let bundle = rollup({
       input: context.config.build.bundle.main as string,
       plugins: [
-        resolve({ preferBuiltins: false, extensions: ['.ts', '.js'] }), 
+        resolve({ preferBuiltins: false, extensions: ['.json', '.ts', '.js'] }), 
         commonjs(), 
         babel(babelConf as RollupBabelInputPluginOptions),
         {
           name: 'listr-output',
+
           transform(code, id) {
-            task.output = `Bundling ${id}...`;
+            task.output = `Rolled up ${++count} files`;
             return code;
           }
         }

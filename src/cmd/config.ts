@@ -46,7 +46,7 @@ const optionSchema = {
       resources: `${path.resolve(process.cwd(), path.join(process.cwd(), 'src/resources/**/*'))}`,
     },
     bundle: {
-      main: [`${path.join(process.cwd(), 'src/resources')}`, 'The path of the main bundle file'] as DescribedOption,
+      main: [`${path.join(process.cwd(), 'src/app/app.ts')}`, 'The path of the main bundle file'] as DescribedOption,
       minify: [ false, 'Whether to minify the bundle'] as DescribedOption,
       sourcemaps: [ false, 'Whether to generate sourcemaps'] as DescribedOption
     }
