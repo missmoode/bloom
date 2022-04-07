@@ -18,7 +18,6 @@ export const bundle = {
       extensions: ['.ts', '.js', '.json'],
       presets: ['@babel/preset-typescript', '@babel/preset-env'].map(require),
       babelHelpers: 'bundled',
-      sourcemaps: context.config.build.bundle.sourcemaps ? context.config.build.bundle.main : undefined
     };
   
     let count = 0;

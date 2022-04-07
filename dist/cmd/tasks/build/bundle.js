@@ -11,7 +11,6 @@ var vinyl_source_stream_1 = __importDefault(require("vinyl-source-stream"));
 var vinyl_buffer_1 = __importDefault(require("vinyl-buffer"));
 var path_1 = __importDefault(require("path"));
 var gulp_terser_1 = __importDefault(require("gulp-terser"));
-var plugin_node_resolve_1 = __importDefault(require("@rollup/plugin-node-resolve"));
 var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
 var context_1 = require("../context");
 exports.bundle = {
@@ -21,15 +20,20 @@ exports.bundle = {
             extensions: ['.ts', '.js', '.json'],
             presets: ['@babel/preset-typescript', '@babel/preset-env'].map(require),
             babelHelpers: 'bundled',
-            sourcemaps: context.config.build.bundle.sourcemaps ? context.config.build.bundle.main : undefined
         };
         var count = 0;
         var bundle = (0, stream_1.default)({
             input: context.config.build.bundle.main,
             plugins: [
-                (0, plugin_node_resolve_1.default)({ preferBuiltins: false, extensions: ['.json', '.ts', '.js'] }),
                 (0, plugin_commonjs_1.default)(),
-                (0, plugin_babel_1.default)(babelConf)
+                (0, plugin_babel_1.default)(babelConf),
+                {
+                    name: 'listr-output',
+                    transform: function (code, id) {
+                        task.output = "[".concat(++count, "] ").concat(id);
+                        return code;
+                    }
+                }
             ],
             output: {
                 sourcemap: context.config.build.bundle.sourcemaps === true,

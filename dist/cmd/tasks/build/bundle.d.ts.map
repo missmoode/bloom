@@ -1,1 +1,1 @@
-{"version":3,"file":"bundle.d.ts","sourceRoot":"","sources":["../../../../src/cmd/tasks/build/bundle.ts"],"names":[],"mappings":"AASA,OAAO,EAAE,gBAAgB,EAAE,MAAM,QAAQ,CAAC;AAC1C,OAAO,EAAE,OAAO,EAAc,MAAM,YAAY,CAAC;AAEjD,eAAO,MAAM,MAAM;;oBAED,OAAO,QAAQ,iBAAiB,OAAO,EAAE,GAAG,CAAC;CAkC9D,CAAC"}
+{"version":3,"file":"bundle.d.ts","sourceRoot":"","sources":["../../../../src/cmd/tasks/build/bundle.ts"],"names":[],"mappings":"AAQA,OAAO,EAAE,gBAAgB,EAAE,MAAM,QAAQ,CAAC;AAC1C,OAAO,EAAE,OAAO,EAAc,MAAM,YAAY,CAAC;AAEjD,eAAO,MAAM,MAAM;;oBAED,OAAO,QAAQ,iBAAiB,OAAO,EAAE,GAAG,CAAC;CAwC9D,CAAC"}
