@@ -29,14 +29,7 @@ exports.bundle = {
             plugins: [
                 (0, plugin_node_resolve_1.default)({ preferBuiltins: false, extensions: ['.json', '.ts', '.js'] }),
                 (0, plugin_commonjs_1.default)(),
-                (0, plugin_babel_1.default)(babelConf),
-                {
-                    name: 'listr-output',
-                    transform: function (code, id) {
-                        task.output = "Rolled up ".concat(++count, " files");
-                        return code;
-                    }
-                }
+                (0, plugin_babel_1.default)(babelConf)
             ],
             output: {
                 sourcemap: context.config.build.bundle.sourcemaps === true,

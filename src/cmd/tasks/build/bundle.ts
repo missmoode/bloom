@@ -33,7 +33,7 @@ export const bundle = {
           name: 'listr-output',
 
           transform(code, id) {
-            task.output = `Rolled up ${++count} files`;
+            task.output = `[${++count}] ${id}`;
             return code;
           }
         }
