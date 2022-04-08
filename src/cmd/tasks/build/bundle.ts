@@ -28,7 +28,7 @@ export const bundle = {
     let bundle = rollup({
       input: context.config.build.bundle.main as string,
       plugins: [
-        resolve({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }), 
+        resolve({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'], moduleDirectories: ['node_modules'] }), 
         json(),
         commonjs(), 
         babel(babelConf as RollupBabelInputPluginOptions),
@@ -44,7 +44,6 @@ export const bundle = {
       onwarn(warning) {
         task.stdout().write(warning.message + '\n');
       },
-      external: [ 'fs' ],
       output: {
         minifyInternalExports: false,
         sourcemap: context.config.build.bundle.sourcemaps === true,
