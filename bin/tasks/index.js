@@ -13,11 +13,15 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.run = void 0;
-const listr2_1 = require("listr2");
+var listr2_1 = require("listr2");
 __exportStar(require("./build"), exports);
-function run(config, platform, ...tasks) {
-    return new listr2_1.Listr(tasks, { rendererOptions: { showTimer: true } }).run({ config, platform });
+function run(config, platform) {
+    var tasks = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        tasks[_i - 2] = arguments[_i];
+    }
+    return new listr2_1.Listr(tasks, { rendererOptions: { showTimer: true } }).run({ config: config, platform: platform });
 }
 exports.run = run;

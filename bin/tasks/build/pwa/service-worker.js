@@ -1,6 +1,6 @@
 
-const CACHE_NAME = '/*{{ cache_name }}*/';
-const toCache = '/*{{ cache }}*/;';
+const CACHE_NAME = '{{ cache_name }}';
+const toCache = '{{ cache }}';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(

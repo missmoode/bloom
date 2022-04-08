@@ -1,10 +1,10 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.stageFiles = exports.Platforms = void 0;
-const vinyl_fs_1 = require("vinyl-fs");
+var vinyl_fs_1 = require("vinyl-fs");
 exports.Platforms = ['web', 'pwa'];
 function stageFiles(context, vinylStream) {
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
         var _a;
         vinylStream.on('end', resolve);
         vinylStream.on('error', reject);

@@ -18,7 +18,7 @@ export const bundle = {
 
     const babelConf = {
       extensions: ['.ts', '.js'],
-      presets: [require('@babel/preset-typescript'), [require('@babel/preset-env'), { loose: true, modules: 'auto' }]],
+      presets: [require('@babel/preset-typescript'), [require('@babel/preset-env')]],
       babelrc: false,
       babelHelpers: 'bundled',
     };

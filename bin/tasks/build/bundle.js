@@ -2,61 +2,61 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.bundle = void 0;
-const stream_1 = __importDefault(require("@rollup/stream"));
-const plugin_babel_1 = __importDefault(require("@rollup/plugin-babel"));
-const plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
-const vinyl_source_stream_1 = __importDefault(require("vinyl-source-stream"));
-const vinyl_buffer_1 = __importDefault(require("vinyl-buffer"));
-const path_1 = __importDefault(require("path"));
-const gulp_terser_1 = __importDefault(require("gulp-terser"));
-const plugin_node_resolve_1 = __importDefault(require("@rollup/plugin-node-resolve"));
-const plugin_json_1 = __importDefault(require("@rollup/plugin-json"));
-const gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
-const context_1 = require("../context");
+var stream_1 = __importDefault(require("@rollup/stream"));
+var plugin_babel_1 = __importDefault(require("@rollup/plugin-babel"));
+var plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
+var vinyl_source_stream_1 = __importDefault(require("vinyl-source-stream"));
+var vinyl_buffer_1 = __importDefault(require("vinyl-buffer"));
+var path_1 = __importDefault(require("path"));
+var gulp_terser_1 = __importDefault(require("gulp-terser"));
+var plugin_node_resolve_1 = __importDefault(require("@rollup/plugin-node-resolve"));
+var plugin_json_1 = __importDefault(require("@rollup/plugin-json"));
+var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
+var context_1 = require("../context");
 exports.bundle = {
     title: 'Bundle',
-    task: (context, task) => {
-        const babelConf = {
+    task: function (context, task) {
+        var babelConf = {
             extensions: ['.ts', '.js'],
-            presets: [require('@babel/preset-typescript'), [require('@babel/preset-env'), { loose: true, modules: 'auto' }]],
+            presets: [require('@babel/preset-typescript'), [require('@babel/preset-env')]],
             babelrc: false,
-            babelHelpers: 'bundled',
+            babelHelpers: 'bundled'
         };
-        let count = 0;
-        let bundle = (0, stream_1.default)({
+        var count = 0;
+        var bundle = (0, stream_1["default"])({
             input: context.config.build.bundle.main,
             plugins: [
-                (0, plugin_node_resolve_1.default)({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }),
-                (0, plugin_json_1.default)(),
-                (0, plugin_commonjs_1.default)(),
-                (0, plugin_babel_1.default)(babelConf),
+                (0, plugin_node_resolve_1["default"])({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }),
+                (0, plugin_json_1["default"])(),
+                (0, plugin_commonjs_1["default"])(),
+                (0, plugin_babel_1["default"])(babelConf),
                 {
                     name: 'listr-output',
-                    transform(code, id) {
-                        task.title = `Bundle (${++count} files)`;
-                        return { code, map: null };
+                    transform: function (code, id) {
+                        task.title = "Bundle (".concat(++count, " files)");
+                        return { code: code, map: null };
                     }
                 }
             ],
-            onwarn(warning) {
+            onwarn: function (warning) {
                 task.stdout().write(warning.message + '\n');
             },
             external: ['fs'],
             output: {
                 minifyInternalExports: false,
                 sourcemap: context.config.build.bundle.sourcemaps === true,
-                format: 'iife',
+                format: 'iife'
             }
-        }).pipe((0, vinyl_source_stream_1.default)('bundle.js'))
-            .pipe((0, vinyl_buffer_1.default)());
+        }).pipe((0, vinyl_source_stream_1["default"])('bundle.js'))
+            .pipe((0, vinyl_buffer_1["default"])());
         if (context.config.build.bundle.sourcemaps === true)
-            bundle = bundle.pipe(gulp_sourcemaps_1.default.init({ loadMaps: true }));
+            bundle = bundle.pipe(gulp_sourcemaps_1["default"].init({ loadMaps: true }));
         if (context.config.build.bundle.minify === true)
-            bundle = bundle.pipe((0, gulp_terser_1.default)({ output: { comments: false }, compress: true, mangle: true }));
+            bundle = bundle.pipe((0, gulp_terser_1["default"])({ output: { comments: false }, compress: true, mangle: true }));
         if (context.config.build.bundle.sourcemaps === true)
-            bundle = bundle.pipe(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(context.config.build.out, path_1.default.dirname(context.config.build.bundle.main)) }));
+            bundle = bundle.pipe(gulp_sourcemaps_1["default"].write('.', { sourceRoot: path_1["default"].relative(context.config.build.out, path_1["default"].dirname(context.config.build.bundle.main)) }));
         return (0, context_1.stageFiles)(context, bundle);
     },
     options: { persistentOutput: true, bottomBar: Infinity }

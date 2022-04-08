@@ -1,1 +1,0 @@
-{"version":3,"file":"verify.d.ts","sourceRoot":"","sources":["../../../src/cmd/tasks/build/verify.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,KAAK,EAAE,gBAAgB,EAAE,MAAM,QAAQ,CAAC;AACjD,OAAO,EAAE,OAAO,EAAa,MAAM,YAAY,CAAC;AAEhD,eAAO,MAAM,MAAM;;oBAED,OAAO,QAAQ,iBAAiB,OAAO,EAAE,GAAG,CAAC,KAAG,KAAK;CA6BtE,CAAC"}
