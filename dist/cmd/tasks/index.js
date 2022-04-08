@@ -22,6 +22,6 @@ function run(config, platform) {
     for (var _i = 2; _i < arguments.length; _i++) {
         tasks[_i - 2] = arguments[_i];
     }
-    return new listr2_1.Listr(tasks).run({ config: config, platform: platform });
+    return new listr2_1.Listr(tasks, { rendererOptions: { showTimer: true } }).run({ config: config, platform: platform });
 }
 exports.run = run;

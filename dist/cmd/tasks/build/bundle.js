@@ -11,33 +11,44 @@ var vinyl_source_stream_1 = __importDefault(require("vinyl-source-stream"));
 var vinyl_buffer_1 = __importDefault(require("vinyl-buffer"));
 var path_1 = __importDefault(require("path"));
 var gulp_terser_1 = __importDefault(require("gulp-terser"));
+var plugin_node_resolve_1 = __importDefault(require("@rollup/plugin-node-resolve"));
+var plugin_json_1 = __importDefault(require("@rollup/plugin-json"));
 var gulp_sourcemaps_1 = __importDefault(require("gulp-sourcemaps"));
 var context_1 = require("../context");
 exports.bundle = {
     title: 'Bundle',
     task: function (context, task) {
         var babelConf = {
-            extensions: ['.ts', '.js', '.json'],
+            extensions: ['.ts', '.js'],
             presets: ['@babel/preset-typescript', '@babel/preset-env'].map(require),
+            babelrc: false,
             babelHelpers: 'bundled',
         };
         var count = 0;
+        var warnings = 0;
         var bundle = (0, stream_1.default)({
             input: context.config.build.bundle.main,
             plugins: [
+                (0, plugin_node_resolve_1.default)({ preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }),
+                (0, plugin_json_1.default)(),
                 (0, plugin_commonjs_1.default)(),
                 (0, plugin_babel_1.default)(babelConf),
                 {
                     name: 'listr-output',
                     transform: function (code, id) {
-                        task.output = "[".concat(++count, "] ").concat(id);
+                        task.output = "[".concat(++count).concat(warnings > 0 ? " (".concat(warnings, ")") : '', "] ").concat(id);
                         return code;
                     }
                 }
             ],
+            onwarn: function (warning) {
+                warnings++;
+                task.stdout().write(warning.message);
+            },
+            external: ['fs'],
             output: {
                 sourcemap: context.config.build.bundle.sourcemaps === true,
-                format: 'umd'
+                format: 'umd',
             }
         }).pipe((0, vinyl_source_stream_1.default)('bundle.js'))
             .pipe((0, vinyl_buffer_1.default)());
