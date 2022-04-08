@@ -85,8 +85,8 @@ function mapFilesRecursive(base) {
 exports.copyHTML = {
     title: 'Drop in HTML template (PWA)',
     task: function (context, task) {
-        var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1["default"].sep, "service-worker.js"))
-            .pipe((0, gulp_template_1["default"])({ title: context.config.name, favicon: './favicon.png', touch_icon: './touch-icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /\{\{([\s\S]+?)\}\}/gs }));
+        var html = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1["default"].sep, "index.html"))
+            .pipe((0, gulp_template_1["default"])({ title: context.config.name, favicon: './favicon.png', touch_icon: './touch-icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
         return (0, context_1.stageFiles)(context, html);
     },
     enabled: function (context) { return context.platform === 'pwa'; }
@@ -95,7 +95,7 @@ exports.copyServiceWorker = {
     title: 'Drop in Service Worker template (PWA)',
     task: function (context, task) {
         var sw = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1["default"].sep, "service-worker.js"))
-            .pipe((0, gulp_template_1["default"])({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out)), cache_name: "\"".concat(Date.now(), "\"") }, { interpolate: /\'\{\{([\s\S]+?)\}\}\'/gs }));
+            .pipe((0, gulp_template_1["default"])({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out)), cache_name: "3" }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
         return (0, context_1.stageFiles)(context, sw);
     },
     enabled: function (context) { return context.platform === 'pwa'; }

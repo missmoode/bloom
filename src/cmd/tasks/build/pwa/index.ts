@@ -84,8 +84,8 @@ function mapFilesRecursive(base: string): string[] {
 export const copyHTML = {
   title: 'Drop in HTML template (PWA)',
   task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
-    const html = src(`${__dirname}${path.sep}service-worker.js`)
-      .pipe(template({ title: context.config.name, favicon: './favicon.png', touch_icon: './touch-icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /\{\{([\s\S]+?)\}\}/gs }));
+    const html = src(`${__dirname}${path.sep}index.html`)
+      .pipe(template({ title: context.config.name, favicon: './favicon.png', touch_icon: './touch-icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
 
     return stageFiles(context, html);
   },
@@ -96,7 +96,7 @@ export const copyServiceWorker = {
   title: 'Drop in Service Worker template (PWA)',
   task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
     const sw = src(`${__dirname}${path.sep}service-worker.js`)
-      .pipe(template({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out as string)), cache_name: `"${Date.now()}"` }, { interpolate: /\'\{\{([\s\S]+?)\}\}\'/gs }));
+      .pipe(template({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out as string)), cache_name: '3' }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
 
     return stageFiles(context, sw);
   },
