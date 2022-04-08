@@ -2,19 +2,20 @@
   "compilerOptions": {
     "lib": [
       "DOM",
-      "ES2015"
+      "ES6"
     ],
-    "target": "es5",
-    "module": "commonjs",
+    "target": "es6",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "declaration": true,
-    "outDir": "./dist",
+    "outDir": "./bin",
     "strict": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "rootDir": "./src/cmd",
   },
   "include": [
-    "src/**/*.ts"
+    "src/cmd/**/*.ts"
   ],
 }

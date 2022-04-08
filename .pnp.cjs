@@ -83,6 +83,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["merge2", "npm:1.4.1"],\
             ["rimraf", "npm:3.0.2"],\
             ["rollup", "npm:2.70.1"],\
+            ["rollup-plugin-polyfill-node", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:0.9.0"],\
             ["typescript", "patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"],\
             ["typescript-eslint", "npm:0.0.1-alpha.0"],\
             ["vinyl", "npm:2.2.1"],\
@@ -2712,6 +2713,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@rollup/plugin-inject", [\
+        ["npm:4.0.4", {\
+          "packageLocation": "../../../.yarn/berry/cache/@rollup-plugin-inject-npm-4.0.4-8e9f28eef1-8.zip/node_modules/@rollup/plugin-inject/",\
+          "packageDependencies": [\
+            ["@rollup/plugin-inject", "npm:4.0.4"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:6e9dce11e5c5b6874f9dba2103ba1c51b788e1d4e96efa4e5823a97cd9ba9779d9870cdab5f38654595df2e70c725f3ff3ee39a536459e643cca299c5eb1f2a0#npm:4.0.4", {\
+          "packageLocation": "./.yarn/__virtual__/@rollup-plugin-inject-virtual-ce984b92d0/4/.yarn/berry/cache/@rollup-plugin-inject-npm-4.0.4-8e9f28eef1-8.zip/node_modules/@rollup/plugin-inject/",\
+          "packageDependencies": [\
+            ["@rollup/plugin-inject", "virtual:6e9dce11e5c5b6874f9dba2103ba1c51b788e1d4e96efa4e5823a97cd9ba9779d9870cdab5f38654595df2e70c725f3ff3ee39a536459e643cca299c5eb1f2a0#npm:4.0.4"],\
+            ["@rollup/pluginutils", "virtual:2265f56f8c2fcf0a02168c3a939de510086e83f7ae80a0d82e5a53a6bf1a6722b4ebcffef847dbee8ce6a96f95d54ef850ca680820c59560a69a9082532fe904#npm:3.1.0"],\
+            ["@types/rollup", null],\
+            ["estree-walker", "npm:2.0.2"],\
+            ["magic-string", "npm:0.25.9"],\
+            ["rollup", "npm:2.70.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/rollup",\
+            "rollup"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@rollup/plugin-json", [\
         ["npm:4.1.0", {\
           "packageLocation": "../../../.yarn/berry/cache/@rollup-plugin-json-npm-4.1.0-c932de6f49-8.zip/node_modules/@rollup/plugin-json/",\
@@ -3786,6 +3812,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["merge2", "npm:1.4.1"],\
             ["rimraf", "npm:3.0.2"],\
             ["rollup", "npm:2.70.1"],\
+            ["rollup-plugin-polyfill-node", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:0.9.0"],\
             ["typescript", "patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"],\
             ["typescript-eslint", "npm:0.0.1-alpha.0"],\
             ["vinyl", "npm:2.2.1"],\
@@ -6618,6 +6645,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["rollup", "npm:2.70.1"],\
             ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["rollup-plugin-polyfill-node", [\
+        ["npm:0.9.0", {\
+          "packageLocation": "../../../.yarn/berry/cache/rollup-plugin-polyfill-node-npm-0.9.0-857fa37c3a-8.zip/node_modules/rollup-plugin-polyfill-node/",\
+          "packageDependencies": [\
+            ["rollup-plugin-polyfill-node", "npm:0.9.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:0.9.0", {\
+          "packageLocation": "./.yarn/__virtual__/rollup-plugin-polyfill-node-virtual-6e9dce11e5/4/.yarn/berry/cache/rollup-plugin-polyfill-node-npm-0.9.0-857fa37c3a-8.zip/node_modules/rollup-plugin-polyfill-node/",\
+          "packageDependencies": [\
+            ["rollup-plugin-polyfill-node", "virtual:94da2977de1030ff3b75d307d3a1d89c1609cff81e8e3f58038d78564bad2068c3113b00cd523c51e42a0c925dc28b3194de9f4511e8cfc7300da84ef5c6cd39#npm:0.9.0"],\
+            ["@rollup/plugin-inject", "virtual:6e9dce11e5c5b6874f9dba2103ba1c51b788e1d4e96efa4e5823a97cd9ba9779d9870cdab5f38654595df2e70c725f3ff3ee39a536459e643cca299c5eb1f2a0#npm:4.0.4"],\
+            ["@types/rollup", null],\
+            ["rollup", "npm:2.70.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/rollup",\
+            "rollup"\
           ],\
           "linkType": "HARD"\
         }]\

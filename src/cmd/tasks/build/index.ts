@@ -2,6 +2,7 @@ import { Listr, ListrTaskWrapper } from 'listr2';
 import { Context } from '../context';
 import { prepareAssets } from './assets';
 import { bundle } from './bundle';
+import * as pwa from './pwa';
 import { verify } from './verify';
 
 export { bundle } from './bundle';
@@ -15,8 +16,11 @@ export const build = {
       {
         task: (context: Context, task: ListrTaskWrapper<Context, any>) => task.newListr([
           bundle,
-          prepareAssets
-        ], { concurrent: true })
+          prepareAssets,
+          pwa.generateWebManifest,
+          pwa.copyHTML,
+          pwa.copyServiceWorker
+        ], { concurrent: false })
       }
     ], { concurrent: false })
 };

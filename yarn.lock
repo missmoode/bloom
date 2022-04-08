@@ -1549,6 +1549,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/plugin-inject@npm:^4.0.0":
+  version: 4.0.4
+  resolution: "@rollup/plugin-inject@npm:4.0.4"
+  dependencies:
+    "@rollup/pluginutils": ^3.1.0
+    estree-walker: ^2.0.1
+    magic-string: ^0.25.7
+  peerDependencies:
+    rollup: ^1.20.0 || ^2.0.0
+  checksum: 22a1847372a96296a5b176af3d5b23ac7b48143a32c77ec4efed38daf4b0d1399a3cd144496d65731299984c5f98c9e00dc6a7f53d0fe87bd4aab2d4bd7b8289
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-json@npm:^4.1.0":
   version: 4.1.0
   resolution: "@rollup/plugin-json@npm:4.1.0"
@@ -2358,6 +2371,7 @@ __metadata:
     merge2: ^1.4.1
     rimraf: ^3.0.2
     rollup: ^2.70.1
+    rollup-plugin-polyfill-node: ^0.9.0
     typescript: ^4.6.3
     typescript-eslint: ^0.0.1-alpha.0
     vinyl: ^2.2.1
@@ -4824,6 +4838,17 @@ __metadata:
   bin:
     rimraf: bin.js
   checksum: 87f4164e396f0171b0a3386cc1877a817f572148ee13a7e113b238e48e8a9f2f31d009a92ec38a591ff1567d9662c6b67fd8818a2dbbaed74bc26a87a2a4a9a0
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-polyfill-node@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "rollup-plugin-polyfill-node@npm:0.9.0"
+  dependencies:
+    "@rollup/plugin-inject": ^4.0.0
+  peerDependencies:
+    rollup: ^1.20.0 || ^2.0.0
+  checksum: a7531a850cf5c8a8d8705aacdad449c14f25368d98cf1f06f22b5f300fde45ac9b1eda533d61e7377366b3ce4ade2075b2deb7c55b9f823d9e609d1d6c23d925
   languageName: node
   linkType: hard
 

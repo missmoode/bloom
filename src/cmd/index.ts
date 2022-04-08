@@ -5,7 +5,7 @@ import path from 'path';
 import { run, build } from './tasks';
 import { Platforms } from './tasks/context';
 
-const packageFile = JSON.parse(readFileSync(`${__dirname}/../../package.json`).toString('utf-8'));
+const packageFile = JSON.parse(readFileSync(`${__dirname}/../package.json`).toString('utf-8'));
 
 let config: Configuration;
 if (existsSync(path.join(process.cwd(), 'bloom.json'))) {

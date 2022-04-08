@@ -11,24 +11,24 @@ import sourcemaps from 'gulp-sourcemaps';
 import { ListrTaskWrapper } from 'listr2';
 import { Context, stageFiles } from '../context';
 
+
 export const bundle = {
   title: 'Bundle',
   task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
 
     const babelConf = {
       extensions: ['.ts', '.js'],
-      presets: ['@babel/preset-typescript', '@babel/preset-env'].map(require),
+      presets: [require('@babel/preset-typescript'), [require('@babel/preset-env'), { loose: true, modules: 'auto' }]],
       babelrc: false,
       babelHelpers: 'bundled',
     };
   
     let count = 0;
-    let warnings = 0;
 
     let bundle = rollup({
       input: context.config.build.bundle.main as string,
       plugins: [
-        resolve({ preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }), 
+        resolve({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'] }), 
         json(),
         commonjs(), 
         babel(babelConf as RollupBabelInputPluginOptions),
@@ -36,19 +36,19 @@ export const bundle = {
           name: 'listr-output',
 
           transform(code, id) {
-            task.output = `[${++count}${warnings > 0 ? ` (${warnings})` : ''}] ${id}`;
-            return code;
+            task.title = `Bundle (${++count} files)`;
+            return { code, map: null };
           }
         }
       ],
       onwarn(warning) {
-        warnings++;
-        task.stdout().write(warning.message);
+        task.stdout().write(warning.message + '\n');
       },
       external: [ 'fs' ],
       output: {
+        minifyInternalExports: false,
         sourcemap: context.config.build.bundle.sourcemaps === true,
-        format: 'umd',
+        format: 'iife',
       }
     }).pipe(source('bundle.js'))
       .pipe(buffer());
@@ -61,5 +61,6 @@ export const bundle = {
       bundle = bundle.pipe(sourcemaps.write('.', { sourceRoot: path.relative(context.config.build.out as string, path.dirname(context.config.build.bundle.main as string)) }));
   
     return stageFiles(context, bundle);
-  }
+  },
+  options: { persistentOutput: true, bottomBar: Infinity }
 };
