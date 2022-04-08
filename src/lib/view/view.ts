@@ -7,7 +7,7 @@ export abstract class View {
   }
   
   /**
-   * Runs after construction but before the stage is added to the display hierarchy.
+   * Runs after the stage is added to the display hierarchy.
    */
   public open?(): void;
   /**
