@@ -9,7 +9,7 @@ import { Logger } from '../../utils/logger';
 import { sequence, task } from '../../tasks';
 import { Bundle, GenerateFavicon, ProcureAppIcon } from '../misc';
 import { CopyAssets } from '../misc';
-import { WebManifest } from './webmanifest';
+import { WebManifest } from '../../tasks/build/pwa/webmanifest';
 
 function list(directory: string): string[] {
   const files = readdirSync(directory);
