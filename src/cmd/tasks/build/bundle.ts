@@ -36,7 +36,7 @@ export const bundle = {
           name: 'listr-output',
 
           transform(code, id) {
-            task.title = `Bundle (${++count} files)`;
+            task.output = `Bundle (${++count} files)`;
             return { code, map: null };
           }
         }

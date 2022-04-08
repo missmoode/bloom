@@ -85,7 +85,7 @@ export const copyHTML = {
   title: 'Drop in HTML template (PWA)',
   task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
     const html = src(`${__dirname}${path.sep}index.html`)
-      .pipe(template({ title: context.config.name, favicon: './favicon.png', touch_icon: './touch-icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
+      .pipe(template({ title: context.config.name, favicon: './app_icon.png', touch_icon: './app_icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
 
     return stageFiles(context, html);
   },
