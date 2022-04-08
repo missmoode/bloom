@@ -95,7 +95,7 @@ exports.copyServiceWorker = {
     title: 'Drop in Service Worker template (PWA)',
     task: function (context, task) {
         var sw = (0, vinyl_fs_1.src)("".concat(__dirname).concat(path_1["default"].sep, "service-worker.js"))
-            .pipe((0, gulp_template_1["default"])({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out)), cache_name: "\"".concat(Date.now(), "\"") }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
+            .pipe((0, gulp_template_1["default"])({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out)), cache_name: "\"".concat(Date.now(), "\"") }, { interpolate: /\'{{([\s\S]+?)}}\'/gs }));
         return (0, context_1.stageFiles)(context, sw);
     },
     enabled: function (context) { return context.platform === 'pwa'; }

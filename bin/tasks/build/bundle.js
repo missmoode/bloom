@@ -20,7 +20,7 @@ exports.bundle = {
     task: function (context, task) {
         var babelConf = {
             extensions: ['.ts', '.js'],
-            presets: [require('@babel/preset-typescript'), [require('@babel/preset-env')]],
+            presets: ['@babel/preset-typescript', '@babel/preset-env'],
             babelrc: false,
             babelHelpers: 'bundled'
         };
