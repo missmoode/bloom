@@ -3,7 +3,7 @@
   "author": "missmoode",
   "version": "1.0.70",
   "description": "A library for creating and packaging pixi-based games",
-  "main": "src/index.ts",
+  "main": "src/lib/index.ts",
   "bin": "bin/start.js",
   "files:": [
     "dist/**/*"

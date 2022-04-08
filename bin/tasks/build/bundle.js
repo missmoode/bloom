@@ -28,7 +28,7 @@ exports.bundle = {
         var bundle = (0, stream_1["default"])({
             input: context.config.build.bundle.main,
             plugins: [
-                (0, plugin_node_resolve_1["default"])({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'], moduleDirectories: ['node_modules'] }),
+                (0, plugin_node_resolve_1["default"])({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json', '.mjs', '.cjs'], moduleDirectories: ['node_modules'] }),
                 (0, plugin_json_1["default"])(),
                 (0, plugin_commonjs_1["default"])(),
                 (0, plugin_babel_1["default"])(babelConf),

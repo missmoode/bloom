@@ -28,7 +28,7 @@ export const bundle = {
     let bundle = rollup({
       input: context.config.build.bundle.main as string,
       plugins: [
-        resolve({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json'], moduleDirectories: ['node_modules'] }), 
+        resolve({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json', '.mjs', '.cjs'], moduleDirectories: ['node_modules'] }), 
         json(),
         commonjs(), 
         babel(babelConf as RollupBabelInputPluginOptions),
