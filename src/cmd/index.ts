@@ -1,39 +1,42 @@
 import { existsSync, readFileSync } from 'fs';
-import { program } from 'commander';
-import { resolve as resolveConfig } from './config';
-import { PWA } from './goals';
-import { sync as rimraf } from 'rimraf';
-import { createLogger } from './utils/logger';
+import { Option, program } from 'commander';
+import { Configuration, GetCommandLineOption, populateConfiguration } from './config';
+import path from 'path';
+import { run, build } from './tasks';
+import { Platforms } from './tasks/context';
 
-const packageFile = JSON.parse(readFileSync(`${__dirname}/../../package.json`).toString('utf-8'));
+const packageFile = JSON.parse(readFileSync(`${__dirname}/../package.json`).toString('utf-8'));
+
+let config: Configuration;
+if (existsSync(path.join(process.cwd(), 'bloom.json'))) {
+  config = populateConfiguration(JSON.parse(readFileSync(path.join(process.cwd(), 'bloom.json')).toString('utf-8')));
+} else {
+  config = populateConfiguration({});
+}
+
 
 const main = program
   .name(packageFile.name)
   .description(packageFile.description)
   .version(packageFile.version);
 
-const build = main.command('build')
-  .description('Builds for web and PWA')
-  .option('--config <path>', 'configuration file to use', './bloomConfig.json')
-  .option('-c, --clean', 'delete the output directory before building')
-  .option('-p, --production', 'build without sourcemaps', false)
-  .option('-o, --out <path>', 'the directory to output to', 'web')
+main.command('build')
+  .description('Builds the game and places it in the output directory.')
+  .addOption(new Option('-p, --platform <platform>', 'Selects the platform to build for').choices(Platforms))
+  .addOption(GetCommandLineOption(config, 'build.bundle.main', '-i --main'))
+  .addOption(GetCommandLineOption(config, 'build.out', '-o --out'))
+  .addOption(GetCommandLineOption(config, 'build.bundle.minify', '-m --minify'))
+  .addOption(GetCommandLineOption(config, 'build.bundle.sourcemaps', '-s --sourcemaps'))
   .action(async (options) => {
-    const config = resolveConfig(options);
-    let l = createLogger('Clean');
-    if (options.clean && existsSync(options.out)) {
-      l.info('Cleaning last build...', '🧹');
-      rimraf(options.out);
-      l.info('Done!', '✨');
+    try {
+      await run(config, options.platform, build);
+    } catch{
+      console.log('Build failed.');
+      process.exit(1);
     }
-    l = createLogger('Build');
-    l.info('Building as Progressive Web App...', '🌷');
-    await PWA(l, config);
-    l.info(`Done! Output at "${config.out}".`, '🌸');
   });
 
 program.parse(process.argv);
 program.exitOverride((err) => {
-  console.log(err);
   process.exit(0);
 });
