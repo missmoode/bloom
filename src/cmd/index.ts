@@ -2,8 +2,8 @@ import { existsSync, readFileSync } from 'fs';
 import { Option, program } from 'commander';
 import { Configuration, GetCommandLineOption, populateConfiguration } from './config';
 import path from 'path';
-import { run, build } from './tasks';
-import { Platforms } from './tasks/context';
+import { run } from './tasks';
+import { PlatformNames } from './tasks/build';
 
 const packageFile = JSON.parse(readFileSync(`${__dirname}/../package.json`).toString('utf-8'));
 
@@ -22,14 +22,14 @@ const main = program
 
 main.command('build')
   .description('Builds the game and places it in the output directory.')
-  .addOption(new Option('-p, --platform <platform>', 'Selects the platform to build for').choices(Platforms))
+  .addOption(new Option('-p, --platform <platform>', 'Selects the platform to build for').choices(PlatformNames))
   .addOption(GetCommandLineOption(config, 'build.bundle.main', '-i --main'))
   .addOption(GetCommandLineOption(config, 'build.out', '-o --out'))
   .addOption(GetCommandLineOption(config, 'build.bundle.minify', '-m --minify'))
   .addOption(GetCommandLineOption(config, 'build.bundle.sourcemaps', '-s --sourcemaps'))
   .action(async (options) => {
     try {
-      await run(config, options.platform, build);
+      await run(config, options.platform);
     } catch{
       console.log('Build failed.');
       process.exit(1);

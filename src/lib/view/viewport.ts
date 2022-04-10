@@ -2,8 +2,7 @@ import { Container, DisplayObject } from '@pixi/display';
 import { StageInternal } from './stage';
 import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from './view';
 import { Interface } from '../utils/private';
-import { Game } from '..';
-import { InternalGameSession } from '../game';
+import { updateRunner } from '../game/timing';
 
 export interface FixedViewport {
   get width(): number;
@@ -64,7 +63,7 @@ export class InternalViewport extends Container implements MutableViewport {
       this.view.open();
     }
     if (this.view.update) {
-      (Game as InternalGameSession).updateNotifier.add(this.view);
+      updateRunner.add(this.view);
     }
   }
 
@@ -77,7 +76,7 @@ export class InternalViewport extends Container implements MutableViewport {
   public finish() {
     if (this.view) {
       if (this.view.update) {
-        (Game as InternalGameSession).updateNotifier.remove(this.view);
+        updateRunner.remove(this.view);
       }
       if (this.view.close) {
         this.view.close();

@@ -1,24 +1,38 @@
-import { Writable } from 'stream';
-import { dest } from 'vinyl-fs';
+import { PassThrough } from 'stream';
 import { Configuration } from '../config';
 
-export const Platforms = ['web', 'pwa'] as const;
-export type Platform = typeof Platforms[number];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Dict<T = any> = { [key: string]: T };
 
-export type Context = Dict & {
-  config: Configuration,
-  platform?: Platform,
-  destination?: Writable,
+export class Context {
+  public readonly config: Configuration;
+  public readonly data: Dict<any> = {};
+  private readonly streams: Dict<NodeJS.ReadWriteStream> = {};
+
+  constructor(config: Configuration) {
+    this.config = config;
+  }
+
+  public pour(from: NodeJS.ReadableStream, key: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      from.on('error', reject);
+      from.on('end', resolve);
+      from.pipe(new PassThrough({ objectMode: true })).pipe((this.streams[key] ??= new PassThrough({ objectMode: true })), { end: false });
+    });
+  }
+
+  public serve(key: string): NodeJS.ReadableStream {
+    const value = this.streams[key];
+    delete this.streams[key];
+    return value.end();
+  }
 }
 
+function isWritableStream(stream: object): stream is NodeJS.WritableStream {
+  return typeof (stream as NodeJS.WritableStream).write === 'function';
+}
 
-export function stageFiles(context: Context, vinylStream: NodeJS.ReadableStream) {
-  return new Promise<void>((resolve, reject) => {
-    vinylStream.on('end', resolve);
-    vinylStream.on('error', reject);
-    vinylStream.pipe(context.fileStage ??= dest(context.config.build.out as string), { end: false });
-  });
+function isReadableStream(stream: object): stream is NodeJS.ReadableStream {
+  return typeof (stream as NodeJS.ReadableStream).pipe === 'function';
 }

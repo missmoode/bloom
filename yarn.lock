@@ -1216,6 +1216,14 @@
     "@types/node" "*"
     "@types/vinyl" "*"
 
+"@types/gulp-tap@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/gulp-tap/-/gulp-tap-1.0.1.tgz#6bcf2beff616e2c8b8077d592baec9bb73b98d0a"
+  integrity sha512-TTxKFun5mAOeO1lvx4PWWXaNqNKyk5DxOMqSuRkDX3we0hnJhELLQuZxEAfdFmEFS5Ou1tPKx4KsVnrBMfrolQ==
+  dependencies:
+    "@types/node" "*"
+    "@types/vinyl" "*"
+
 "@types/gulp-template@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/gulp-template/-/gulp-template-5.0.1.tgz#63317789a3fe122bc5a588041ef1fcf37a714c0a"
@@ -2389,6 +2397,13 @@ gulp-sourcemaps@^3.0.0:
     source-map "^0.6.0"
     strip-bom-string "^1.0.0"
     through2 "^2.0.0"
+
+gulp-tap@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-tap/-/gulp-tap-2.0.0.tgz#6f66b79870dcbfc364cf4ebe0735b6008473200f"
+  integrity sha512-U5/v1bTozx672QHzrvzPe6fPl2io7Wqyrx2y30AG53eMU/idH4BrY/b2yikOkdyhjDqGgPoMUMnpBg9e9LK8Nw==
+  dependencies:
+    through2 "^3.0.1"
 
 gulp-template@^5.0.0:
   version "5.0.0"

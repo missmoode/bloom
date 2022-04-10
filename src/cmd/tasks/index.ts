@@ -1,8 +1,10 @@
-import { Listr, ListrTask } from 'listr2';
+import { Listr } from 'listr2';
 import { Configuration } from '../config';
-import { Context, Platform } from './context';
+import { build } from './build';
+import { Platform } from './build/platform';
+import { Context } from './context';
 
-export * from './build';
-export function run(config: Configuration, platform?: Platform, ...tasks: ListrTask<Context, any>[]) {
-  return new Listr<Context>(tasks, { rendererOptions: { showTimer: true } }).run({ config, platform });
+export { Platform } from './build';
+export function run(config: Configuration, platform?: Platform) {
+  return new Listr<Context>(build(platform), { rendererOptions: { showTimer: true } }).run(new Context(config));
 }

@@ -1,11 +1,19 @@
 import path from 'path';
 import { PassThrough } from 'stream';
 import Vinyl from 'vinyl';
-import { Context, stageFiles } from '../../context';
-import { ListrTaskWrapper } from 'listr2';
+import { Listr, ListrTask, ListrTaskWrapper } from 'listr2';
 import template from 'gulp-template';
 import { src } from 'vinyl-fs';
-import { readdirSync, statSync } from 'fs';
+import { Context } from '../../context';
+import tap from 'gulp-tap';
+import { PlatformPreset } from '../platform';
+
+const icon = {
+  title: 'Stage icon',
+  task: async (context: Context) => {
+    context.pour(src(context.config.presentation.icon as string), 'dest');
+  }
+};
 
 // write json object to vinyl file
 function writeJson(obj: any, fileName: string) {
@@ -16,8 +24,8 @@ function writeJson(obj: any, fileName: string) {
   return file;
 }
 
-export const generateWebManifest = {
-  title: 'Generate Web Manifest (PWA)',
+const generateWebManifest = {
+  title: 'Generate Web Manifest',
   task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
     const manifest = {
       name: context.config.name,
@@ -44,61 +52,48 @@ export const generateWebManifest = {
     const manifestStream = new PassThrough({ objectMode: true });
     manifestStream.end(writeJson(manifest, 'manifest.webmanifest'));
 
-    return stageFiles(context, manifestStream);
-  },
-  enabled: (context: Context) => context.platform === 'pwa'
+    return context.pour(manifestStream, 'dest');
+  }
 };
 
-function list(directory: string): string[] {
-  const files = readdirSync(directory);
-  const result = [];
-  for (const file of files) {
-    const fullPath = path.join(directory, file);
-    if (statSync(fullPath).isDirectory()) {
-      result.push(...list(fullPath));
-    } else {
-      result.push(fullPath);
-    }
-  }
-  return result;
-}
 
-// from a list of files and directories
-// add a trailing slash for each directory
-// and return a list of files
-function mapFilesRecursive(base: string): string[] {
-  const files = list(base);
-  const result = [];
-  for (const file of files) {
-    if (statSync(file).isDirectory()) {
-      result.push(`/${path.relative(base, file)}/`.replace('//', '/'));
-    } else {
-      result.push(`/${path.relative(base, file)}`);
-    }
-  }
-  result.push('/');
-  return result;
-}
-
-
-export const copyHTML = {
-  title: 'Drop in HTML template (PWA)',
+const copyHTML = {
+  title: 'Drop in HTML template',
   task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
     const html = src(`${__dirname}${path.sep}index.html`)
       .pipe(template({ title: context.config.name, favicon: './app_icon.png', touch_icon: './app_icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
 
-    return stageFiles(context, html);
-  },
-  enabled: (context: Context) => context.platform === 'pwa'
+    return context.pour(html, 'dest');
+  }
 };
 
-export const copyServiceWorker = {
-  title: 'Drop in Service Worker template (PWA)',
-  task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
-    const sw = src(`${__dirname}${path.sep}service-worker.js`)
-      .pipe(template({ cache: JSON.stringify(mapFilesRecursive(context.config.build.out as string)), cache_name: '3' }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
-
-    return stageFiles(context, sw);
+const copyServiceWorker: ListrTask = {
+  title: 'Generate File-Aware Service Worker',
+  task(context: Context, task: ListrTaskWrapper<Context, any>): Listr {
+    return task.newListr([
+      {
+        title: 'Scan file tree',
+        task(context: Context) {
+          const files = context.serve('dest').pipe(tap((file) => {
+            if (file.relative.includes('.')) (context.data.fileMap ??= new Array<string>()).push(file.relative);
+          }));
+          return context.pour(files, 'dest');    
+        }
+      },
+      {
+        title: 'Drop in Service Worker template',
+        task(context) {
+          const sw = src(`${__dirname}${path.sep}service-worker.js`)
+            .pipe(template({ cache: JSON.stringify(context.data.fileMap), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
+    
+          return context.pour(sw, 'dest');
+        }
+      }
+    ]);
   },
-  enabled: (context: Context) => context.platform === 'pwa'
+  options: { bottomBar: Infinity }
+};
+
+export const pwa: PlatformPreset = {
+  tasks: [icon, generateWebManifest, copyHTML, copyServiceWorker]
 };
