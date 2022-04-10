@@ -25,6 +25,6 @@ export abstract class View {
   public update?(deltaMillis: number): void;
 
 }
-export type ViewConstructor<T extends View> = new (stage: Stage, opts: any | undefined) => T;
+export type ViewConstructor<T extends View> = new (stage: Stage, opts: object | undefined) => T;
 export type DefaultViewConstructor<T extends View> = new (stage: Stage, opts: undefined) => T;
-export type ArgumentViewConstructor<T extends View> = new (stage: Stage, opts: any) => T;
+export type ArgumentViewConstructor<T extends View> = new (stage: Stage, opts: object) => T;
