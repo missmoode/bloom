@@ -14,6 +14,7 @@ export function build(platform?: Platform) {
   return [
     {
       title: 'Select platform',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       task: async (context: Context, task: ListrTaskWrapper<Context, any>) => {
         return task.prompt({
           type: 'Select',
@@ -29,6 +30,7 @@ export function build(platform?: Platform) {
     },
     {
       title: 'Build: ' + platform,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       task: (context: Context, task: ListrTaskWrapper<Context, any>): Listr => {
         return task.newListr([
           bundle,
@@ -37,9 +39,7 @@ export function build(platform?: Platform) {
           ...Platforms[platform!].tasks,
           {
             title: 'Copy to output',
-            task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
-              return context.serve('dest').pipe(dest(context.config.build.out as string));
-            }
+            task: (context: Context) => context.serve('dest').pipe(dest(context.config.build.out as string))
           }
         ]);
       }

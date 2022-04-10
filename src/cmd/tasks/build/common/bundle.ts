@@ -14,10 +14,12 @@ import { Context } from '../../context';
 
 export const bundle = {
   title: 'Create bundle',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   task: (context: Context, task: ListrTaskWrapper<Context, any>): Listr =>
     task.newListr([
       {
         title: 'Condense source',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         task: (context: Context, btask: ListrTaskWrapper<Context, any>) => {
           const babelConf = {
             extensions: ['.ts', '.js'],

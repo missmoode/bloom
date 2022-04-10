@@ -16,7 +16,7 @@ const icon = {
 };
 
 // write json object to vinyl file
-function writeJson(obj: any, fileName: string) {
+function writeJson(obj: object, fileName: string) {
   const file = new Vinyl({
     contents: Buffer.from(JSON.stringify(obj)),
     path: fileName
@@ -26,7 +26,7 @@ function writeJson(obj: any, fileName: string) {
 
 const generateWebManifest = {
   title: 'Generate Web Manifest',
-  task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
+  task: (context: Context) => {
     const manifest = {
       name: context.config.name,
       background_color: context.config.presentation.themeColor,
@@ -59,7 +59,7 @@ const generateWebManifest = {
 
 const copyHTML = {
   title: 'Drop in HTML template',
-  task: (context: Context, task: ListrTaskWrapper<Context, any>) => {
+  task: (context: Context) => {
     const html = src(`${__dirname}${path.sep}index.html`)
       .pipe(template({ title: context.config.name, favicon: './app_icon.png', touch_icon: './app_icon.png', theme_color: context.config.presentation.themeColor }, { interpolate: /{{([\s\S]+?)}}/gs }));
 
@@ -69,6 +69,7 @@ const copyHTML = {
 
 const copyServiceWorker: ListrTask = {
   title: 'Generate File-Aware Service Worker',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   task(context: Context, task: ListrTaskWrapper<Context, any>): Listr {
     return task.newListr([
       {

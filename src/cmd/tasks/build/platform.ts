@@ -2,6 +2,7 @@ import { ListrTask } from 'listr2';
 import { Context } from '../context';
 
 export type PlatformPreset = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tasks: ListrTask<Context, any>[];
 };
 
