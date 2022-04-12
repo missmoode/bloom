@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "./bin",
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "../../bin",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitOverride": true,
-    "rootDir": "./src/cmd",
   },
   "include": [
-    "src/cmd/**/*.ts"
+    "./**/*.ts"
   ],
 }
