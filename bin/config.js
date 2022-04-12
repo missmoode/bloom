@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetCommandLineOption = exports.getDescription = exports.getValue = exports.setValue = exports.populateConfiguration = void 0;
+const commander_1 = require("commander");
 const assert_1 = __importDefault(require("assert"));
 const path_1 = __importDefault(require("path"));
-const commander_1 = require("commander");
 const fs_1 = require("fs");
 const implPackageFile = JSON.parse((0, fs_1.readFileSync)(path_1.default.join(process.cwd(), 'package.json')).toString('utf-8'));
 const inferredDefaultMain = implPackageFile.main && implPackageFile.main.endsWith('.ts') ? implPackageFile.main : 'src/app/main.ts';
