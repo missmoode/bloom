@@ -17,18 +17,20 @@ const commander_1 = require("commander");
 const config_1 = require("./config");
 const path_1 = __importDefault(require("path"));
 const build_1 = require("./build");
-const bloomPackageFile = JSON.parse((0, fs_1.readFileSync)(`${__dirname}/../package.json`).toString('utf-8'));
-const implPackageFile = JSON.parse((0, fs_1.readFileSync)(path_1.default.join(process.cwd(), 'package.json')).toString('utf-8'));
 const partials = [];
 if ((0, fs_1.existsSync)(path_1.default.join(process.cwd(), 'bloom.json'))) {
     partials.push(JSON.parse((0, fs_1.readFileSync)(path_1.default.join(process.cwd(), 'bloom.json')).toString('utf-8')));
 }
-if (implPackageFile.bloom) {
-    partials.push(implPackageFile.bloom);
+if ((0, fs_1.existsSync)(path_1.default.join(process.cwd(), 'package.json'))) {
+    const pkg = JSON.parse((0, fs_1.readFileSync)(path_1.default.join(process.cwd(), 'package.json')).toString('utf-8'));
+    if (pkg.bloom) {
+        partials.push(pkg.bloom);
+    }
 }
 const config = (0, config_1.populateConfiguration)(...partials);
+const bloomPackageFile = JSON.parse((0, fs_1.readFileSync)(`${__dirname}/../package.json`).toString('utf-8'));
 const main = commander_1.program
-    .name(bloomPackageFile.name)
+    .name('Bloom 🌸')
     .description('Command-line tool for building a Bloom game')
     .version(bloomPackageFile.version)
     .addArgument(new commander_1.Argument('<target>', 'Selects the target to build for').choices(build_1.Targets))

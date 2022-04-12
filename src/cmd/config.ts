@@ -1,6 +1,7 @@
+
+import { Option as CMDROption, InvalidOptionArgumentError } from 'commander';
 import assert from 'assert';
 import path from 'path';
-import { InvalidOptionArgumentError, Option as CMDROption } from 'commander';
 import { readFileSync } from 'fs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
