@@ -1,13 +1,14 @@
 import assert from 'assert';
 import path from 'path';
 import { InvalidOptionArgumentError, Option as CMDROption } from 'commander';
+import { readFileSync } from 'fs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Dict<T = any> = { [key: string]: T };
 
 // The default values for some options can be derived from other options, if set (eg. change the default value of `out` to the value of `applicationRoot`).
 type ResolvedValue = (options: Configuration) => ValueType;
-type ValueType = string | boolean | number;
+type ValueType = string | boolean | number | string[];
 
 type ValueLike = ValueType | ResolvedValue;
 
@@ -17,7 +18,17 @@ type DescribedOption = [ value: ValueLike, description: string ];
 // Nestable
 type OptionDefaults = {[key: string]: OptionDefaults | ValueLike | DescribedOption };
 
-type ExtractValueType<T extends ValueLike> = T extends string ? string : T extends number ? number : T extends boolean ? boolean : T extends ResolvedValue ? ExtractValueType<ReturnType<T>> : never;
+type ExtractValueType<T extends ValueLike> = 
+T extends string[]
+? string[] :
+T extends string 
+? string : 
+T extends number 
+? number : 
+T extends boolean 
+? boolean : 
+T extends ResolvedValue 
+? ExtractValueType<ReturnType<T>> : never;
 
 type OptionsInferredFromDefaults<T extends OptionDefaults> = {
   [key in keyof T]: 
@@ -33,20 +44,26 @@ type OptionsInferredFromDefaults<T extends OptionDefaults> = {
       never
 };
 
+const implPackageFile = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json')).toString('utf-8'));
+const inferredDefaultMain = implPackageFile.main && (implPackageFile.main as string).endsWith('.ts') ? implPackageFile.main : 'src/app/main.ts';
+
+// Convert snake_case or kebab-case or UpperCamelCase to Noun Case
+const toNounCase = (str: string) => str.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\s+/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
+
 const optionSchema = {
-  name: [ path.basename(process.cwd()), 'The name of the game, used in the title bar and in the manifest'] as DescribedOption,
+  productName: [ toNounCase(implPackageFile.name ?? path.basename(process.cwd())), 'The name of the game, used in the title bar and in the manifest'] as DescribedOption,
+  appVersion: [ implPackageFile.version ?? '0.0.1', 'The version of the game'] as DescribedOption,
   presentation: {
     icon: `${path.resolve(process.cwd(), path.join(process.cwd(), 'src/resources/icon.svg'))}`,
     themeColor: '#ffffff',
   },
   build: {
-    clean: true,
     out: [ 'dist', 'The directory the final build will be placed in'] as DescribedOption,
     assets: {
       resources: `${path.resolve(process.cwd(), path.join(process.cwd(), 'src/resources/**/*'))}`,
     },
     bundle: {
-      main: [`${path.join(process.cwd(), 'src/app/app.ts')}`, 'The path of the main bundle file'] as DescribedOption,
+      main: [`${path.relative(process.cwd(), path.join(process.cwd(), inferredDefaultMain))}`, 'The path of the bundle entry file'] as DescribedOption,
       minify: [ false, 'Whether to minify the bundle'] as DescribedOption,
       sourcemaps: [ false, 'Whether to generate sourcemaps'] as DescribedOption
     }
@@ -95,8 +112,8 @@ function resolveConfiguration(set: any, defaults: any = optionSchema, resolution
   return set;
 }
 
-export function populateConfiguration(set: Partial<Configuration>) {
-  return resolveConfiguration(set);
+export function populateConfiguration(...set: Partial<Configuration>[]): Configuration {
+  return resolveConfiguration(Object.assign({}, ...set));
 }
 
 export function setValue(configuration: Configuration, key: OptionKey, value: ValueType) {
@@ -134,24 +151,27 @@ function dashCase(str: string) {
 }
 
 export function GetCommandLineOption(config: Configuration, key: OptionKey, flags = `--${dashCase(key)}`): CMDROption {
-  const previous: ValueType = getValue(config, key);
-  return new CMDROption(
-    `${flags}${typeof previous === 'string' ? ' <value>' : typeof previous === 'number' ? ' <number>' : ''}`,
+  const preset: ValueType = getValue(config, key);
+  const opt = new CMDROption(
+    `${flags}${typeof preset === 'string' ? ' <value>' : typeof preset === 'number' ? ' <number>' : Array.isArray(preset) ? ' <targets...>' : ''}`,
     getDescription(key)
-  ).default(previous)
-    .argParser((value: string) => {
-      if (typeof previous === 'string') {
+  ).default(preset)
+    .argParser((value: ValueType) => {
+      if (typeof preset === 'string') {
         return setValue(config, key, value);
-      } else if (typeof previous === 'number') {
+      } else if (typeof preset === 'number') {
         if (!isNaN(Number(value))) {
           setValue(config, key, Number(value));
         } else {
           throw new InvalidOptionArgumentError(`Invalid number: ${value}`);
         }
-      } else if (typeof previous === 'boolean') {
+      } else if (typeof preset === 'boolean') {
         setValue(config, key, true);
+      } else if (Array.isArray(preset)) {
+        setValue(config, key, value);
       } else {
-        throw new InvalidOptionArgumentError(`Invalid option type for ${key}: ${typeof previous}`);
+        throw new InvalidOptionArgumentError(`Invalid option type for ${key}: ${typeof preset}`);
       }
     });
+  return opt;
 }
