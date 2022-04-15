@@ -50,7 +50,7 @@
     "@types/vinyl-buffer": "^1.0.0",
     "@types/vinyl-fs": "^2.4.12",
     "@types/vinyl-source-stream": "^0.0.30",
-    "commander": "^9.1.0",
+    "commander": "^9.2.0",
     "commonjs": "^0.0.1",
     "enquirer": "^2.3.6",
     "gulp-rename": "^2.0.0",
