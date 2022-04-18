@@ -1,5 +1,5 @@
-import { Loader } from '@pixi/loaders';
-import { Dict } from '@pixi/utils';
+import { Loader } from 'pixi.js';
+import { Dict } from 'pixi.js';
 import { ShaderLoaderPlugin } from './shaderloaderplugin';
 
 export type ResourceTarget = string;

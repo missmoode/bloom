@@ -1,4 +1,4 @@
-import { Container, DisplayObject } from '@pixi/display';
+import { Container, DisplayObject } from 'pixi.js';
 import { StageInternal } from './stage';
 import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from './view';
 import { Interface } from '../utils/private';

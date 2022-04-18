@@ -1,5 +1,5 @@
-import { Filter } from '@pixi/core';
-import { LoaderResource, ILoaderPlugin } from '@pixi/loaders';
+import { Filter } from 'pixi.js';
+import { LoaderResource, ILoaderPlugin } from 'pixi.js';
 
 const fileExtension = 'glsl';
 

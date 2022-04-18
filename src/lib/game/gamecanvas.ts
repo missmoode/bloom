@@ -1,5 +1,5 @@
-import { AbstractRenderer, autoDetectRenderer, Renderer } from '@pixi/core';
-import { Ticker } from '@pixi/ticker';
+import { AbstractRenderer, autoDetectRenderer, Renderer } from 'pixi.js';
+import { Ticker } from 'pixi.js';
 
 import { MutableViewport, Viewport } from '../view/viewport';
 

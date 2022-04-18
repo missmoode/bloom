@@ -1,5 +1,5 @@
 import { Stage } from './stage';
-import { Ticker, UPDATE_PRIORITY } from '@pixi/ticker';
+import { Ticker, UPDATE_PRIORITY } from 'pixi.js';
 export abstract class View {
   public readonly stage: Stage;
 
