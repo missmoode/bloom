@@ -36,6 +36,7 @@ exports.bundle = {
                     presets: ['@babel/preset-typescript', '@babel/preset-env'],
                     babelrc: false,
                     babelHelpers: 'bundled',
+                    inputSourceMap: null
                 };
                 let count = 0;
                 const bundle = (0, stream_1.default)({

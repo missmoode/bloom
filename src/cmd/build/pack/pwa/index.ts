@@ -73,7 +73,6 @@ const copyServiceWorker: ListrTask = {
     for (const file of context.artefacts) {
       if (file.relative.includes('.') && !fileMap.has(file.relative)) fileMap.add(file.relative);
     }
-    // remove duplicates from fileMap
     const sw = src(`${__dirname}${path.sep}service-worker.js`)
       .pipe(template({ cache: JSON.stringify([...fileMap]), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
 

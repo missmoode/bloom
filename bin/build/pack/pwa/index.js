@@ -72,13 +72,14 @@ const copyHTML = {
 const copyServiceWorker = {
     title: 'Drop in Service Worker template',
     task(context) {
-        const fileMap = [];
+        const fileMap = new Set();
         for (const file of context.artefacts) {
-            if (file.relative.includes('.'))
-                fileMap.push(file.relative);
+            if (file.relative.includes('.') && !fileMap.has(file.relative))
+                fileMap.add(file.relative);
         }
+        // remove duplicates from fileMap
         const sw = (0, vinyl_fs_1.src)(`${__dirname}${path_1.default.sep}service-worker.js`)
-            .pipe((0, gulp_template_1.default)({ cache: JSON.stringify(fileMap), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
+            .pipe((0, gulp_template_1.default)({ cache: JSON.stringify([...fileMap]), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
         return context.artefacts.ingest(sw);
     }
 };
