@@ -1,7 +1,7 @@
-import { GameSession, InternalGameSession } from './game';
+import { Game as GameConstructor } from './game';
 
 export * from './view';
 export * from './utils';
 export * from './resources';
 
-export const Game = new InternalGameSession(document.getElementsByTagName('main')[0]) as GameSession; 
+export const Game = new GameConstructor(); 
