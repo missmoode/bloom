@@ -1,7 +1,7 @@
 {
   "name": "bloom",
   "author": "missmoode",
-  "version": "1.0.78",
+  "version": "0.6.0",
   "description": "A library for creating and packaging pixi-based games",
   "main": "src/lib/index.ts",
   "bin": "bin/start.js",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "clean": "rm -rf bin",
-    "build": "yarn run clean && yarn tsc && yarn copyfiles -e \"./src/cmd/**/*.ts\" -u 2 \"./src/cmd/**/*\" ./bin/"
+    "build": "yarn run clean && yarn tsc --project ./src/cmd/tsconfig.json && yarn copyfiles -e \"./src/cmd/**/*.ts\" -u 2 \"./src/cmd/**/*\" ./bin/ && rm -f ./bin/tsconfig.json"
   },
   "repository": "github:missmoode/bloom",
   "license": "MIT",
@@ -33,7 +33,7 @@
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^21.0.3",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-node-resolve": "^13.2.0",
     "@rollup/stream": "^2.0.0",
     "@types/babel__core": "^7.1.19",
     "@types/babel__preset-env": "^7.9.2",
@@ -75,10 +75,10 @@
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
     "@types/offscreencanvas": "^2019.6.4",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^8.12.0",
+    "eslint": "^8.13.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"
