@@ -20,7 +20,7 @@ export class GameCanvas {
   public readonly viewport: MutableViewport;
 
   private _resize: ResizeObserver = new ResizeObserver((e) => {
-    this.renderer.resize(e[0].contentRect.height, e[0].contentRect.height);
+    this.renderer.resize(e[0].contentRect.width, e[0].contentRect.height);
     this.viewport.resize(e[0].contentRect.width, e[0].contentRect.height);
   });
 
