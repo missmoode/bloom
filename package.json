@@ -64,7 +64,7 @@
     "lodash.isequal": "^4.5.0",
     "merge2": "^1.4.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.70.1",
+    "rollup": "^2.70.2",
     "rollup-plugin-polyfill-node": "^0.9.0",
     "type-signals": "^1.1.0",
     "vinyl": "^2.2.1",
