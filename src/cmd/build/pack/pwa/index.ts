@@ -69,12 +69,13 @@ const copyHTML = {
 const copyServiceWorker: ListrTask = {
   title: 'Drop in Service Worker template',
   task(context: Context) {
-    const fileMap: string[] = [];
+    const fileMap: Set<string> = new Set<string>();
     for (const file of context.artefacts) {
-      if (file.relative.includes('.') && !fileMap.includes(file.relative)) fileMap.push(file.relative);
+      if (file.relative.includes('.') && !fileMap.has(file.relative)) fileMap.add(file.relative);
     }
+    // remove duplicates from fileMap
     const sw = src(`${__dirname}${path.sep}service-worker.js`)
-      .pipe(template({ cache: JSON.stringify(fileMap), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
+      .pipe(template({ cache: JSON.stringify([...fileMap]), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
 
     return context.artefacts.ingest(sw);
   }
