@@ -1,4 +1,4 @@
-import { Container, DisplayObject } from 'pixi.js';
+import { Container, DisplayObject, Ticker, UPDATE_PRIORITY } from 'pixi.js';
 import { StageInternal } from './stage';
 import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from './view';
 import { Interface } from '../utils/private';
@@ -47,9 +47,7 @@ export class InternalViewport extends Container implements MutableViewport {
   public resize(width: number, height = width) {
     this.__width = width;
     this.__height = height;
-    if (this.view.resize) {
-      this.view.resize();
-    }
+    if (this.view.resize) this.view.resize();
   }
 
   public goto<V extends View>(View: DefaultViewConstructor<V>): void;
@@ -58,8 +56,10 @@ export class InternalViewport extends Container implements MutableViewport {
     this.finish();
     this.view = new View(new StageInternal(this), opts);
     this.addChild(this.view.stage as StageInternal);
-    this.view.open();
-    this.view.resize();
+    // TODO: Check if it's resourceful and wait for it to finish loading.
+    if (this.view.open) this.view.open();
+    if (this.view.resize) this.view.resize();
+    if (this.view.update) Ticker.shared.add(this.view.update, this.view, UPDATE_PRIORITY.NORMAL);
   }
 
   /**
@@ -70,7 +70,8 @@ export class InternalViewport extends Container implements MutableViewport {
    */
   public finish() {
     if (this.view) {
-      this.view.close();
+      if (this.view.update) Ticker.shared.remove(this.view.update, this.view);
+      if (this.view.close) this.view.close();
       this.removeChild(this.view?.stage as StageInternal);
       (this.view?.stage as StageInternal).destroy(true);
     }

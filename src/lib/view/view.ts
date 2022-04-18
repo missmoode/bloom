@@ -1,5 +1,4 @@
 import { Stage } from './stage';
-import { Ticker, UPDATE_PRIORITY } from 'pixi.js';
 export abstract class View {
   public readonly stage: Stage;
 
@@ -10,15 +9,11 @@ export abstract class View {
   /**
    * Runs after the stage is added to the display hierarchy.
    */
-  public open() {
-    Ticker.shared.add(this.update, this, UPDATE_PRIORITY.LOW);
-  }
+  public open?(): void;
   /**
    * Runs before the stage is removed from the display hierarchy.
    */
-  public close() {
-    Ticker.shared.remove(this.update, this);
-  }
+  public close?(): void;
   /**
    * Runs after open or when the viewport size changes.
    */
@@ -27,7 +22,7 @@ export abstract class View {
    * Called every frame.
    * @param deltaMillis The time since the last frame in milliseconds.
    */
-  public abstract update(deltaMillis: number): void;
+  public update?(deltaMillis: number): void;
 
 }
 export type ViewConstructor<T extends View> = new (stage: Stage, opts: object | undefined) => T;
