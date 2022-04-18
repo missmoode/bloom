@@ -77,7 +77,6 @@ const copyServiceWorker = {
             if (file.relative.includes('.') && !fileMap.has(file.relative))
                 fileMap.add(file.relative);
         }
-        // remove duplicates from fileMap
         const sw = (0, vinyl_fs_1.src)(`${__dirname}${path_1.default.sep}service-worker.js`)
             .pipe((0, gulp_template_1.default)({ cache: JSON.stringify([...fileMap]), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
         return context.artefacts.ingest(sw);

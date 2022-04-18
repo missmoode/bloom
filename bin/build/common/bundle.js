@@ -35,8 +35,7 @@ exports.bundle = {
                     extensions: ['.ts', '.js'],
                     presets: ['@babel/preset-typescript', '@babel/preset-env'],
                     babelrc: false,
-                    babelHelpers: 'bundled',
-                    inputSourceMap: null
+                    babelHelpers: 'bundled'
                 };
                 let count = 0;
                 const bundle = (0, stream_1.default)({

@@ -25,8 +25,7 @@ export const bundle = {
             extensions: ['.ts', '.js'],
             presets: ['@babel/preset-typescript', '@babel/preset-env'],
             babelrc: false,
-            babelHelpers: 'bundled',
-            inputSourceMap: null
+            babelHelpers: 'bundled'
           };
       
           let count = 0;
