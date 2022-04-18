@@ -71,7 +71,7 @@ const copyServiceWorker: ListrTask = {
   task(context: Context) {
     const fileMap: string[] = [];
     for (const file of context.artefacts) {
-      if (file.relative.includes('.')) fileMap.push(file.relative);
+      if (file.relative.includes('.') && !fileMap.includes(file.relative)) fileMap.push(file.relative);
     }
     const sw = src(`${__dirname}${path.sep}service-worker.js`)
       .pipe(template({ cache: JSON.stringify(fileMap), cache_name: `"${Date.now()}"` }, { interpolate: /'{{([\s\S]+?)}}'/gs }));
