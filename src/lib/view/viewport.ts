@@ -59,6 +59,7 @@ export class InternalViewport extends Container implements MutableViewport {
     this.view = new View(new StageInternal(this), opts);
     this.addChild(this.view.stage as StageInternal);
     this.view.open();
+    this.view.resize();
   }
 
   /**

@@ -20,7 +20,7 @@ export abstract class View {
     Ticker.shared.remove(this.update, this);
   }
   /**
-   * Runs when the viewport size changes.
+   * Runs after open or when the viewport size changes.
    */
   public resize?(): void;
   /**
