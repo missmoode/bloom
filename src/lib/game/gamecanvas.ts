@@ -21,12 +21,13 @@ export class GameCanvas {
 
   private _resize: ResizeObserver = new ResizeObserver((e) => {
     this.renderer.resize(e[0].contentRect.height, e[0].contentRect.height);
+    this.viewport.resize(e[0].contentRect.width, e[0].contentRect.height);
   });
 
 
   public constructor(fills: HTMLElement) {
     const canvas = fills.appendChild(document.createElement('canvas'));
-    this.viewport = new Viewport(canvas.clientWidth, canvas.clientHeight);
+    this.viewport = new Viewport(fills.clientWidth, fills.clientHeight);
 
     this.renderer = autoDetectRenderer({
       view: canvas,
