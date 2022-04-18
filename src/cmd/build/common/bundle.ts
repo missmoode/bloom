@@ -26,7 +26,7 @@ export const bundle = {
             presets: ['@babel/preset-typescript', '@babel/preset-env'],
             babelrc: false,
             babelHelpers: 'bundled',
-            sourceMaps: context.config.build.bundle.sourcemaps === true,
+            inputSourceMap: null
           };
       
           let count = 0;
