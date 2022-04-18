@@ -34,7 +34,7 @@ export class GameCanvas {
       resolution: window.devicePixelRatio ?? 1
     });
 
-    this._resize.observe(canvas);
+    this._resize.observe(fills);
 
     Ticker.shared.add(this.render, this);
   }
