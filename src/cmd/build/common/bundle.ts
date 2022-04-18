@@ -21,11 +21,12 @@ export const bundle = {
         title: 'Condense source',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         task: async (context: Context, btask: ListrTaskWrapper<Context, any>) => {
-          const babelConf = {
+          const babelConf: RollupBabelInputPluginOptions = {
             extensions: ['.ts', '.js'],
             presets: ['@babel/preset-typescript', '@babel/preset-env'],
             babelrc: false,
             babelHelpers: 'bundled',
+            sourceMaps: context.config.build.bundle.sourcemaps === true,
           };
       
           let count = 0;
