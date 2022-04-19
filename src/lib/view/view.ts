@@ -1,9 +1,17 @@
-import { Stage } from './stage';
+import { Stage, StageInternal } from './stage';
+import { FixedViewport } from './viewport';
 export abstract class View {
   public readonly stage: Stage;
 
   constructor(stage: Stage) {
     this.stage = stage;
+  }
+
+  /**
+   * Access the viewport for 
+   */
+  public get host(): FixedViewport {
+    return (this.stage as StageInternal).host;
   }
   
   /**
