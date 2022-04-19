@@ -14,6 +14,7 @@ const reservations: Dict<Reservation> = {};
  * @param {Attachment<T>} container The object resources are attached to
  * @returns 
  */
+// TODO: place a breakpoint here: is the first argument being shunted to the context?
 export function prepare<T>(container: Attachment<T>): Availability {
   const resources: LoaderResource[] = [];
   let mustLoad = false;
