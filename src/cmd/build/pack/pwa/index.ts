@@ -42,8 +42,7 @@ const generateWebManifest = {
         {
           src: 'app_icon.png',
           sizes: '512x512',
-          type: 'image/png',
-          purpose: 'maskable'
+          type: 'image/png'
         }
       ]
     };
