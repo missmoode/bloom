@@ -1,4 +1,4 @@
-import { Container, DisplayObject, Ticker, UPDATE_PRIORITY } from 'pixi.js';
+import { Container, DisplayObject, Ticker, TickerCallback, UPDATE_PRIORITY } from 'pixi.js';
 import { StageInternal } from './stage';
 import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from './view';
 import { Interface } from '../utils/private';
@@ -19,6 +19,7 @@ export interface MutableViewport extends DisplayObject, FixedViewport {
 
 export class InternalViewport extends Container implements MutableViewport {
   private view?: View;
+  private updateFunction?: TickerCallback<View>;
 
   private __width: number;
   private __height: number;
@@ -59,7 +60,10 @@ export class InternalViewport extends Container implements MutableViewport {
     // TODO: Check if it's resourceful and wait for it to finish loading.
     if (this.view.open) this.view.open();
     if (this.view.resize) this.view.resize();
-    if (this.view.update) Ticker.shared.add(this.view.update, this.view, UPDATE_PRIORITY.NORMAL);
+    if (this.view.update) {
+      this.updateFunction = (delta: number) => this.view.update(delta);
+      Ticker.shared.add(this.updateFunction, this.view, UPDATE_PRIORITY.NORMAL);
+    }
   }
 
   /**
@@ -70,7 +74,7 @@ export class InternalViewport extends Container implements MutableViewport {
    */
   public finish() {
     if (this.view) {
-      if (this.view.update) Ticker.shared.remove(this.view.update, this.view);
+      if (this.view.update) Ticker.shared.remove(this.updateFunction, this.view);
       if (this.view.close) this.view.close();
       this.removeChild(this.view?.stage as StageInternal);
       (this.view?.stage as StageInternal).destroy(true);
