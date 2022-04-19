@@ -56,9 +56,8 @@ export class InternalViewport extends Container implements MutableViewport {
   public goto<C extends ViewConstructor>(View: C, ...params:  ViewConstructorParameters<C>): void {
     this.clean();
     this.view = new View(new StageInternal(this), params);
-    this.addChild(this.view.stage as StageInternal);
-    // TODO: Check if it's resourceful and wait for it to finish loading.
     if (this.view.open) this.view.open();
+    this.addChild(this.view.stage as StageInternal);
     if (this.view.resize) this.view.resize();
     if (this.view.update) {
       this.updateFunction = (delta: number) => this.view.update(delta);
@@ -69,8 +68,8 @@ export class InternalViewport extends Container implements MutableViewport {
   private clean() {
     if (this.view) {
       if (this.view.update) Ticker.shared.remove(this.updateFunction, this.view);
-      if (this.view.close) this.view.close();
       this.removeChild(this.view?.stage as StageInternal);
+      if (this.view.close) this.view.close();
       (this.view?.stage as StageInternal).destroy(true);
     }
   }

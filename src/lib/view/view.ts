@@ -15,11 +15,11 @@ export abstract class View {
   }
   
   /**
-   * Runs after the stage is added to the display hierarchy.
+   * Runs immediately before the stage is added to the display hierarchy.
    */
   public open?(): void;
   /**
-   * Runs before the stage is removed from the display hierarchy.
+   * Runs immediately after the stage is removed from the display hierarchy.
    */
   public close?(): void;
   /**
