@@ -31,6 +31,8 @@ exports.bundle = {
             title: 'Condense source',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             task: (context, btask) => __awaiter(void 0, void 0, void 0, function* () {
+                var _a;
+                var _b;
                 const babelConf = {
                     extensions: ['.ts', '.js'],
                     presets: ['@babel/preset-typescript', '@babel/preset-env'],
@@ -40,6 +42,7 @@ exports.bundle = {
                 let count = 0;
                 const bundle = (0, stream_1.default)({
                     input: context.config.build.bundle.main,
+                    cache: (_a = (_b = context.data).rollupCache) !== null && _a !== void 0 ? _a : (_b.rollupCache = {}),
                     plugins: [
                         (0, plugin_node_resolve_1.default)({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json', '.mjs', '.cjs'], moduleDirectories: ['node_modules'] }),
                         (0, plugin_json_1.default)(),

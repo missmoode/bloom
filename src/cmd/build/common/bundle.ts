@@ -32,6 +32,7 @@ export const bundle = {
     
           const bundle = rollup({
             input: context.config.build.bundle.main as string,
+            cache: context.data.rollupCache ??= {},
             plugins: [
               resolve({ browser: true, preferBuiltins: false, extensions: ['.ts', '.js', '.json', '.mjs', '.cjs'], moduleDirectories: ['node_modules'] }), 
               json(),
