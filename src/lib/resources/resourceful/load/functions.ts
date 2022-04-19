@@ -47,3 +47,7 @@ export function release<T>(resourcefulObject: Attachment<T>): void {
     }
   }
 }
+
+export function get(key: string): LoaderResource {
+  return reservations[key].resource;
+}
