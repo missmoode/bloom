@@ -1,3 +1,3 @@
 export { Stage } from './stage';
-export { View } from './view';
+export { View, ViewTarget, target } from './view';
 export { MutableViewport, Viewport, FixedViewport } from './viewport';

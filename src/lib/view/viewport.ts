@@ -1,13 +1,17 @@
 import { Container, DisplayObject, IDestroyOptions, Ticker, TickerCallback, UPDATE_PRIORITY } from 'pixi.js';
 import { StageInternal } from './stage';
-import { ArgumentViewConstructor, DefaultViewConstructor, ViewConstructor, View } from './view';
+import { View, ViewConstructor, ViewConstructorParameters } from './view';
 import { Interface } from '../utils/private';
 export interface FixedViewport {
   get width(): number;
   get height(): number;
 
-  goto<V extends View>(View: DefaultViewConstructor<V>): void;
-  goto<V extends View>(View: ArgumentViewConstructor<V>, opts: ConstructorParameters<ViewConstructor<V>>[1]): void;
+  /**
+   * Host a view.
+   * @param View The constructor for the view to load.
+   * @param params The parameters to pass to the view constructor (after the stage).
+   */
+  goto<C extends ViewConstructor>(View: C, ...params:  ViewConstructorParameters<C>): void;
 }
 export interface MutableViewport extends DisplayObject, FixedViewport {
   set width(width: number);
@@ -49,11 +53,9 @@ export class InternalViewport extends Container implements MutableViewport {
     if (this.view.resize) this.view.resize();
   }
 
-  public goto<V extends View>(View: DefaultViewConstructor<V>): void;
-  public goto<V extends View>(View: ArgumentViewConstructor<V>, opts: ConstructorParameters<ViewConstructor<V>>[1]): void;
-  public goto<V extends View>(View: ViewConstructor<V>, opts?: object): void {
+  public goto<C extends ViewConstructor>(View: C, ...params:  ViewConstructorParameters<C>): void {
     this.clean();
-    this.view = new View(new StageInternal(this), opts);
+    this.view = new View(new StageInternal(this), params);
     this.addChild(this.view.stage as StageInternal);
     // TODO: Check if it's resourceful and wait for it to finish loading.
     if (this.view.open) this.view.open();
@@ -64,12 +66,6 @@ export class InternalViewport extends Container implements MutableViewport {
     }
   }
 
-  /**
-   * Informs the game that the View is no longer running.
-   * This tells the game that:
-   *  - Any assets that only it was using can be safely unloaded.
-   *  - It no longer needs to listen for events or receive update signals.
-   */
   private clean() {
     if (this.view) {
       if (this.view.update) Ticker.shared.remove(this.updateFunction, this.view);
