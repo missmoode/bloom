@@ -1,6 +1,6 @@
 import { Container, DisplayObject, IDestroyOptions, Ticker, TickerCallback, UPDATE_PRIORITY } from 'pixi.js';
-import { StageInternal } from './stage';
-import { View, ViewConstructor, ViewConstructorParameters } from './view';
+import { StageInternal } from './Stage';
+import { View, ViewConstructor, ViewConstructorParameters } from './View';
 import { Interface } from '../utils/private';
 export interface FixedViewport {
   get width(): number;

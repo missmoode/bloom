@@ -69,7 +69,7 @@ export const bundle = {
           task.output = 'Compressing...';
           if (context.config.build.bundle.sourcemaps === true)
             await bundle.cycle(sourcemaps.init({ loadMaps: true }));
-          await bundle.cycle(terser({ output: { comments: false }, compress: true, mangle: true }));
+          await bundle.cycle(terser({ output: { comments: false }, compress: true, mangle: { properties: false } }));
           if (context.config.build.bundle.sourcemaps === true)
             await bundle.cycle(sourcemaps.write('.', { sourceRoot: path.relative(context.config.build.out as string, path.dirname(context.config.build.bundle.main as string)) }));
         },

@@ -1,5 +1,5 @@
-import { Stage, StageInternal } from './stage';
-import { FixedViewport } from './viewport';
+import { Stage, StageInternal } from './Stage';
+import { FixedViewport } from './Viewport';
 export abstract class View {
   public readonly stage: Stage;
 

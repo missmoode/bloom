@@ -1,6 +1,6 @@
 import { Container } from 'pixi.js';
 import { Point } from 'pixi.js';
-import { FixedViewport } from './viewport';
+import { FixedViewport } from './Viewport';
 
 type Passed = 'addChild' | 'addChildAt' | 'removeChild' | 'removeChildAt' | 'removeChildren' | 'swapChildren' | 'getChildIndex' | 'setChildIndex' | 'sortChildren' | 'sortDirty' | 'sortableChildren' | 'children';
 

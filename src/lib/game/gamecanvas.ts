@@ -1,7 +1,7 @@
 import { AbstractRenderer, autoDetectRenderer, Renderer } from 'pixi.js';
 import { Ticker } from 'pixi.js';
 
-import { MutableViewport, Viewport } from '../view/viewport';
+import { MutableViewport, Viewport } from '../view/Viewport';
 
 /**
  * Each game has a state.

@@ -7,7 +7,7 @@ type Binding = {percentage: number, progressBinding: ReturnType<LoaderResource['
 /**
  * Utility to expose the progress of asset loading distributed across multiple pixi loaders.
  */
-export class Availability {
+export class ResourceLoaderHandle {
   #resources: Map<LoaderResource, Binding> = new Map();
 
   /**
@@ -107,6 +107,6 @@ type OnComplete = (error?: Error) => void;
 /**
  * @callback OnPreparationEnded
  * @param {number} percentage - The percentage of the preparation in the range [0, 1].
- * @see {@link Availability#percentage}
+ * @see {@link ResourceLoaderHandle#percentage}
  */
 type OnPercentageChange = (percentage: number) => void;

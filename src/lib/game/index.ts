@@ -1,5 +1,5 @@
 import { FixedViewport } from '../view';
-import { GameCanvas } from './gamecanvas';
+import { GameCanvas } from './GameCanvas';
 
 export class Game {
   private canvas = new GameCanvas(document.getElementsByTagName('main')[0]);

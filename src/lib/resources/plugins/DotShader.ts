@@ -3,7 +3,7 @@ import { LoaderResource, ILoaderPlugin } from 'pixi.js';
 
 const fileExtension = 'glsl';
 
-export class ShaderFileType implements ILoaderPlugin {
+export class DotShader implements ILoaderPlugin {
   add() {
     // shader files loaded as text
     LoaderResource.setExtensionXhrType(
