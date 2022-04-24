@@ -1,7 +1,8 @@
-import { Container, DisplayObject, IDestroyOptions, Ticker, TickerCallback, UPDATE_PRIORITY } from 'pixi.js';
+import { Container, DisplayObject, IDestroyOptions, Ticker, UPDATE_PRIORITY } from 'pixi.js';
 import { StageInternal } from './Stage';
 import { View, ViewConstructor, ViewConstructorParameters } from './View';
 import { Interface } from '../utils/private';
+import { Task, TaskSystem } from '../TaskSystem';
 export interface FixedViewport {
   get width(): number;
   get height(): number;
@@ -13,15 +14,16 @@ export interface FixedViewport {
    */
   goto<C extends ViewConstructor>(View: C, ...params:  ViewConstructorParameters<C>): void;
 }
-export interface MutableViewport extends DisplayObject, FixedViewport {
+export interface MutableViewport extends FixedViewport, DisplayObject {
   set width(width: number);
   set height(height: number);
   resize(width: number, height?: number): void;
 }
 
 export class InternalViewport extends Container implements MutableViewport {
+
   private view?: View;
-  public updateFunction?: TickerCallback<View>;
+  public updateTask?: Task;
 
   private __width: number;
   private __height: number;
@@ -50,7 +52,7 @@ export class InternalViewport extends Container implements MutableViewport {
   public resize(width: number, height = width) {
     this.__width = width;
     this.__height = height;
-    if (this.view.resize) this.view.resize();
+    if (this.view && this.view.resize) this.view.resize();
   }
 
   public goto<C extends ViewConstructor>(View: C, ...params:  ViewConstructorParameters<C>): void {
@@ -60,21 +62,25 @@ export class InternalViewport extends Container implements MutableViewport {
     this.addChild(this.view.stage as StageInternal);
     if (this.view.resize) this.view.resize.call(this.view);
     if (this.view.update) {
-      this.updateFunction = (delta: number) => this.view.update(delta);
+      // actually have linkedlist.append return a callback to then remove it from the list
+      this.updateTask = TaskSystem.scheduleRepeating(() => this.view.update(), this.view, 0, UPDATE_PRIORITY.NORMAL);
       Ticker.shared.add(this.updateFunction, this.view, UPDATE_PRIORITY.NORMAL);
     }
   }
 
   private clean() {
     if (this.view) {
-      if (this.view.update) Ticker.shared.remove(this.updateFunction, this.view);
+      if (this.updateFunction) {
+        Ticker.shared.remove(this.updateFunction, this.view);
+        this.updateFunction = undefined;
+      }
       this.removeChild(this.view?.stage as StageInternal);
       if (this.view.close) this.view.close.call(this.view);
       (this.view?.stage as StageInternal).destroy(true);
     }
   }
 
-  destroy(options?: boolean | IDestroyOptions): void {
+  override destroy(options?: boolean | IDestroyOptions): void {
     this.clean();
     super.destroy(options);
   }

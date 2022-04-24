@@ -23,10 +23,10 @@ export abstract class LoaderView extends View {
 
   public open(): void {
     const availability = Resourceful.prepare(this.target.View);
-    if (availability.state === Resourceful.State.READY) {
+    if (availability.state === Resourceful.State.Ready) {
       this.host.goto(this.target.View, ...this.target.params);
       return;
-    } else if (availability.state === Resourceful.State.ERROR) {
+    } else if (availability.state === Resourceful.State.Error) {
       throw new Error(`Failed to load ${this.target.View.name}`);
     } else {
       availability.onProgress.add(this.onProgress.bind(this));

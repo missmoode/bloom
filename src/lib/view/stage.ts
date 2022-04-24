@@ -18,5 +18,4 @@ export class StageInternal extends Container implements Stage {
   get mid(): Point {
     return new Point(this.host.width/2, this.host.height/2);
   }
-  
 }

@@ -28,7 +28,7 @@ export class ResourceLoaderHandle {
     return this.#percentage;
   }
 
-  #state: State = State.INCOMPLETE;
+  #state: State = State.Incomplete;
   /**
    * The state of the preparation.
    */
@@ -43,9 +43,11 @@ export class ResourceLoaderHandle {
         return;
       }
       const binding = this.#resources.get(resource);
-      binding.percentage = resource.complete ? 0 : 100;
-      binding.progressBinding = resource.onProgress.add(this.progressListener, this);
-      binding.completeBinding = resource.onComplete.add(this.completeListener, this);
+      if (binding) {
+        binding.percentage = resource.isComplete ? 0 : 100;
+        binding.progressBinding = resource.onProgress.add(this.progressListener, this);
+        binding.completeBinding = resource.onComplete.add(this.completeListener, this);
+      }
     }
   }
   
@@ -54,10 +56,13 @@ export class ResourceLoaderHandle {
       this.unbind();
       this.error(resource.error);
     } else {
-      this.#resources.get(resource).percentage = 1;
+      const binding = this.#resources.get(resource);
+      if (binding) {
+        binding.percentage = 1;
+      }
       if (Array.from(this.#resources.values()).every(v => v.percentage === 1)) {
         this.unbind();
-        this.#state = State.READY;
+        this.#state = State.Ready;
         this.onDone.dispatch();
       }
     }
@@ -65,12 +70,16 @@ export class ResourceLoaderHandle {
   
 
   private progressListener = (resource: LoaderResource, percentage: number) => {
-    this.#resources.get(resource).percentage = percentage;
-    this.#percentage = Array.from(this.#resources.values()).reduce((a, b) => a + b.percentage, 0) / this.#resources.size;
+    const binding = this.#resources.get(resource);
+    if (binding) {
+      binding.percentage = percentage;
+      this.#percentage = Array.from(this.#resources.values()).reduce((acc, v) => acc + v.percentage, 0) / this.#resources.size;
+      this.onProgress.dispatch(this.#percentage);
+    }
   };
 
   private error(error: Error) {
-    this.#state = State.ERROR;
+    this.#state = State.Error;
     this.onDone.dispatch(error);
   }
 
@@ -87,15 +96,15 @@ export enum State {
   /**
    * The preparation has yet to finish.
    */
-  INCOMPLETE,
+  Incomplete,
   /**
    * The preparation has finished with errors.
    */
-  ERROR,
+  Error,
   /**
    * The preparation has finished without errors. Resources can now be used.
    */
-  READY
+  Ready
 }
 
 /**

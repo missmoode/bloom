@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "target": "es6",
+    "moduleResolution": "node",
+    "outDir": "lib",
+    "strict": true,
+    "esModuleInterop": true,
+    "noImplicitOverride": true,
+  },
+  "include": [
+    "src/lib/**/*.ts"
+  ],
+  "typedocOptions": {
+      "entryPoints": ["./src/lib/index.ts"],
+      "out": "docs"
+  }
+}
