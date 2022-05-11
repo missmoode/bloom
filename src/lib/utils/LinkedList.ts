@@ -1,41 +1,126 @@
+/**
+ * @hidden
+ */
 type Link<T> = {
   prev: Link<T> | null;
   next: Link<T> | null;
   value: T;
-  unlink(): void;
+  remove(): T;
 }
+
+
 /**
  * A standard doubly-linked list.
  * Optimised for iteration and queueing. Other operations are as optimal as I can think of.
+ * @typeParam T The type of the items in the list.
  */
-export class LinkedList<T> implements Iterable<T> {
-  [Symbol.iterator](){
-    let head: Link<T> = { prev: null, next: this._head, value: undefined };
+export class LinkedList<T> {
+  constructor(items?: Iterable<T>) {
+    if (items !== undefined) this.pushAll(items);
+  }
+
+  /**
+   * An iterable of links, containing the ability to remove the link from the list.
+   */
+  get links(): Iterable<LinkedList.ReadonlyLink<T>> {
+    const head = this._head;
     return {
-      next: () => {
+      [Symbol.iterator]: () => {
+        let link = head;
         return {
-          done: (head = head.next) === null,
-          value: head.value,
+          next: () => {
+            if (link === null) {
+              return { done: true, value: undefined };
+            } else {
+              const res = { done: false, value: link };
+              link = link.next;
+              return res;
+            }
+          }
         };
       }
     };
   }
 
-  constructor(items: T[]);
-  constructor(...items: T[]);
-  constructor(items: Iterable<T>);
-  constructor(items: Iterable<T>) {
-    this.pushAll(...items);
+  /**
+   * An iterable of links in reverse order, containing the ability to remove the link from the list.
+   */
+  get reverseLinks(): Iterable<LinkedList.ReadonlyLink<T>> {
+    const tail = this._tail;
+    return {
+      [Symbol.iterator]: () => {
+        let link = tail;
+        return {
+          next: () => {
+            if (link === null) {
+              return { done: true, value: undefined };
+            } else {
+              const res = { done: false, value: link };
+              link = link.prev;
+              return res;
+            }
+          }
+        };
+      }
+    };
   }
-  
+
+  /**
+   * An iterable of values in the list.
+   */
+  get values(): Iterable<T> {
+    const head = this._head;
+    return {
+      [Symbol.iterator]: () => {
+        let link = head;
+        return {
+          next: () => {
+            if (link === null) {
+              return { done: true, value: undefined };
+            } else {
+              const res = { done: false, value: link.value };
+              link = link.next;
+              return res;
+            }
+          }
+        };
+      }
+    };
+  }
+
+  /**
+   * An iterable of values in the list in reverse order.
+   */
+  get reverseValues(): Iterable<T> {
+    const tail = this._tail;
+    return {
+      [Symbol.iterator]: () => {
+        let link = tail;
+        return {
+          next: () => {
+            if (link === null) {
+              return { done: true, value: undefined };
+            } else {
+              const res = { done: false, value: link.value };
+              link = link.prev;
+              return res;
+            }
+          }
+        };
+      }
+    };
+  }
+    
+  /** @internal */
   get [Symbol.toStringTag]() {
-    return `(${Array.from(this).join(' -> ')})`;
+    return `(${Array.from(this.values).join(' -> ')})`;
   }
+  /** @internal */
   [Symbol.toPrimitive](hint: 'default' | 'number' | 'string') {
     return hint === 'string' ? this.toString() : this.length;
   }
   toString() {
-    return `LinkedList(${Array.from(this).join(' -> ')})`;
+    return `LinkedList(${Array.from(this.values).join(' -> ')})`;
   }
 
   private _head: Link<T> | null = null;
@@ -44,15 +129,15 @@ export class LinkedList<T> implements Iterable<T> {
   /**
    * Returns the first item in the list
    */
-  readonly get firstItem(): T {
-    return (this._head != null) ? this._head.value : undefined;
+  get head(): LinkedList.ReadonlyLink<T> | null {
+    return this._head;
   }
 
   /**
    * Returns the last item in the list
    */
-  readonly get lastItem(): T {
-    return (this._tail != null) ? this._tail.value : undefined;
+  get tail(): LinkedList.ReadonlyLink<T> | null {
+    return this._tail;
   }
 
   private _length = 0;
@@ -64,78 +149,116 @@ export class LinkedList<T> implements Iterable<T> {
   }
 
   /**
-   * Adds an item to the end of the list
-   * @param {T} items The item(s) to add
-   * @returns {LinkedList<T>} This list for chaining
+   * Add an item to the list at the specified index
+   * @param item The item to add to the list
+   * @param position The position to add the item at. Negative values are from the end of the list, positive values are from the start.
+   * @returns 
    */
-  pushAll(...items: T[]): this;
-  pushAll(items: T[]): this;
-  pushAll(items: Iterable<T>): this;
-  pushAll(items: Iterable<T>): this {
-    for (const item of items) {
-      if (this._head === null) {
-        this._head = this._tail = { prev: null, next: null, value: item };
-      } else {
-        const newLink = { prev: this._tail, next: null, value: item };
+  push(item: T, position = -1): LinkedList.ReadonlyLink<T> {
+    if (position < 0) {
+      position = this._length + position;
+    }
+    if (position < 0) {
+      position = 0;
+    }
+    if (position > this._length) {
+      position = this._length;
+    }
+    const newLink: Link<T> = {
+      prev: null,
+      next: null,
+      value: item,
+      remove: () => {
+        if (newLink.prev != null) {
+          newLink.prev.next = newLink.next;
+        }
+        if (newLink.next != null) {
+          newLink.next.prev = newLink.prev;
+        }
+        if (this._head === newLink) {
+          this._head = newLink.next;
+        }
+        if (this._tail === newLink) {
+          this._tail = newLink.prev;
+        }
+        this._length--;
+        return newLink.value;
+      }
+    };
+    if (this._head === null || this._tail === null) {
+      this._head = this._tail = newLink;
+    } else {
+      if (position === 0) {
+        newLink.next = this._head;
+        this._head.prev = newLink;
+        this._head = newLink;
+      } else if (position === this._length) {
+        newLink.prev = this._tail;
         this._tail.next = newLink;
         this._tail = newLink;
+      } else {
+        const link = this.getIndex(position) as Link<T>;
+        newLink.prev = link.prev;
+        newLink.next = link;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        link.prev!.next = newLink;
+        link.prev = newLink;
       }
-      this._length++;
+    }
+    this._length++;
+    return newLink;
+  }
+
+  /**
+   * Adds a collection of items to the end of the list
+   * @param {Iterable<T>} items An iterable collection of items to add to the list
+   * @param position The position to add the items at. Negative values are from the end of the list, positive values are from the start.
+   * @returns {this This list for chaining
+   */
+  pushAll(items: Iterable<T>, position = 0): this {
+    if (position < 0) {
+      position = this._length + position;
+    }
+    for (const item of items) {
+      this.push(item, position++);
     }
     return this;
   }
-
   /**
-   * Adds an item to the start of the list
-   * @param {T} item The item(s) to add
-   * @returns {LinkedList<T>} This list for chaining
+   * Get a link at a specific index
+   * @param index The index of the link to return. Negative values are from the end of the list, positive values are from the start.
+   * @returns {Link<T>} The link at the specified index
+   * @throws If the index is out of bounds
    */
-  pushFront(item: T): this;
-  pushFront(...items: T[]): this;
-  pushFront(...items: T[]): this {
-    for (const item of items) {
-      if (this._head === null) {
-        this._head = this._tail = { prev: null, next: null, value: item };
-      } else {
-        const newLink = { prev: null, next: this._head, value: item };
-        this._head.prev = newLink;
-        this._head = newLink;
-      }
-      this._length++;
-      return this;
+  getIndex(index: number): LinkedList.ReadonlyLink<T> {
+    if (index < 0) {
+      index = this._length + index;
     }
-  }
-
-  /**
-   * Get an item at a specific index
-   * @param index The index of the item to return
-   * @returns {T} The item at the specified index
-   * @throws {Error} If the index is out of bounds
-   */
-  getIndex(index: number): T {
+    if (index >= this._length || index < 0) {
+      throw new Error(`Index out of bounds: ${index}`);
+    }
     if (index == 0) {
-      return this._head;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this._head!;
     } else if (index == this._length - 1) {
-      return this._tail;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this._tail!;
     } else if (index > this._length/2) {
-      if (index >= this._length || index < 0) {
-        throw new Error(`Index out of bounds: ${index}`);
+      let i = this._length-1;
+      for (const link of this.reverseLinks) {
+        if (i-- === index) {
+          return link;
+        }
       }
-      let link = this._tail;
-      for (let i = this._length - 1; i > index; i--) {
-        link = link.prev;
-      }
-      return link.value;
     } else {
-      if (index >= this._length || index < 0) {
-        throw new Error(`Index out of bounds: ${index}`);
+      for (const link of this.reverseLinks) {
+        if (index === 0) {
+          return link;
+        }
+        index--;
       }
-      let link = this._head;
-      for (let i = 0; i < index; i++) {
-        link = link.next;
-      }
-      return link.value;
     }
+    throw new Error('Unreachable code');
   }
 
   /**
@@ -145,31 +268,9 @@ export class LinkedList<T> implements Iterable<T> {
    * @throws {Error} If the index is out of bounds
    */
   removeAt(index: number): T {
-    if (index === 0) {
-      return this.popFront();
-    } else if (index === this._length - 1) {
-      return this.pop();
-    } else if (index > this._length/2) {
-      if (index >= this._length || index < 0) {
-        throw new Error(`Index out of bounds: ${index}`);
-      }
-      let link = this._tail;
-      for (let i = this._length - 1; i > index; i--) {
-        link = link.prev;
-      }
-      link.prev.next = link.next;
-      return link.value;
-    } else {
-      if (index >= this._length || index < 0) {
-        throw new Error(`Index out of bounds: ${index}`);
-      }
-      let link = this._head;
-      for (let i = 0; i < index; i++) {
-        link = link.next;
-      }
-      link.prev.next = link.next;
-      return link.value;
-    }
+    const link = this.getIndex(index);
+    this.getIndex(index).remove();
+    return link.value;
   }
   
   /**
@@ -201,9 +302,9 @@ export class LinkedList<T> implements Iterable<T> {
 
   /**
    * Removes the last item from the list
-   * @returns {T} The item that was removed
+   * @returns {T|undefined} The item that was removed, if any
    */
-  pop() {
+  pop(): T | undefined {
     if (this._tail === null) {
       return undefined;
     }
@@ -220,9 +321,9 @@ export class LinkedList<T> implements Iterable<T> {
 
   /**
    * Removes the first item from the list
-   * @returns {T} The item that was removed
+   * @returns {T|undefined} The item that was removed, if any
    */
-  popFront() {
+  shift(): T | undefined {
     if (this._head === null) {
       return undefined;
     }
@@ -254,13 +355,7 @@ export class LinkedList<T> implements Iterable<T> {
    * Returns a copy of the list in reverse order
    */
   get inverse(): LinkedList<T> {
-    const list = new LinkedList<T>();
-    let link = this._tail;
-    while (link !== null) {
-      list.pushAll(link.value);
-      link = link.prev;
-    }
-    return list;
+    return new LinkedList<T>(this.reverseValues);
   }
 
   /**
@@ -268,72 +363,103 @@ export class LinkedList<T> implements Iterable<T> {
    */
   clone(): LinkedList<T> {
     const list = new LinkedList<T>();
-    let link = this._head;
-    while (link !== null) {
-      list.pushAll(link.value);
-      link = link.next;
-    }
+    list.pushAll(this.values);
     return list;
   }
 
   /**
-   * Iterate over the list, removing elements matching the predicate
-   * @param {CullingPredicate} predicate The predicate to use
+   * Iterate over the list, removing elements matching the predicate.
+   * @param cullingPredicate The predicate to use
+   * @returns The list for chaining.
    */
-  cull(predicate: CullingPredicate): LinkedList<T> {
-    let link = this._head;
-    while (link !== null) {
-      if (predicate(link.value)) {
-        link = link.next;
-      } else {
-        link = link.prev.next = link.next;
+  cull(cullingPredicate: LinkedList.CullingPredicate<T>): this {
+    for (const link of this.links) {
+      if (!cullingPredicate(link.value)) {
+        link.remove();
       }
     }
+    return this;
   }
 
-  map<U>(mapper: Mapper<T, U>): LinkedList<U> {
+  /**
+   * Create a new list with only the functions where the predicate returns true
+   * @param cullingPredicate - The predicate to use
+   * @returns The created list
+   */
+  filter(cullingPredicate: LinkedList.CullingPredicate<T>): LinkedList<T> {
+    const list = new LinkedList<T>();
+    for (const item of this.values) {
+      if (cullingPredicate(item)) list.push(item);
+    }
+    return list;
+  }
+  
+  /**
+   * Create a new list with the results of applying a function to each item in the list.
+   * @param mapper - The mapping function
+   * @returns The new list
+   */
+  map<U>(mapper: LinkedList.Mapper<T, U>): LinkedList<U> {
     const list = new LinkedList<U>();
-    let link = this._head;
-    while (link !== null) {
-      const value = mapper(link.value);
-      if (value !== null && value !== undefined) {
-        list.pushAll(mapper(link.value));
-      }
-      link = link.next;
+    for (const link of this.links) {
+      list.push(mapper(link.value));
     }
     return list;
   }
 
   /**
    * Perform an operation once for each item in the list
-   * @param callback The callback to use
+   * @param callback - The callback to use
    */
-  forEach(callback: ForEachCallback<T>) {
+  forEach(forEachCallback: LinkedList.ForEachCallback<T>) {
     let link = this._head;
     while (link !== null) {
-      callback(link.value);
+      forEachCallback(link.value);
       link = link.next;
     }
   }
 }
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace LinkedList {
+  /**
+   * @callback cullingPredicate
+   * @param item - The item to test
+   * @returns {boolean} True if the item should be culled
+   */
+  export type CullingPredicate<T> = (item: T) => boolean;
 
-type CullingPredicate =
-/**
- * @param item The item to test
- * @returns {boolean} True if the item should be culled
- */
-(item: T) => boolean;
+  /**
+   * @callback mapper
+   * @param item The item to map
+   * @returns {U} The mapped item
+   */
+  export type Mapper<T, U> = (item: T) => U;
 
-type Mapper<T, U> =
-/**
- * @param item The item to map
- * @returns {U} The mapped item
- */
-(item: T) => U;
+  /**
+   * @callback forEachCallback
+   * @param item The item to process
+   **/
+  export type ForEachCallback<T> = (item: T) => void;
 
-type ForEachCallback<T> =
-/**
- * @param item The item to process
- * @returns {void}
- **/
-(item: T) => void;
+  /**
+   * An item in a linked list.
+   */
+  export type ReadonlyLink<T> = {
+    /**
+     * The previous item in the list.
+     */
+    readonly prev: LinkedList.ReadonlyLink<T> | null;
+    /**
+     * The next item in the list.
+     */
+    readonly next: LinkedList.ReadonlyLink<T> | null;
+    /**
+     * The value of the item.
+     */
+    readonly value: T;
+    /**
+     * Remove this item from the list.
+     */
+    remove(): T;
+  }
+}

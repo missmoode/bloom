@@ -1,7 +1,7 @@
 import { Loader, LoaderResource } from 'pixi.js';
-import { Dict } from '../../../utils/types';
-import { Attachment } from '../attachment';
-import { Availability } from './object';
+import { Dict } from '../utils/types';
+import type { Attachment } from './attachment';
+import { ResourceLoaderHandle } from './ResourceLoaderHandle';
 
 type Reservation = {
   resource: LoaderResource,
@@ -15,7 +15,7 @@ const reservations: Dict<Reservation> = {};
  * @returns 
  */
 // TODO: place a breakpoint here: is the first argument being shunted to the context?
-export function prepare<T>(container: Attachment<T>): Availability {
+export function prepare<T>(container: Attachment<T>): ResourceLoaderHandle {
   const resources: LoaderResource[] = [];
   let mustLoad = false;
   for (const key in container._bloom_assets) {
@@ -34,7 +34,7 @@ export function prepare<T>(container: Attachment<T>): Availability {
     resources.push(reservation.resource);
   }
   if (mustLoad) Loader.shared.load();
-  return new Availability(resources);
+  return new ResourceLoaderHandle(resources);
 }
 
 export function release<T>(resourcefulObject: Attachment<T>): void {

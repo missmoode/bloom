@@ -5,17 +5,32 @@
       "dom"
     ],
     "target": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "lib",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitOverride": true,
+    "rootDir": "./src/lib"
   },
   "include": [
-    "src/lib/**/*.ts"
+    "./src/lib/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ],
   "typedocOptions": {
-      "entryPoints": ["./src/lib/index.ts"],
-      "out": "docs"
+      "entryPoints": [
+        "./src/lib/game/index.ts",
+        "./src/lib/view/index.ts",
+        "./src/lib/TaskSystem.ts",
+        "./src/lib/resources/index.ts",
+        "./src/lib/utils/index.ts",
+        "./src/lib/helpers/index.ts"
+      ],
+      "out": "wiki",
+      "theme": "github-wiki",
+      "excludePrivate": true,
+      "excludeInternal": true
   }
 }

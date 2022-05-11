@@ -1,24 +1,10 @@
-import { Container, DisplayObject, IDestroyOptions, Ticker, UPDATE_PRIORITY } from 'pixi.js';
+import { Container, IDestroyOptions } from 'pixi.js';
 import { StageInternal } from './Stage';
-import { View, ViewConstructor, ViewConstructorParameters } from './View';
 import { Interface } from '../utils/private';
-import { Task, TaskSystem } from '../TaskSystem';
-export interface FixedViewport {
-  get width(): number;
-  get height(): number;
-
-  /**
-   * Host a view.
-   * @param View The constructor for the view to load.
-   * @param params The parameters to pass to the view constructor (after the stage).
-   */
-  goto<C extends ViewConstructor>(View: C, ...params:  ViewConstructorParameters<C>): void;
-}
-export interface MutableViewport extends FixedViewport, DisplayObject {
-  set width(width: number);
-  set height(height: number);
-  resize(width: number, height?: number): void;
-}
+import { Task, Interval, TaskPriority, TaskSystem } from '../TaskSystem';
+import { MutableViewport } from './IViewport';
+import { View } from './View';
+import { ViewConstructor, ViewConstructorParameters } from './ViewConstructor';
 
 export class InternalViewport extends Container implements MutableViewport {
 
@@ -62,17 +48,15 @@ export class InternalViewport extends Container implements MutableViewport {
     this.addChild(this.view.stage as StageInternal);
     if (this.view.resize) this.view.resize.call(this.view);
     if (this.view.update) {
-      // actually have linkedlist.append return a callback to then remove it from the list
-      this.updateTask = TaskSystem.scheduleRepeating(() => this.view.update(), this.view, 0, UPDATE_PRIORITY.NORMAL);
-      Ticker.shared.add(this.updateFunction, this.view, UPDATE_PRIORITY.NORMAL);
+      this.updateTask = TaskSystem.scheduleRepeating(this.view.update, Interval.Zero, Interval.ticks(1), TaskPriority.Update);
     }
   }
 
   private clean() {
     if (this.view) {
-      if (this.updateFunction) {
-        Ticker.shared.remove(this.updateFunction, this.view);
-        this.updateFunction = undefined;
+      if (this.updateTask) {
+        this.updateTask.cancel();
+        this.updateTask = undefined;
       }
       this.removeChild(this.view?.stage as StageInternal);
       if (this.view.close) this.view.close.call(this.view);

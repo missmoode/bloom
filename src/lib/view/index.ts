@@ -1,3 +1,6 @@
-export { Stage } from './Stage';
-export { View, ViewTarget, target } from './View';
-export { MutableViewport, Viewport, FixedViewport } from './Viewport';
+/** @module Views and Viewports */
+export { View } from './View';
+export { target, ViewTarget, ViewConstructor, ViewConstructorParameters } from './ViewConstructor';
+export { Viewport } from './Viewport';
+export { Stage } from './IStage';
+export { MutableViewport, FixedViewport } from './IViewport';

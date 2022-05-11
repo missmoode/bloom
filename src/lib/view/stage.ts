@@ -1,12 +1,8 @@
 import { Container } from 'pixi.js';
 import { Point } from 'pixi.js';
-import { FixedViewport } from './Viewport';
+import { Stage } from './IStage';
+import { FixedViewport } from './IViewport';
 
-type Passed = 'addChild' | 'addChildAt' | 'removeChild' | 'removeChildAt' | 'removeChildren' | 'swapChildren' | 'getChildIndex' | 'setChildIndex' | 'sortChildren' | 'sortDirty' | 'sortableChildren' | 'children';
-
-export interface Stage extends Pick<Container, Passed> {
-  get mid(): Point;
-}
 export class StageInternal extends Container implements Stage {
   public readonly host: FixedViewport;
 

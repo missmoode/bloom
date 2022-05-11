@@ -1,6 +1,6 @@
-import { Resourceful } from '../../resources';
-import { Stage, View, ViewTarget } from '../../view';
-import { ViewConstructor } from '../../view/view';
+
+import * as Resourceful from '../../resources';
+import { ViewConstructor, View, ViewTarget, Stage } from '../../view';
 
 // function flow()
 // public goto<V extends View>(View: DefaultViewConstructor<V>): void;
@@ -21,7 +21,7 @@ export abstract class LoaderView extends View {
     this.target = target;
   }
 
-  public open(): void {
+  public override open(): void {
     const availability = Resourceful.prepare(this.target.View);
     if (availability.state === Resourceful.State.Ready) {
       this.host.goto(this.target.View, ...this.target.params);

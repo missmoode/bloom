@@ -1,7 +1,7 @@
 import { AbstractRenderer, autoDetectRenderer, Renderer } from 'pixi.js';
-import { Ticker } from 'pixi.js';
+import { Task, Interval, TaskPriority, TaskSystem } from '../TaskSystem';
 
-import { MutableViewport, Viewport } from '../view/Viewport';
+import { MutableViewport, Viewport } from '../view';
 
 /**
  * Each game has a state.
@@ -17,6 +17,7 @@ import { MutableViewport, Viewport } from '../view/Viewport';
 
 export class GameCanvas {
   private renderer: Renderer | AbstractRenderer;
+  private renderTask: Task;
   public readonly viewport: MutableViewport;
 
   private _resize: ResizeObserver = new ResizeObserver((e) => {
@@ -36,14 +37,15 @@ export class GameCanvas {
 
     this._resize.observe(fills);
 
-    Ticker.shared.add(this.render, this);
+    this.renderTask = TaskSystem.scheduleRepeating(this.render, Interval.Zero, Interval.ticks(1), TaskPriority.Render);
   }
 
-  public render() {
+  private render = () => {
     this.renderer.render(this.viewport);
-  }
+  };
 
   public destroy(): void {
+    this.renderTask.cancel();
     this.renderer.destroy();
     this._resize.disconnect();
   }

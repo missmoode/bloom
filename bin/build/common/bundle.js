@@ -77,7 +77,7 @@ exports.bundle = {
                 task.output = 'Compressing...';
                 if (context.config.build.bundle.sourcemaps === true)
                     yield bundle.cycle(gulp_sourcemaps_1.default.init({ loadMaps: true }));
-                yield bundle.cycle((0, gulp_terser_1.default)({ output: { comments: false }, compress: true, mangle: true }));
+                yield bundle.cycle((0, gulp_terser_1.default)({ output: { comments: false }, compress: true, mangle: { properties: false } }));
                 if (context.config.build.bundle.sourcemaps === true)
                     yield bundle.cycle(gulp_sourcemaps_1.default.write('.', { sourceRoot: path_1.default.relative(context.config.build.out, path_1.default.dirname(context.config.build.bundle.main)) }));
             }),

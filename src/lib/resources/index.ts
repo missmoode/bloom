@@ -1,7 +1,4 @@
-import { Loader } from 'pixi.js';
-import { Plugins } from './plugins';
-for (const Plugin of Plugins) {
-  Loader.registerPlugin(new Plugin());
-}
-
-export * as Resourceful from './resourceful';
+/** @module Resource Attachment */
+export * from './attachment';
+export * from './functions';
+export * from './ResourceLoaderHandle';

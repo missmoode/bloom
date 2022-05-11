@@ -1,5 +1,6 @@
-import { Stage, StageInternal } from './Stage';
-import { FixedViewport } from './Viewport';
+import { Stage } from './IStage';
+import { FixedViewport } from './IViewport';
+import { StageInternal } from './Stage';
 export abstract class View {
   public readonly stage: Stage;
 
@@ -31,14 +32,4 @@ export abstract class View {
    * @param deltaMillis The time since the last frame in milliseconds.
    */
   public update?(deltaMillis: number): void;
-}
-
-export type ViewConstructor = new (stage: Stage, ...args: any[]) => View;
-
-export type ViewConstructorParameters<T extends ViewConstructor> = ConstructorParameters<T> extends [unknown, ...infer A] ? A : [];
-
-export type ViewTarget<T extends ViewConstructor = ViewConstructor> = {View: T, params: ViewConstructorParameters<T>};
-
-export function target<T extends ViewConstructor>(View: T, ...params: ViewConstructorParameters<T>): ViewTarget<T> {
-  return { View, params };
 }
