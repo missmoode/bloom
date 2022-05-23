@@ -1,43 +1,56 @@
-export type ProtocolVersion = number;
-export type PacketDescriptor = string;
-
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PacketProducer<P extends TransmissionPayload> = (...args: any[]) => P;
+type Any = any;
 
-export type TransmissionPayload =
-  | string
-  | number
-  | boolean
-  | null
-  | TransmissionPayload[]
-  | { [key: string]: TransmissionPayload };
+type TransmissiblePrimitives =
+| string
+| number
+| boolean
+| undefined;
+type TransmissibleArray =
+| string[]
+| number[]
+| boolean[]
+| TransmissibleObject[];
 
-interface Packet<D extends PacketDescriptor = PacketDescriptor, P extends TransmissionPayload = TransmissionPayload> {
-  type: D;
-  payload: P;
+type TransmissibleObject = { [key: string]: TransmissibleData };
+export type TransmissibleData = TransmissiblePrimitives | TransmissibleArray | TransmissibleObject;
+
+export interface Codec<Incoming extends TransmissibleData, Outgoing> {
+  decoder: (data: Incoming) => Outgoing;
+  encoder: (data: Outgoing) => Incoming;
 }
-interface ProtocolPacket<D extends PacketDescriptor, P extends TransmissionPayload, F extends PacketProducer<P>> {
-  make(...args: Parameters<F>): Packet<D, P>;
-  match(packet: Packet): packet is Packet<D, P>;
-}
-/**
- * 
- * @param type The name of the packet, used in the network to identify the packet
- * @param factory A function that takes the arguments of the packet and returns the payload
- * @returns An object that can be used to create a packet and match against a packet
- */
-export function definePacket<P extends TransmissionPayload>(type: PacketDescriptor, factory: PacketProducer<P>):
- ProtocolPacket<typeof type, P, typeof factory> {
+
+export type EncodedType<T extends Codec<Any, Any>> = T extends Codec<infer Encoded, Any> ? Encoded : never;
+export type DecodedType<T extends Codec<Any, Any>> = T extends Codec<Any, infer Decoded> ? Decoded : never;
+
+function codec<Encoded extends TransmissibleData, Decoded>(encoder: (outgoing: Decoded) => Encoded, decoder: (incoming: Encoded) => Decoded): Codec<Encoded, Decoded> {
   return {
-    make(...args: Parameters<typeof factory>) {
-      return {
-        type: type,
-        payload: factory(...args)
-      };
-    },
-    match(packet: Packet): packet is Packet<typeof type, P> {
-      return packet.type === type;
-    }
+    encoder,
+    decoder
   };
 }
+
+export type Combined<T extends Any[]> =
+T extends [infer A, infer B, ...infer C]
+? C extends []
+  ? A & B
+  : A & B & Combined<C>
+: Record<string, never>;
+
+export type PacketProtocol = Record<string, Codec<Any, Any>>;
+export type CodecName<T extends PacketProtocol> = Extract<keyof T, string>;
+
+function combine<P extends PacketProtocol[]>(...protocols: P): Combined<P> {
+  const combinedProtocol = {} as PacketProtocol;
+  for (const protocol of protocols) {
+    for (const name in protocol) {
+      if (combinedProtocol[name]) {
+        throw new Error(`Packet names cannot be defined twice (on "${name}".)`);
+      }
+      combinedProtocol[name] = protocol[name];
+    }
+  }
+  return combinedProtocol as Combined<P>;
+}
+export const Protocol = { codec, combine };
