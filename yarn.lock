@@ -3946,10 +3946,10 @@ type@^2.5.0:
   resolved "https://registry.yarnpkg.com/type/-/type-2.6.0.tgz#3ca6099af5981d36ca86b78442973694278a219f"
   integrity sha512-eiDBDOmkih5pMbo9OqsqPRGMljLodLcwd5XD5JbtNB0o89xZAwynY9EdCDsJU7LtcVCClu9DvM7/0Ep1hYX3EQ==
 
-typedoc-github-wiki-theme@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/typedoc-github-wiki-theme/-/typedoc-github-wiki-theme-1.0.0.tgz#85e2171be1a15457e80f2a3ca07a653bc8c77e91"
-  integrity sha512-8ZuRBSTq15j7oTCMRAiZV3t7KH+Y6tOXkEcyRj5HUEwCgd08DCfXpSrLHjXc83MlvvGi+16n7LuXK17NkEjf/g==
+typedoc-github-wiki-theme@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/typedoc-github-wiki-theme/-/typedoc-github-wiki-theme-1.0.1.tgz#412b9c9aeaa15f1360e79296c9dd186caf711e2c"
+  integrity sha512-FaO7fENGK6IJLpkddbNXxJfNbooF9KBC7xfk7Lj4uqG5SCC7YQFPTLDyNmbpJKO93QEenRYgqBwI5E5d/bKrHw==
 
 typedoc-plugin-markdown@^3.12.1:
   version "3.12.1"
