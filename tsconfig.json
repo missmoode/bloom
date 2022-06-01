@@ -15,7 +15,7 @@
   },
   "include": [
     "./src/lib/**/*.ts"
-  ],
+, "src/lib/network/protocol/buffertools.ts.old"  ],
   "exclude": [
     "node_modules"
   ],
