@@ -8,7 +8,7 @@ export class NetworkManager<T extends PacketProtocol> {
     private readonly protocol: T,
   ) {}
 
-
+  
   public constructPacket<C extends CodecName<T>>(name: C, data: DecodedType<T[C]>): Packet {
     return {
       name,

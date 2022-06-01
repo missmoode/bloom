@@ -418,6 +418,14 @@ export class LinkedList<T> {
       link = link.next;
     }
   }
+
+  toArray(): T[] {
+    const array = [];
+    for (const link of this.links) {
+      array.push(link.value);
+    }
+    return array;
+  }
 }
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace LinkedList {
