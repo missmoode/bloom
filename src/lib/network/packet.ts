@@ -7,7 +7,6 @@ class PacketContext<T extends PacketProtocol> {
   ) {}
 }
 
-
 export interface Packet {
   name: string;
   data: TransmissibleData;

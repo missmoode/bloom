@@ -17,17 +17,17 @@ type TransmissibleObject = { [key: string]: TransmissibleData };
 export type TransmissibleData = TransmissiblePrimitives | TransmissibleArray | TransmissibleObject;
 
 export interface Codec<Incoming extends TransmissibleData, Outgoing> {
-  decoder: (data: Incoming) => Outgoing;
-  encoder: (data: Outgoing) => Incoming;
+  decode: (data: Incoming) => Outgoing;
+  encode: (data: Outgoing) => Incoming;
 }
 
 export type EncodedType<T extends Codec<Any, Any>> = T extends Codec<infer Encoded, Any> ? Encoded : never;
 export type DecodedType<T extends Codec<Any, Any>> = T extends Codec<Any, infer Decoded> ? Decoded : never;
 
-function codec<Encoded extends TransmissibleData, Decoded>(encoder: (outgoing: Decoded) => Encoded, decoder: (incoming: Encoded) => Decoded): Codec<Encoded, Decoded> {
+function codec<Encoded extends TransmissibleData, Decoded>(encode: (object: Decoded) => Encoded, decode: (data: Encoded) => Decoded): Codec<Encoded, Decoded> {
   return {
-    encoder,
-    decoder
+    encode,
+    decode
   };
 }
 
