@@ -5,7 +5,7 @@ export class NetworkProtocol {
 
   /**
    * Register a packet codec with the network protocol.
-   * @param id A 2-byte unsigned integer used to identify the packet. Must be unique.
+   * @param id A single-byte id used to identify the packet. This id must be unique within the protocol.
    * @param codec The codec used to encode and decode the packet.
    * @returns This for chaining.
    */
