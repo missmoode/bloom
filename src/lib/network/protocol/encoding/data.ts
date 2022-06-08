@@ -1,9 +1,9 @@
 import { Buffer } from 'buffer';
-import { LinkedList } from '../../utils';
+import { LinkedList } from '../../../utils';
 
 export interface BufferWriter {
   writeRaw(data: WithImplicitCoercion<Uint8Array | ReadonlyArray<number>>): void;
-  write<T>(codec: Codec<T>, object: T): void;
+  write<T>(codec: NetworkCodec<T>, object: T): void;
 }
 
 export class BufferConcatenator implements BufferWriter {
@@ -17,7 +17,7 @@ export class BufferConcatenator implements BufferWriter {
     }
   }
 
-  public write<T>(codec: Codec<T>, object: T): void {
+  public write<T>(codec: NetworkCodec<T>, object: T): void {
     codec.encode(object, this);
   }
 
@@ -44,12 +44,12 @@ export class BufferReader {
     return out;
   }
 
-  public read<T>(codec: Codec<T>): T {
+  public read<T>(codec: NetworkCodec<T>): T {
     return codec.decode(this);
   }
 }
 
-export type Codec<T> = {
+export type NetworkCodec<T> = {
   encode(object: T, buf: BufferWriter): void;
   decode(data: BufferReader): T;
 };

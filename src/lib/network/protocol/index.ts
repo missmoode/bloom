@@ -1,3 +1,3 @@
-export * from './data';
-export * as PrimitiveCodecs from './basecodecs';
 export * from './NetworkProtocol';
+export * from './encoding';
+export * as Schema from './definition';

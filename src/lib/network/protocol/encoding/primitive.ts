@@ -1,6 +1,6 @@
-import { BufferReader, BufferWriter, Codec } from './data';
+import { BufferReader, BufferWriter, NetworkCodec } from './data';
 
-export const Boolean: Codec<boolean> = {
+export const Boolean: NetworkCodec<boolean> = {
   encode: (data: boolean, buf: BufferWriter) => {
     buf.writeRaw([data ? 1 : 0]);
   }, 
@@ -9,7 +9,7 @@ export const Boolean: Codec<boolean> = {
   }
 };
 
-export const UByte: Codec<number> = {
+export const UByte: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(1);
     b.writeUInt8(data, 0);
@@ -20,7 +20,7 @@ export const UByte: Codec<number> = {
   }
 };
 
-export const Byte: Codec<number> = {
+export const Byte: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(1);
     b.writeInt8(data, 0);
@@ -31,7 +31,7 @@ export const Byte: Codec<number> = {
   }
 };
 
-export const UShort: Codec<number> = {
+export const UShort: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(2);
     b.writeUint16BE(data, 0);
@@ -42,7 +42,7 @@ export const UShort: Codec<number> = {
   }
 };
 
-export const Short: Codec<number> = {
+export const Short: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(2);
     b.writeInt16BE(data, 0);
@@ -53,7 +53,7 @@ export const Short: Codec<number> = {
   }
 };
 
-export const UInt: Codec<number> = {
+export const UInt: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(4);
     b.writeUint32BE(data, 0);
@@ -64,7 +64,7 @@ export const UInt: Codec<number> = {
   } 
 };
 
-export const Int: Codec<number> = {
+export const Int: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(4);
     b.writeInt32BE(data, 0);
@@ -75,7 +75,7 @@ export const Int: Codec<number> = {
   }
 };
 
-export const UBigInt: Codec<bigint> = {
+export const UBigInt: NetworkCodec<bigint> = {
   encode: (data: bigint, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(8);
     b.writeBigUInt64BE(data, 0);
@@ -86,7 +86,7 @@ export const UBigInt: Codec<bigint> = {
   }
 };
 
-export const BigInt: Codec<bigint> = {
+export const BigInt: NetworkCodec<bigint> = {
   encode: (data: bigint, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(8);
     b.writeBigInt64BE(data, 0);
@@ -97,7 +97,7 @@ export const BigInt: Codec<bigint> = {
   }
 };
 
-export const Float: Codec<number> = {
+export const Float: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(4);
     b.writeFloatBE(data, 0);
@@ -108,7 +108,7 @@ export const Float: Codec<number> = {
   }
 };
 
-export const Double: Codec<number> = {
+export const Double: NetworkCodec<number> = {
   encode: (data: number, buf: BufferWriter) => {
     const b = Buffer.allocUnsafe(8);
     b.writeDoubleBE(data, 0);
@@ -119,7 +119,7 @@ export const Double: Codec<number> = {
   }
 };
 
-export const String: Codec<string> = {
+export const String: NetworkCodec<string> = {
   encode: (data: string, buf: BufferWriter) => {
     const b = Buffer.from(data, 'utf8');
     buf.write(Int, b.byteLength);

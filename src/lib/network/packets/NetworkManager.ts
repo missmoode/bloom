@@ -1,22 +1,40 @@
 import { Buffer } from 'buffer';
-import { BufferReader, PrimitiveCodecs, NetworkProtocol } from '../protocol';
+import { BufferReader, StandardCodecs, NetworkProtocol, PacketID } from '../protocol';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T> = new (...args: any[]) => T;
 
 type PacketHandler<T> = (packet: T) => void;
 
+
+/**
+ * Single network manager. Doesn't have listeners itself, directs to the protocols.
+ */
 export class NetworkManager {
   private protocols: { [id: number]: NetworkProtocol } = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private listeners: Map<Constructor<any>, PacketHandler<any>[]> = new Map();
 
   constructor(...protocols: NetworkProtocol[]) {
-    this.protocols = protocols;
+    for (const proto of protocols) {
+      if (this.protocols[proto.protocolID]) {
+        throw new Error(`Protocol collision: Multiple protocols using the ID ${proto.protocolID}.`);
+      }
+      proto.lock();
+      this.protocols[proto.protocolID] = proto;
+    }
+  }
+
+  private getCodec(id: PacketID) {
+    const proto = this.protocols[id >> 8];
+    if (!proto) {
+      throw new Error(`Protocol ${id >> 8} not found`);
+    }
+    return proto.getCodec(id);
   }
 
   private decodePacket(buf: BufferReader): object {
-    const id = buf.read(PrimitiveCodecs.UByte);
+    const id = buf.read(StandardCodecs.UByte);
     const proto = this.protocols[id];
     if (!proto) {
       throw new Error(`Protocol ${id} not found`);
