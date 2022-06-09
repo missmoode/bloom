@@ -13,16 +13,6 @@ type InstanceOfSchema<T extends Schema> = {
   [K in T[number]['key']]: Extract<T[number], {key: K}>['codec'] extends NetworkCodec<infer U> ? U : never;
 };
 
-
-export type PacketDefinition<T extends Schema = Schema> = {
-  readonly identifier: number;
-  readonly codec: NetworkCodec<InstanceOfSchema<T>>;
-}
-
-function isPacketDefinition<T extends Schema>(obj: PacketDefinition<T> | unknown): obj is PacketDefinition<T> {
-  return (obj as PacketDefinition<T>).identifier !== undefined && (obj as PacketDefinition<T>).codec !== undefined;
-}
-
 function isCodec<E, T extends NetworkCodec<E>>(codec: T | unknown): codec is NetworkCodec<E> {
   return (codec as T).encode !== undefined && (codec as T).decode !== undefined;
 }
@@ -56,39 +46,46 @@ export function property<K extends string, E, T extends NetworkCodec<E>>(key: K,
  * @param payload Another schema to be read into or out of like a nested object
  */
 export function property<K extends string, T extends Schema>(key: K, payload: T): SchemaProperty<K, NetworkCodec<InstanceOfSchema<T>>>;
-/**
- * Include another packet's schema as a property of this one.
- * @param key The key of the property for use in reading/writing
- * @param payload An existing packet definition, which will be read as a nested schema
- */
-export function property<K extends string, T extends Schema>(key: K, payload: PacketDefinition<T>): SchemaProperty<K, NetworkCodec<InstanceOfSchema<T>>>;
-export function property<K extends string, E>(key: K, codecOrSchemaOrPacketDef: Schema|NetworkCodec<E>|PacketDefinition<Schema>): object {
-  if (isCodec(codecOrSchemaOrPacketDef)) {
-    return { key, codec: codecOrSchemaOrPacketDef };
-  } else if (isPacketDefinition(codecOrSchemaOrPacketDef)) {
-    return { key, codec: codecOrSchemaOrPacketDef.codec };
+export function property<K extends string, E>(key: K, codecOrSchema: Schema|NetworkCodec<E>): object {
+  if (isCodec(codecOrSchema)) {
+    return { key, codec: codecOrSchema };
   } else {
-    return { key, codec: makeCodec(codecOrSchemaOrPacketDef) };
+    return { key, codec: makeCodec(codecOrSchema) };
   }
 }
 
+
+
+type UnassociatedPacket<T extends Schema = Schema> = {
+  readonly id: number;
+  readonly codec: NetworkCodec<InstanceOfSchema<T>>;
+}
+
+/*
+  Need a way to decode any packet
+  packets are always preceded by a 2-byte domain and 2-byte id
+  domain is used to determine the protocol the packet belongs to
+    - this is so that we can have multiple functionalities which operate independently as drop-in modules
+  id is used to determine the packet within the protocol
+  maybe create some sort of header matching system?
+*/
+
 /**
  * 
- * @param identifier The ID of the packet as two-byte number, which will be used to identify it in the network. This must be unique for each packet within the protocol. Any bigger number will be truncated to a 16-bit number.
+ * @param packetID The ID of the packet as two-byte number, which will be used to identify it in the network. This must be unique for each packet within the protocol. Any bigger number will be truncated to a 16-bit number.
  * @param schema The schema of the packet, which defines the properties of the packet.
  * @returns A packet definition, which can be used to read and write packets as part of a communication protocol.
  */
-export function definePacket<T extends Schema>(identifier: number, schema: T): PacketDefinition<T> {
+export function definePacket<T extends Schema>(packetID: number, schema: T): UnassociatedPacket<T> {
   return {
-    identifier,
-    codec: makeCodec(schema)\
+    id: packetID,
+    codec: makeCodec(schema)
   };
 }
 
 type ProtocolLayout = {
-  [key: string]: PacketDefinition<Schema>;
+  [key: string]: UnassociatedPacket<Schema>;
 }
-
 
 type Protocol<T extends ProtocolLayout> = {
   getID(): number;
@@ -105,12 +102,24 @@ const exampleProtocol = defineProtocol(0, {
   ])
 });
 
+class ProtcolManager {
+  
+  decode(data: Buffer): { identity: number };
+}
+
 /*
   Packet definition has an identifier and a codec. Could possibly call it a "message domain", and then have protocol also be one.
 
   "messagehandlers" are registrations of a header number and a function which can decode the message.
 
   Protocol is a collection of packet definitions as well as handlers.
+
+  each encoder has a domain key
+  domain key is encoded before the message
+  part of an object which has:
+    - a domain key
+    - a codec
+    - a place to send decoded messages
 
   so maybe protocol.packetName.construct(packet) returns a buffer?
  ¦
