@@ -103,7 +103,6 @@ const exampleProtocol = defineProtocol(0, {
 });
 
 class ProtcolManager {
-  
   decode(data: Buffer): { identity: number };
 }
 
